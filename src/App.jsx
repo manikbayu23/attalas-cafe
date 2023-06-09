@@ -7,7 +7,6 @@ import { useEffect } from 'react'
 import Footer from './components/Fragments/Footer'
 import Navbar from './components/Fragments/Navbar'
 import Home from './pages/Home'
-import About from './pages/About'
 import Menu from './pages/Menu'
 import Gallery from './pages/Gallery'
 import Contact from './pages/Contact'
@@ -25,7 +24,6 @@ function App() {
         <Navbar />
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/about' element={<About />} />
           <Route path='/menu' element={<Menu />} />
           <Route path='/gallery' element={<Gallery />} />
           <Route path='/contact' element={<Contact />} />

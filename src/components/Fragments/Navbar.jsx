@@ -18,12 +18,11 @@ const Navbar = () => {
                 <NavLink to="/" className='logo-cafe'>Attalas Cafe</NavLink>
                 <ul className={isNavbarOpen ? 'nav-list' : 'nav-list-close'}>
                     <li><NavLink onClick={closeNavbar} to="/" className='nav-link'>HOME</NavLink></li>
-                    <li><NavLink onClick={closeNavbar} to="/about" className='nav-link'>ABOUT US</NavLink></li>
                     <li><NavLink onClick={closeNavbar} to="/menu" className='nav-link'>MENU</NavLink></li>
                     <li><NavLink onClick={closeNavbar} to="/gallery" className='nav-link'>GALLERY</NavLink></li>
+                    <li><NavLink onClick={closeNavbar} to="/contact" className='nav-link'>CONTACT US</NavLink></li>
                 </ul>
                 <div className='togglres' >
-                    <NavLink to="/contact" className='link-contact'><FontAwesomeIcon className='icon-phone' icon={faUser} /> <span>CONTACT US</span></NavLink>
                     <div className={isNavbarOpen ? 'btn-toggle' : ''}
                     >
                         <input
