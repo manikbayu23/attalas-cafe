@@ -8,8 +8,8 @@
         <div class="sidebar-section">
             <div class="sidebar-section-body d-flex justify-content-center">
                 <h5 class="sidebar-resize-hide flex-grow-1 my-auto text-center">
-                    <img src="{{ asset(path: 'assets/img/panca-mahottama2.png') }}" class="img-fluid rounded-circle"
-                        width="100" alt="logo">
+                    <img src="{{ asset('assets/images/attalas-logo.png') }}" class="img-fluid rounded-circle"
+                        width="100" alt="Attalas Cafe Logo">
                 </h5>
 
                 <div>
@@ -47,37 +47,55 @@
                     </a>
                 </li>
 
-                {{-- <li class="nav-item">
-                    <a href="{{ route('admin.user-account') }}"
-                        class="nav-link {{ Route::is('admin.user-account*') ? 'active' : '' }}">
-                        <i class="ph-users"></i>
+                <li class="nav-item">
+                    <a href="{{ route('admin.menu.index') }}"
+                        class="nav-link {{ Route::is('admin.menu.*') ? 'active' : '' }}">
+                        <i class="ph-list"></i>
                         <span>
-                            Akun Pengguna
+                            Menu
                         </span>
                     </a>
                 </li>
-                <li class="nav-item nav-item-submenu">
-                    <a href="#" class="nav-link  {{ Route::is('admin.master*') ? 'active' : '' }}">
-                        <i class="ph-database"></i>
-                        <span>Master</span>
-                    </a>
-                    <ul class="nav-group-sub collapse">
-                        <li class="nav-item"><a href="{{ route('admin.master.division') }}"
-                                class="nav-link {{ Route::is('admin.master.division*') ? 'active' : '' }}">Divisi</a>
-                        </li>
-                        <li class="nav-item"><a href="{{ route('admin.master.room') }}"
-                                class="nav-link {{ Route::is('admin.master.room*') ? 'active' : '' }}">Ruangan</a>
-                        </li>
-                        <li class="nav-item"><a href="{{ route('admin.master.position') }}"
-                                class="nav-link {{ Route::is('admin.master.position*') ? 'active' : '' }}">Jabatan</a>
-                        </li>
-                        <li class="nav-item"><a href="{{ route('admin.master.category') }}"
-                                class="nav-link {{ Route::is('admin.master.category*') ? 'active' : '' }}">Kategori
-                                Barang</a>
-                        </li>
 
-                    </ul>
-                </li> --}}
+                <li class="nav-item">
+                    <a href="{{ route('admin.menu-category.index') }}"
+                        class="nav-link {{ Route::is('admin.menu-category.*') ? 'active' : '' }}">
+                        <i class="ph-tag"></i>
+                        <span>
+                            Kategori Menu
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.gallery.index') }}"
+                        class="nav-link {{ Route::is('admin.gallery.*') ? 'active' : '' }}">
+                        <i class="ph-image"></i>
+                        <span>
+                            Galeri
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.reviews.index') }}"
+                        class="nav-link {{ Route::is('admin.reviews.*') ? 'active' : '' }}">
+                        <i class="ph-star"></i>
+                        <span>
+                            Ulasan
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.users.index') }}"
+                        class="nav-link {{ Route::is('admin.users.*') ? 'active' : '' }}">
+                        <i class="ph-users"></i>
+                        <span>
+                            Pengguna
+                        </span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- /main navigation -->

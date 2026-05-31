@@ -21,6 +21,67 @@
         .datepicker {
             z-index: 9999;
         }
+
+        /* Attalas Cafe soft brown palette */
+        :root {
+            --attalas-brown-900: #2b160d;
+            --attalas-brown-700: #5a3720;
+            --attalas-brown-500: #8b5a2b;
+            --attalas-brown-300: #b77b45;
+            --attalas-cream-50: #f9f5f0;
+        }
+
+        body {
+            background-color: var(--attalas-cream-50);
+        }
+
+        /* Sidebar: tetap gelap tapi lebih soft dan menyatu */
+        .sidebar.sidebar-main {
+            background: linear-gradient(155deg, var(--attalas-brown-900), var(--attalas-brown-700)) !important;
+        }
+
+        .nav-sidebar .nav-link {
+            color: #e5d5c6;
+        }
+
+        .nav-sidebar .nav-link .ph {
+            color: #f1e1d2;
+        }
+
+        .nav-sidebar .nav-link.active,
+        .nav-sidebar .nav-link.active:hover {
+            background-color: rgba(249, 245, 240, 0.12) !important;
+            color: #ffffff !important;
+        }
+
+        .nav-sidebar .nav-link:hover {
+            background-color: rgba(249, 245, 240, 0.06) !important;
+            color: #ffffff !important;
+        }
+
+        /* Navbar: putih dengan aksen cokelat tipis, biar tidak terlalu berat */
+        .navbar.navbar-light {
+            background-color: #ffffff !important;
+            border-bottom: 2px solid rgba(139, 90, 43, 0.12) !important;
+        }
+
+        /* Primary button: ambil tone login tapi sedikit lebih modern */
+        .btn-primary,
+        .btn.btn-primary {
+            background-color: var(--attalas-brown-500) !important;
+            border-color: var(--attalas-brown-500) !important;
+        }
+
+        .btn-primary:hover,
+        .btn.btn-primary:hover {
+            background-color: var(--attalas-brown-700) !important;
+            border-color: var(--attalas-brown-700) !important;
+        }
+
+        .page-header-light {
+            border-top: 3px solid rgba(139, 90, 43, 0.18) !important;
+            background-image: linear-gradient(to right, rgba(139, 90, 43, 0.06), transparent);
+        }
     </style>
     <!-- /global stylesheets -->
 
