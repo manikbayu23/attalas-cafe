@@ -15,7 +15,7 @@ class MenuCategoryController extends Controller
     public function index()
     {
         $categories = MenuCategory::all();
-        return view('pages.admin.menu-category', compact('categories'));
+        return view('pages.admin.menu-category.index', compact('categories'));
     }
 
     /**
@@ -23,7 +23,7 @@ class MenuCategoryController extends Controller
      */
     public function create()
     {
-        return view('pages.admin.menu-category-create');
+        return view('pages.admin.menu-category.create');
     }
 
     /**
@@ -50,7 +50,7 @@ class MenuCategoryController extends Controller
      */
     public function show(MenuCategory $menuCategory)
     {
-        return view('pages.admin.menu-category-show', compact('menuCategory'));
+        return view('pages.admin.menu-category.show', compact('menuCategory'));
     }
 
     /**
@@ -58,7 +58,7 @@ class MenuCategoryController extends Controller
      */
     public function edit(MenuCategory $menuCategory)
     {
-        return view('pages.admin.menu-category-edit', compact('menuCategory'));
+        return view('pages.admin.menu-category.edit', compact('menuCategory'));
     }
 
     /**

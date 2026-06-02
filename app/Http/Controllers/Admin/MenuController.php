@@ -63,7 +63,7 @@ class MenuController extends Controller
 
         $categories = MenuCategory::where('status', true)->get();
 
-        return view('pages.admin.menu', compact('menus', 'categories'));
+        return view('pages.admin.menu.index', compact('menus', 'categories'));
     }
 
     /**
@@ -72,7 +72,7 @@ class MenuController extends Controller
     public function create()
     {
         $categories = MenuCategory::where('status', true)->get();
-        return view('pages.admin.menu-create', compact('categories'));
+        return view('pages.admin.menu.create', compact('categories'));
     }
 
     /**
@@ -112,7 +112,7 @@ class MenuController extends Controller
      */
     public function show(Menu $menu)
     {
-        return view('pages.admin.menu-show', compact('menu'));
+        return view('pages.admin.menu.show', compact('menu'));
     }
 
     /**
@@ -121,7 +121,7 @@ class MenuController extends Controller
     public function edit(Menu $menu)
     {
         $categories = MenuCategory::where('status', true)->get();
-        return view('pages.admin.menu-edit', compact('menu', 'categories'));
+        return view('pages.admin.menu.edit', compact('menu', 'categories'));
     }
 
     /**
