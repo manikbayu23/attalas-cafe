@@ -48,7 +48,12 @@ class PageController extends Controller
 
     public function gallery()
     {
-        return view('pages.public.gallery');
+        $galleries = Gallery::where('status', true)
+            ->orderByDesc('is_featured')
+            ->latest()
+            ->paginate(12);
+
+        return view('pages.public.gallery', compact('galleries'));
     }
 
     public function contact()
@@ -58,6 +63,13 @@ class PageController extends Controller
 
     public function menu()
     {
-        return view('pages.public.menu');
+        $menus = Menu::with('category')
+            ->where('status', true)
+            ->orderByDesc('is_best_seller')
+            ->orderByDesc('is_featured')
+            ->orderBy('sort_order')
+            ->paginate(12);
+
+        return view('pages.public.menu', compact('menus'));
     }
 }
