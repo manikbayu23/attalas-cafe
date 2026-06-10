@@ -72,9 +72,9 @@
             padding: 130px 0 76px;
             color: #fff;
             background:
-                linear-gradient(90deg, rgba(6, 18, 20, 0.84), rgba(14, 32, 33, 0.52), rgba(14, 32, 33, 0.18)),
+                linear-gradient(90deg, rgba(17, 29, 28, 0.84), rgba(32, 50, 49, 0.52), rgba(32, 50, 49, 0.18)),
                 radial-gradient(circle at top right, rgba(159, 200, 179, 0.28), transparent 42%),
-                linear-gradient(135deg, #0f1f1f, #354844);
+                linear-gradient(135deg, var(--primary-950), var(--primary-800));
         }
 
         .about-hero-inner {

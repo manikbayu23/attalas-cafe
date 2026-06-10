@@ -11,9 +11,11 @@
 
     <style>
         :root {
-            --graphite-950: #101417;
-            --graphite-800: #242b2f;
-            --graphite-600: #4a5358;
+            --primary-950: #111d1c;
+            --primary-900: #203231;
+            --primary-800: #2d4442;
+            --primary-700: #3c5956;
+            --primary-100: #dce7e3;
             --mist-50: #f5f7f4;
             --mist-100: #e7ece7;
             --sage-500: #7f9b88;
@@ -79,9 +81,9 @@
             gap: 24px;
             min-height: 68px;
             padding: 12px 14px 12px 22px;
-            border: 1px solid rgba(255, 255, 255, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.635);
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.82);
+            background: rgba(255, 255, 255, 0.62);
             box-shadow: 0 18px 48px rgba(16, 20, 23, 0.14);
             backdrop-filter: blur(18px);
             pointer-events: auto;
@@ -126,8 +128,8 @@
 
         .nav-links a:hover,
         .nav-links a.active {
-            background: rgba(16, 20, 23, 0.08);
-            color: var(--graphite-950);
+            background: rgba(32, 50, 49, 0.1);
+            color: var(--primary-900);
         }
 
         .btn {
@@ -147,13 +149,38 @@
         }
 
         .btn-primary {
-            background: var(--graphite-950);
+            background: var(--primary-900);
             color: #fff;
-            box-shadow: 0 14px 28px rgba(16, 20, 23, 0.24);
+            box-shadow: 0 14px 28px rgba(32, 50, 49, 0.24);
         }
 
         .btn-primary:hover {
-            background: var(--graphite-800);
+            background: var(--primary-800);
+            color: #fff;
+        }
+
+        .language-switcher {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px;
+            border-radius: 999px;
+            background: rgba(32, 50, 49, 0.08);
+            border: 1px solid rgba(32, 50, 49, 0.1);
+        }
+
+        .language-switcher a {
+            min-width: 40px;
+            padding: 8px 10px;
+            border-radius: 999px;
+            color: var(--primary-900);
+            font-size: 0.82rem;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .language-switcher a.active {
+            background: var(--primary-900);
             color: #fff;
         }
 
@@ -170,7 +197,7 @@
             height: 42px;
             border: 0;
             border-radius: 999px;
-            background: var(--graphite-950);
+            background: var(--primary-900);
             color: #fff;
             font-size: 1.35rem;
             cursor: pointer;
@@ -184,7 +211,7 @@
             right: 16px;
             padding: 10px;
             border-radius: 24px;
-            background: rgba(255, 255, 255, 0.96);
+            background: rgba(255, 255, 255, 0.92);
             box-shadow: 0 18px 48px rgba(16, 20, 23, 0.16);
             backdrop-filter: blur(18px);
         }
@@ -202,25 +229,115 @@
 
         .mobile-menu a:hover,
         .mobile-menu a.active {
-            background: rgba(16, 20, 23, 0.08);
-            color: var(--graphite-950);
+            background: rgba(32, 50, 49, 0.1);
+            color: var(--primary-900);
         }
 
         .footer {
-            padding: 44px 0;
-            background: var(--graphite-950);
+            padding: 58px 0 28px;
+            background: var(--primary-950);
             color: rgba(255, 255, 255, 0.72);
         }
 
         .footer-inner {
-            display: flex;
-            justify-content: space-between;
-            gap: 24px;
-            align-items: center;
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(220px, 0.7fr);
+            gap: 34px;
+            align-items: start;
         }
 
         .footer strong {
             color: #fff;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .footer-brand img {
+            width: 58px;
+            height: 58px;
+            border-radius: 999px;
+            object-fit: cover;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .footer-brand strong {
+            display: block;
+            font-size: 1.1rem;
+        }
+
+        .footer-brand span {
+            color: rgba(255, 255, 255, 0.58);
+            font-size: 0.88rem;
+        }
+
+        .footer-copy {
+            max-width: 390px;
+            margin: 0;
+            line-height: 1.75;
+        }
+
+        .footer-title {
+            margin: 0 0 16px;
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .footer-contact {
+            display: grid;
+            gap: 12px;
+        }
+
+        .footer-contact a,
+        .footer-contact div {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            color: rgba(255, 255, 255, 0.72);
+            line-height: 1.55;
+        }
+
+        .footer-contact i {
+            margin-top: 2px;
+            color: var(--primary-100);
+            font-size: 1.05rem;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 10px;
+        }
+
+        .footer-socials a {
+            width: 42px;
+            height: 42px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 1.2rem;
+            transition: transform 0.15s ease, background-color 0.15s ease;
+        }
+
+        .footer-socials a:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.16);
+        }
+
+        .footer-bottom {
+            margin-top: 34px;
+            padding-top: 22px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.52);
+            font-size: 0.9rem;
         }
 
         .whatsapp-float {
@@ -247,8 +364,10 @@
         }
 
         @media (max-width: 992px) {
+
             .nav-links,
-            .nav-cta {
+            .nav-cta,
+            .language-switcher.desktop-language {
                 display: none;
             }
 
@@ -260,8 +379,7 @@
 
         @media (max-width: 640px) {
             .footer-inner {
-                flex-direction: column;
-                align-items: flex-start;
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -278,11 +396,16 @@
             </a>
 
             <div class="nav-links" aria-label="Main navigation">
-                <a href="{{ route('home') }}" class="{{ Route::is('home') ? 'active' : '' }}">Home</a>
-                <a href="{{ route('about') }}" class="{{ Route::is('about') ? 'active' : '' }}">About Us</a>
-                <a href="{{ route('menu') }}" class="{{ Route::is('menu') ? 'active' : '' }}">Menu</a>
-                <a href="{{ route('gallery') }}" class="{{ Route::is('gallery') ? 'active' : '' }}">Gallery</a>
-                <a href="{{ route('contact') }}" class="{{ Route::is('contact') ? 'active' : '' }}">Contact</a>
+                <a href="{{ route('home') }}" class="{{ Route::is('home') ? 'active' : '' }}">{{ __('public.nav.home') }}</a>
+                <a href="{{ route('about') }}" class="{{ Route::is('about') ? 'active' : '' }}">{{ __('public.nav.about') }}</a>
+                <a href="{{ route('menu') }}" class="{{ Route::is('menu') ? 'active' : '' }}">{{ __('public.nav.menu') }}</a>
+                <a href="{{ route('gallery') }}" class="{{ Route::is('gallery') ? 'active' : '' }}">{{ __('public.nav.gallery') }}</a>
+                <a href="{{ route('contact') }}" class="{{ Route::is('contact') ? 'active' : '' }}">{{ __('public.nav.contact') }}</a>
+            </div>
+
+            <div class="language-switcher desktop-language" aria-label="Language switcher">
+                <a href="{{ route('language.switch', 'id') }}" class="{{ app()->getLocale() === 'id' ? 'active' : '' }}">ID</a>
+                <a href="{{ route('language.switch', 'en') }}" class="{{ app()->getLocale() === 'en' ? 'active' : '' }}">EN</a>
             </div>
 
             <button type="button" class="mobile-toggle" id="mobileMenuToggle" aria-label="Open main menu"
@@ -291,11 +414,13 @@
             </button>
 
             <div class="mobile-menu" id="mobileMenu">
-                <a href="{{ route('home') }}" class="{{ Route::is('home') ? 'active' : '' }}">Home</a>
-                <a href="{{ route('about') }}" class="{{ Route::is('about') ? 'active' : '' }}">About Us</a>
-                <a href="{{ route('menu') }}" class="{{ Route::is('menu') ? 'active' : '' }}">Menu</a>
-                <a href="{{ route('gallery') }}" class="{{ Route::is('gallery') ? 'active' : '' }}">Gallery</a>
-                <a href="{{ route('contact') }}" class="{{ Route::is('contact') ? 'active' : '' }}">Contact</a>
+                <a href="{{ route('home') }}" class="{{ Route::is('home') ? 'active' : '' }}">{{ __('public.nav.home') }}</a>
+                <a href="{{ route('about') }}" class="{{ Route::is('about') ? 'active' : '' }}">{{ __('public.nav.about') }}</a>
+                <a href="{{ route('menu') }}" class="{{ Route::is('menu') ? 'active' : '' }}">{{ __('public.nav.menu') }}</a>
+                <a href="{{ route('gallery') }}" class="{{ Route::is('gallery') ? 'active' : '' }}">{{ __('public.nav.gallery') }}</a>
+                <a href="{{ route('contact') }}" class="{{ Route::is('contact') ? 'active' : '' }}">{{ __('public.nav.contact') }}</a>
+                <a href="{{ route('language.switch', 'id') }}" class="{{ app()->getLocale() === 'id' ? 'active' : '' }}">{{ __('public.language.id') }}</a>
+                <a href="{{ route('language.switch', 'en') }}" class="{{ app()->getLocale() === 'en' ? 'active' : '' }}">{{ __('public.language.en') }}</a>
             </div>
         </div>
     </nav>
@@ -303,17 +428,59 @@
     @yield('content')
 
     <footer class="footer">
-        <div class="container footer-inner">
-            <div>
-                <strong>Attalas Cafe</strong>
-                <div>Premium coffee, scenic Kintamani view, and warm cafe experience.</div>
+        <div class="container">
+            <div class="footer-inner">
+                <div>
+                    <div class="footer-brand">
+                        <img src="{{ asset('assets/images/attalas-logo.png') }}" alt="Attalas Cafe Logo">
+                        <div>
+                            <strong>Attalas Cafe</strong>
+                            <span>{{ __('public.footer.tagline') }}</span>
+                        </div>
+                    </div>
+                    <p class="footer-copy">
+                        {{ __('public.footer.description') }}
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">{{ __('public.footer.contact') }}</h4>
+                    <div class="footer-contact">
+                        <div>
+                            <i class="ph-map-pin"></i>
+                            <span>Kintamani, Bangli, Bali, Indonesia</span>
+                        </div>
+                        <a href="https://wa.me/6281234567890" target="_blank" rel="noopener">
+                            <i class="ph-whatsapp-logo"></i>
+                            <span>+62 812-3456-7890</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">{{ __('public.footer.social_media') }}</h4>
+                    <div class="footer-socials">
+                        <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+                            <i class="ph-instagram-logo"></i>
+                        </a>
+                        <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">
+                            <i class="ph-facebook-logo"></i>
+                        </a>
+                        <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp">
+                            <i class="ph-whatsapp-logo"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div>&copy; {{ now()->year }} Attalas Cafe. All rights reserved.</div>
+
+            <div class="footer-bottom">
+                &copy; {{ now()->year }} Attalas Cafe. {{ __('public.footer.copyright') }}
+            </div>
         </div>
     </footer>
 
-    <a href="https://wa.me/6281234567890?text=Halo%20Attalas%20Cafe,%20saya%20ingin%20bertanya."
-        class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat Attalas Cafe via WhatsApp">
+    <a href="https://wa.me/6281234567890?text=Halo%20Attalas%20Cafe,%20saya%20ingin%20bertanya." class="whatsapp-float"
+        target="_blank" rel="noopener" aria-label="Chat Attalas Cafe via WhatsApp">
         <i class="ph-whatsapp-logo"></i>
     </a>
 
@@ -334,7 +501,9 @@
             }
 
             updateNavbarPosition();
-            window.addEventListener('scroll', updateNavbarPosition, { passive: true });
+            window.addEventListener('scroll', updateNavbarPosition, {
+                passive: true
+            });
 
             if (toggle && menu) {
                 toggle.addEventListener('click', function() {

@@ -18,8 +18,7 @@
                         yang membuat waktu santai terasa lebih berkesan.
                     </p>
                     <div class="hero-actions">
-                        <a href="{{ route('menu') }}" class="btn btn-primary"><i class="ph-fork-knife"></i>Lihat Menu</a>
-                        <a href="{{ route('gallery') }}" class="btn btn-ghost"><i class="ph-images"></i>Lihat Gallery</a>
+                        <a href="#menu" class="btn btn-ghost"><i class="ph-arrow-down"></i>Explore</a>
                     </div>
                 </div>
             </div>
@@ -39,7 +38,7 @@
                         <p>Panorama alam menjadi bagian dari pengalaman bersantai di Attalas Cafe.</p>
                     </div>
                     <div class="feature-card">
-                        <i class="ph-bowl-food"></i>
+                        <i class="ph-fork-knife"></i>
                         <h3>Fresh Menu</h3>
                         <p>Pilihan menu yang cocok untuk sarapan, makan siang, hingga camilan sore.</p>
                     </div>
@@ -70,7 +69,12 @@
                             <article class="menu-card">
                                 <div class="menu-image">
                                     @if ($menu->image)
-                                        <img src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->name }}">
+                                        <a href="{{ asset('storage/' . $menu->image) }}" data-fancybox="home-menu"
+                                            data-caption="{{ $menu->name }} - {{ $menu->formatted_price }}"
+                                            class="image-zoom-link">
+                                            <img src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->name }}">
+                                            <span class="zoom-indicator"><i class="ph-magnifying-glass-plus"></i></span>
+                                        </a>
                                     @endif
                                     @if ($menu->is_best_seller)
                                         <span class="menu-badge">Best Seller</span>
@@ -129,8 +133,12 @@
                     <div class="gallery-grid">
                         @foreach ($galleryItems as $gallery)
                             <div class="gallery-item">
-                                <img src="{{ asset('storage/' . $gallery->image) }}"
-                                    alt="{{ $gallery->title ?? 'Gallery Attalas Cafe' }}">
+                                <a href="{{ asset('storage/' . $gallery->image) }}" data-fancybox="home-gallery"
+                                    data-caption="{{ $gallery->title ?? 'Gallery Attalas Cafe' }}" class="image-zoom-link">
+                                    <img src="{{ asset('storage/' . $gallery->image) }}"
+                                        alt="{{ $gallery->title ?? 'Gallery Attalas Cafe' }}">
+                                    <span class="zoom-indicator"><i class="ph-magnifying-glass-plus"></i></span>
+                                </a>
                             </div>
                         @endforeach
                     </div>
@@ -150,16 +158,42 @@
                 @if ($reviews->isEmpty())
                     <div class="empty-state">Belum ada ulasan yang ditampilkan.</div>
                 @else
-                    <div class="reviews-grid">
+                    <div class="review-carousel owl-carousel" id="reviewCarousel" aria-label="Customer reviews carousel">
                         @foreach ($reviews as $review)
-                            <article class="review-card">
-                                <div class="stars">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <i class="ph-star{{ $i <= $review->rating ? '-fill' : '' }}"></i>
-                                    @endfor
+                            @php
+                                $reviewTitle =
+                                    $review->rating >= 5
+                                        ? 'Great day!'
+                                        : ($review->rating >= 4
+                                            ? 'Wonderful experience'
+                                            : 'Nice visit');
+                            @endphp
+                            <article class="review-card google-review-card">
+                                <div class="review-topline">
+                                    <div class="reviewer-profile">
+                                        <div class="review-avatar">
+                                            {{ Str::upper(Str::substr($review->customer_name, 0, 1)) }}
+                                        </div>
+                                        <div>
+                                            <h3>{{ $review->customer_name }}</h3>
+                                            <div class="stars" aria-label="{{ $review->rating }} out of 5 stars">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <span
+                                                        class="google-star {{ $i <= $review->rating ? 'is-filled' : '' }}">★</span>
+                                                @endfor
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <time>{{ $review->created_at?->format('F Y') ?? 'November 2024' }}</time>
                                 </div>
-                                <p>“{{ Str::limit($review->review, 150) }}”</p>
-                                <strong>{{ $review->customer_name }}</strong>
+
+                                <h4>{{ $reviewTitle }}</h4>
+                                <p>{{ Str::limit($review->review, 210) }}</p>
+
+                                <div class="review-brand">
+                                    <span class="maps-pin"><i class="ph-map-pin-fill"></i></span>
+                                    <span>Google Maps</span>
+                                </div>
                             </article>
                         @endforeach
                     </div>
@@ -170,13 +204,17 @@
 @endsection
 
 @push('style')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
     <style>
         .home-hero {
             position: relative;
-            min-height: 760px;
+            height: 100vh;
             overflow: hidden;
             color: #fff;
-            background: linear-gradient(135deg, #0f1f1f, #354844);
+            background: linear-gradient(135deg, var(--primary-950), var(--primary-800));
         }
 
         .home-hero::before {
@@ -197,8 +235,8 @@
             inset: 0;
             z-index: 1;
             background:
-                linear-gradient(90deg, rgba(6, 18, 20, 0.74), rgba(14, 32, 33, 0.5), rgba(14, 32, 33, 0.14)),
-                linear-gradient(180deg, rgba(6, 18, 20, 0.18), rgba(6, 18, 20, 0.06), rgba(6, 18, 20, 0.62));
+                linear-gradient(90deg, rgba(17, 29, 28, 0.74), rgba(32, 50, 49, 0.5), rgba(32, 50, 49, 0.14)),
+                linear-gradient(180deg, rgba(17, 29, 28, 0.18), rgba(17, 29, 28, 0.06), rgba(17, 29, 28, 0.62));
             pointer-events: none;
         }
 
@@ -216,7 +254,7 @@
         .hero-inner {
             position: relative;
             z-index: 3;
-            min-height: 760px;
+            height: 90vh;
             display: flex;
             align-items: center;
             padding: 120px 0 90px;
@@ -294,23 +332,20 @@
             line-height: 1.7;
         }
 
-        .features,
-        .reviews-grid {
+        .features {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 18px;
         }
 
         .feature-card,
-        .review-card,
         .menu-card {
             background: #fff;
             border: 1px solid rgba(16, 20, 23, 0.06);
             box-shadow: 0 18px 44px rgba(16, 20, 23, 0.08);
         }
 
-        .feature-card,
-        .review-card {
+        .feature-card {
             padding: 24px;
             border-radius: 28px;
         }
@@ -334,7 +369,6 @@
 
         .feature-card p,
         .menu-body p,
-        .review-card p,
         .about-band p {
             margin: 0;
             color: var(--muted);
@@ -359,6 +393,14 @@
             overflow: hidden;
         }
 
+        .image-zoom-link {
+            position: absolute;
+            inset: 0;
+            display: block;
+            overflow: hidden;
+            color: inherit;
+        }
+
         .menu-image img {
             width: 100%;
             height: 100%;
@@ -368,6 +410,30 @@
 
         .menu-card:hover .menu-image img {
             transform: scale(1.05);
+        }
+
+        .zoom-indicator {
+            position: absolute;
+            right: 14px;
+            bottom: 14px;
+            width: 42px;
+            height: 42px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            background: rgba(255, 255, 255, 0.86);
+            color: var(--primary-900);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 12px 28px rgba(16, 20, 23, 0.16);
+            opacity: 0;
+            transform: translateY(8px) scale(0.94);
+            transition: opacity 0.18s ease, transform 0.18s ease;
+        }
+
+        .menu-image:hover .zoom-indicator,
+        .gallery-item:hover .zoom-indicator {
+            opacity: 1;
+            transform: translateY(0) scale(1);
         }
 
         .menu-badge {
@@ -407,8 +473,8 @@
             padding: 86px 0;
             color: #fff;
             background:
-                linear-gradient(90deg, rgba(6, 18, 20, 0.88), rgba(14, 32, 33, 0.68)),
-                linear-gradient(135deg, #0f1f1f, #354844);
+                linear-gradient(90deg, rgba(17, 29, 28, 0.88), rgba(32, 50, 49, 0.68)),
+                linear-gradient(135deg, var(--primary-950), var(--primary-800));
         }
 
         .about-grid {
@@ -485,23 +551,160 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.18s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
         }
 
         .reviews-section {
             padding-top: 0;
         }
 
-        .reviews-grid {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+        .review-carousel .owl-stage-outer {
+            padding: 4px 2px 28px;
+        }
+
+        .google-review-card {
+            min-height: 390px;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            border-radius: 30px;
+            background: #fff;
+            border: 1px solid #e7eaeb;
+            box-shadow: 0 1px 10px rgba(16, 20, 23, 0.07);
+        }
+
+        .review-topline {
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .reviewer-profile {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            min-width: 0;
+        }
+
+        .review-avatar {
+            width: 54px;
+            height: 54px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            background: linear-gradient(135deg, var(--primary-900), var(--primary-700));
+            color: #fff;
+            font-size: 1.35rem;
+            font-weight: 800;
+            box-shadow: 0 12px 26px rgba(32, 50, 49, 0.18);
+        }
+
+        .reviewer-profile h3 {
+            margin: 0 0 7px;
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .review-topline time {
+            color: #9aa2a5;
+            font-size: 0.85rem;
+            white-space: nowrap;
         }
 
         .stars {
-            margin-bottom: 14px;
-            color: #d99b29;
+            display: flex;
+            gap: 2px;
+            line-height: 1;
         }
 
-        .review-card p {
-            margin-bottom: 18px;
+        .google-star {
+            font-size: 1.05rem;
+            color: #d7dcde;
+        }
+
+        .google-star.is-filled {
+            color: #fbbc04;
+        }
+
+        .google-review-card h4 {
+            margin: 0 0 14px;
+            color: var(--text);
+            font-size: 1.35rem;
+            line-height: 1.15;
+            letter-spacing: -0.04em;
+        }
+
+        .google-review-card p {
+            margin: 0;
+            color: #6d777a;
+            line-height: 1.75;
+            font-size: 0.98rem;
+        }
+
+        .review-brand {
+            margin-top: auto;
+            padding-top: 22px;
+            display: inline-flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 8px;
+            color: #5f686b;
+            font-size: 0.88rem;
+            font-weight: 700;
+        }
+
+        .maps-pin {
+            width: 30px;
+            height: 30px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: linear-gradient(135deg, #4285f4, #34a853 48%, #fbbc05 74%, #ea4335);
+            font-size: 1rem;
+        }
+
+        .review-carousel .owl-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 2px;
+        }
+
+        .review-carousel .owl-nav button.owl-prev,
+        .review-carousel .owl-nav button.owl-next {
+            width: 44px;
+            height: 44px;
+            border-radius: 999px !important;
+            background: #fff !important;
+            border: 1px solid #e3e7e8 !important;
+            color: var(--primary-900) !important;
+            box-shadow: 0 10px 24px rgba(16, 20, 23, 0.07);
+            font-size: 1.25rem !important;
+        }
+
+        .review-carousel .owl-dots {
+            margin-top: 14px !important;
+        }
+
+        .review-carousel .owl-dot span {
+            width: 8px !important;
+            height: 8px !important;
+            background: #ccd3d4 !important;
+            transition: width 0.18s ease, background-color 0.18s ease;
+        }
+
+        .review-carousel .owl-dot.active span {
+            width: 24px !important;
+            background: var(--primary-900) !important;
         }
 
         .empty-state {
@@ -514,9 +717,9 @@
         }
 
         @media (max-width: 992px) {
+
             .features,
             .menu-grid,
-            .reviews-grid,
             .about-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
@@ -533,6 +736,7 @@
         }
 
         @media (max-width: 640px) {
+
             .home-hero,
             .hero-inner {
                 min-height: 640px;
@@ -549,7 +753,6 @@
 
             .features,
             .menu-grid,
-            .reviews-grid,
             .about-grid,
             .about-metrics {
                 grid-template-columns: 1fr;
@@ -564,17 +767,84 @@
 @endpush
 
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            if (window.Fancybox) {
+                Fancybox.bind('[data-fancybox="home-menu"], [data-fancybox="home-gallery"]', {
+                    animated: true,
+                    dragToClose: true,
+                    Images: {
+                        zoom: true,
+                    },
+                    Toolbar: {
+                        display: {
+                            left: [],
+                            middle: [],
+                            right: ['close'],
+                        },
+                    },
+                });
+            }
+
+            if (window.jQuery && jQuery.fn.owlCarousel) {
+                jQuery('#reviewCarousel').owlCarousel({
+                    loop: true,
+                    margin: 22,
+                    nav: true,
+                    dots: true,
+                    autoplay: true,
+                    autoplayTimeout: 2000,
+                    autoplayHoverPause: true,
+                    smartSpeed: 650,
+                    slideBy: 1,
+                    navText: ['<i class="ph-arrow-left"></i>', '<i class="ph-arrow-right"></i>'],
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+                        760: {
+                            items: 2
+                        },
+                        1120: {
+                            items: 3
+                        }
+                    }
+                });
+            }
+
             if (!window.gsap) {
                 return;
             }
 
-            gsap.timeline({ defaults: { ease: 'power3.out' } })
-                .from('.eyebrow', { y: 22, opacity: 0, duration: 0.75 }, 0.15)
-                .from('.hero-content h1', { y: 42, opacity: 0, duration: 1 }, 0.3)
-                .from('.hero-content p', { y: 30, opacity: 0, duration: 0.9 }, 0.48)
-                .from('.hero-actions .btn', { y: 24, opacity: 0, duration: 0.75, stagger: 0.12 }, 0.62);
+            gsap.timeline({
+                    defaults: {
+                        ease: 'power3.out'
+                    }
+                })
+                .from('.eyebrow', {
+                    y: 22,
+                    opacity: 0,
+                    duration: 0.75
+                }, 0.15)
+                .from('.hero-content h1', {
+                    y: 42,
+                    opacity: 0,
+                    duration: 1
+                }, 0.3)
+                .from('.hero-content p', {
+                    y: 30,
+                    opacity: 0,
+                    duration: 0.9
+                }, 0.48)
+                .from('.hero-actions .btn', {
+                    y: 24,
+                    opacity: 0,
+                    duration: 0.75,
+                    stagger: 0.12
+                }, 0.62);
 
             gsap.to('.hero-video', {
                 scale: 1.08,
@@ -587,7 +857,8 @@
                 }
             });
 
-            ['.feature-card', '.menu-card', '.about-metrics div', '.gallery-item', '.review-card'].forEach(function(selector) {
+            ['.feature-card', '.menu-card', '.about-metrics div', '.gallery-item', '.review-card'].forEach(function(
+                selector) {
                 gsap.utils.toArray(selector).forEach(function(item, index) {
                     gsap.from(item, {
                         y: 44,

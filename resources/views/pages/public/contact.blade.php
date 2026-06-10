@@ -47,7 +47,7 @@
 
 @push('style')
     <style>
-        .page-hero { padding:150px 0 86px; color:#fff; background:linear-gradient(90deg,rgba(6,18,20,.88),rgba(14,32,33,.46)),linear-gradient(135deg,#0f1f1f,#354844); }
+        .page-hero { padding:150px 0 86px; color:#fff; background:linear-gradient(90deg,rgba(17,29,28,.88),rgba(32,50,49,.46)),linear-gradient(135deg,var(--primary-950),var(--primary-800)); }
         .eyebrow { display:inline-block; margin-bottom:14px; color:rgba(255,255,255,.72); font-size:.78rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
         .page-hero h1 { max-width:900px; margin:0 0 18px; font-size:clamp(2.5rem,5vw,5rem); line-height:.98; letter-spacing:-.07em; }
         .page-hero p { max-width:620px; margin:0; color:rgba(255,255,255,.72); line-height:1.75; }

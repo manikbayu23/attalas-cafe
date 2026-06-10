@@ -56,7 +56,7 @@
         .page-hero {
             padding: 150px 0 86px;
             color: #fff;
-            background: linear-gradient(90deg, rgba(6, 18, 20, 0.88), rgba(14, 32, 33, 0.58)), linear-gradient(135deg, #0f1f1f, #354844);
+            background: linear-gradient(90deg, rgba(17, 29, 28, 0.88), rgba(32, 50, 49, 0.58)), linear-gradient(135deg, var(--primary-950), var(--primary-800));
         }
 
         .eyebrow {
@@ -164,7 +164,7 @@
         }
 
         .menu-body strong {
-            color: var(--graphite-950);
+            color: var(--primary-900);
             font-size: 1.08rem;
         }
 
