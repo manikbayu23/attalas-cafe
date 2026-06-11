@@ -4,7 +4,7 @@
 
 @section('content')
     <main>
-        <section class="about-hero">
+        <section class="about-hero" @style(['--hero-image: url(' . $heroImage . ')' => $heroImage])>
             <div class="container about-hero-inner">
                 <div class="about-copy">
                     <span class="eyebrow">About Attalas Cafe</span>
@@ -71,10 +71,12 @@
             align-items: center;
             padding: 130px 0 76px;
             color: #fff;
-            background:
-                linear-gradient(90deg, rgba(17, 29, 28, 0.84), rgba(32, 50, 49, 0.52), rgba(32, 50, 49, 0.18)),
-                radial-gradient(circle at top right, rgba(159, 200, 179, 0.28), transparent 42%),
+            background-image:
+                linear-gradient(90deg, rgba(17, 29, 28, 0.86), rgba(32, 50, 49, 0.56), rgba(32, 50, 49, 0.22)),
+                var(--hero-image),
                 linear-gradient(135deg, var(--primary-950), var(--primary-800));
+            background-size: cover;
+            background-position: center;
         }
 
         .about-hero-inner {

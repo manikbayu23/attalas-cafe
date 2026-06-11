@@ -4,7 +4,7 @@
 
 @section('content')
     <main>
-        <section class="page-hero">
+        <section class="page-hero" @style(['--hero-image: url(' . $heroImage . ')' => $heroImage])>
             <div class="container">
                 <span class="eyebrow">Gallery</span>
                 <h1>Momen, menu, dan view Attalas Cafe.</h1>
@@ -39,7 +39,7 @@
 
 @push('style')
     <style>
-        .page-hero { padding: 150px 0 86px; color:#fff; background: linear-gradient(90deg, rgba(17,29,28,.88), rgba(32,50,49,.46)), linear-gradient(135deg,var(--primary-950),var(--primary-800)); }
+        .page-hero { padding: 150px 0 86px; color:#fff; background-image: linear-gradient(90deg, rgba(17,29,28,.88), rgba(32,50,49,.48), rgba(32,50,49,.18)), var(--hero-image), linear-gradient(135deg,var(--primary-950),var(--primary-800)); background-size: cover; background-position: center; }
         .eyebrow { display:inline-block; margin-bottom:14px; color:rgba(255,255,255,.72); font-size:.78rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
         .page-hero h1 { max-width:900px; margin:0 0 18px; font-size:clamp(2.5rem,5vw,5rem); line-height:.98; letter-spacing:-.07em; }
         .page-hero p { max-width:620px; margin:0; color:rgba(255,255,255,.72); line-height:1.75; }

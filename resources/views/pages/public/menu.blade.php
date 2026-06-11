@@ -4,7 +4,7 @@
 
 @section('content')
     <main>
-        <section class="page-hero">
+        <section class="page-hero" @style(['--hero-image: url(' . $heroImage . ')' => $heroImage])>
             <div class="container">
                 <span class="eyebrow">Our Menu</span>
                 <h1>Menu pilihan untuk menikmati suasana Kintamani.</h1>
@@ -56,7 +56,9 @@
         .page-hero {
             padding: 150px 0 86px;
             color: #fff;
-            background: linear-gradient(90deg, rgba(17, 29, 28, 0.88), rgba(32, 50, 49, 0.58)), linear-gradient(135deg, var(--primary-950), var(--primary-800));
+            background-image: linear-gradient(90deg, rgba(17, 29, 28, 0.88), rgba(32, 50, 49, 0.52), rgba(32, 50, 49, 0.2)), var(--hero-image), linear-gradient(135deg, var(--primary-950), var(--primary-800));
+            background-size: cover;
+            background-position: center;
         }
 
         .eyebrow {

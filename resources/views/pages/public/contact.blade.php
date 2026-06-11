@@ -4,7 +4,7 @@
 
 @section('content')
     <main>
-        <section class="page-hero">
+        <section class="page-hero" @style(['--hero-image: url(' . $heroImage . ')' => $heroImage])>
             <div class="container">
                 <span class="eyebrow">Contact Us</span>
                 <h1>Mari terhubung dengan Attalas Cafe.</h1>
@@ -42,12 +42,22 @@
                 </div>
             </div>
         </section>
+
+        <section class="map-section">
+            <div class="container">
+                <div class="map-card">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.2626025838836!2d115.34794147506892!3d-8.276641291757661!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd1f579afd7161f%3A0xc4036299583a290a!2sATTALAS%20CAFE!5e0!3m2!1sid!2sid!4v1781182076446!5m2!1sid!2sid"
+                        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </section>
     </main>
 @endsection
 
 @push('style')
     <style>
-        .page-hero { padding:150px 0 86px; color:#fff; background:linear-gradient(90deg,rgba(17,29,28,.88),rgba(32,50,49,.46)),linear-gradient(135deg,var(--primary-950),var(--primary-800)); }
+        .page-hero { padding:150px 0 86px; color:#fff; background-image:linear-gradient(90deg,rgba(17,29,28,.88),rgba(32,50,49,.48),rgba(32,50,49,.18)),var(--hero-image),linear-gradient(135deg,var(--primary-950),var(--primary-800)); background-size:cover; background-position:center; }
         .eyebrow { display:inline-block; margin-bottom:14px; color:rgba(255,255,255,.72); font-size:.78rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
         .page-hero h1 { max-width:900px; margin:0 0 18px; font-size:clamp(2.5rem,5vw,5rem); line-height:.98; letter-spacing:-.07em; }
         .page-hero p { max-width:620px; margin:0; color:rgba(255,255,255,.72); line-height:1.75; }
@@ -64,6 +74,9 @@
         .contact-card form { display:grid; gap:14px; margin-top:22px; }
         .contact-card input,.contact-card textarea { width:100%; border:1px solid rgba(16,20,23,.12); border-radius:18px; padding:14px 16px; font:inherit; background:var(--mist-50); }
         .contact-card textarea { resize:vertical; }
+        .map-section { padding:0 0 76px; }
+        .map-card { overflow:hidden; border-radius:30px; background:#fff; border:1px solid rgba(16,20,23,.06); box-shadow:0 18px 44px rgba(16,20,23,.08); }
+        .map-card iframe { display:block; width:100%; min-height:450px; }
         @media (max-width: 860px) { .contact-grid { grid-template-columns:1fr; } }
     </style>
 @endpush
@@ -74,6 +87,7 @@
             if (!window.gsap) return;
             gsap.from('.page-hero .eyebrow, .page-hero h1, .page-hero p', { y: 34, opacity: 0, duration: .9, stagger: .12, ease: 'power3.out' });
             gsap.from('.info-card, .contact-card', { y: 42, opacity: 0, duration: .8, stagger: .1, ease: 'power3.out', scrollTrigger: { trigger: '.contact-section', start: 'top 80%' } });
+            gsap.from('.map-card', { y: 42, opacity: 0, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: '.map-section', start: 'top 82%' } });
         });
     </script>
 @endpush

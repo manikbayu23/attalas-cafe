@@ -254,7 +254,7 @@
         .hero-inner {
             position: relative;
             z-index: 3;
-            height: 90vh;
+            height: 100vh;
             display: flex;
             align-items: center;
             padding: 120px 0 90px;

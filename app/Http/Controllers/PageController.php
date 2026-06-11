@@ -38,7 +38,9 @@ class PageController extends Controller
 
     public function about()
     {
-        return view('pages.public.about');
+        $heroImage = $this->heroImage();
+
+        return view('pages.public.about', compact('heroImage'));
     }
 
     public function reservation()
@@ -53,12 +55,16 @@ class PageController extends Controller
             ->latest()
             ->paginate(12);
 
-        return view('pages.public.gallery', compact('galleries'));
+        $heroImage = $this->heroImage();
+
+        return view('pages.public.gallery', compact('galleries', 'heroImage'));
     }
 
     public function contact()
     {
-        return view('pages.public.contact');
+        $heroImage = $this->heroImage();
+
+        return view('pages.public.contact', compact('heroImage'));
     }
 
     public function menu()
@@ -70,6 +76,18 @@ class PageController extends Controller
             ->orderBy('sort_order')
             ->paginate(12);
 
-        return view('pages.public.menu', compact('menus'));
+        $heroImage = $this->heroImage();
+
+        return view('pages.public.menu', compact('menus', 'heroImage'));
+    }
+
+    private function heroImage(): ?string
+    {
+        $gallery = Gallery::where('status', true)
+            ->orderByDesc('is_featured')
+            ->latest()
+            ->first();
+
+        return $gallery?->image ? asset('storage/' . $gallery->image) : null;
     }
 }
