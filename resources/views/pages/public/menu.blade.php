@@ -569,7 +569,7 @@
                         showNextBatch();
                     }
                 }, {
-                    rootMargin: '50% 0px'
+                    rootMargin: '500px 0px'
                 });
 
                 observer.observe(sentinelEl);

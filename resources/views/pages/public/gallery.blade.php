@@ -373,7 +373,7 @@
                             loadMoreCards();
                         }
                     }, {
-                        rootMargin: '50% 0px',
+                        rootMargin: '500px 0px',
                         threshold: 0
                     }
                 );
