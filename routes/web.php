@@ -28,6 +28,7 @@ Route::get('/reservation', [PageController::class, 'reservation'])->name('reserv
 Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/menu', [PageController::class, 'menu'])->name('menu');
+Route::get('/menu/data', [PageController::class, 'menuData'])->name('menu.data');
 
 Route::middleware(['role:admin'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {

@@ -332,6 +332,12 @@
             background: rgba(255, 255, 255, 0.16);
         }
 
+        .social-icon-svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
         .footer-bottom {
             margin-top: 34px;
             padding-top: 22px;
@@ -345,22 +351,50 @@
             right: 24px;
             bottom: 24px;
             z-index: 60;
-            width: 58px;
-            height: 58px;
+            width: 64px;
+            height: 64px;
             border-radius: 999px;
             display: grid;
             place-items: center;
-            background: #25d366;
+            background: linear-gradient(135deg, #25d366 0%, #1fa852 100%);
             color: #fff;
-            box-shadow: 0 16px 34px rgba(37, 211, 102, 0.35);
-            font-size: 1.75rem;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 0 18px 38px rgba(37, 211, 102, 0.34);
+            border: 2px solid rgba(255, 255, 255, 0.24);
+            font-size: 1.85rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+            animation: float-bounce 2.4s ease-in-out infinite;
+        }
+
+        .whatsapp-float::before {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: inherit;
+            border: 1px solid rgba(37, 211, 102, 0.22);
+            pointer-events: none;
         }
 
         .whatsapp-float:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 20px 42px rgba(37, 211, 102, 0.42);
+            transform: translateY(-4px) scale(1.04);
+            box-shadow: 0 24px 50px rgba(37, 211, 102, 0.45);
+            filter: brightness(1.05);
             color: #fff;
+        }
+
+        .whatsapp-float:active {
+            transform: scale(0.96);
+        }
+
+        @keyframes float-bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-6px);
+            }
         }
 
         @media (max-width: 992px) {
@@ -396,16 +430,23 @@
             </a>
 
             <div class="nav-links" aria-label="Main navigation">
-                <a href="{{ route('home') }}" class="{{ Route::is('home') ? 'active' : '' }}">{{ __('public.nav.home') }}</a>
-                <a href="{{ route('about') }}" class="{{ Route::is('about') ? 'active' : '' }}">{{ __('public.nav.about') }}</a>
-                <a href="{{ route('menu') }}" class="{{ Route::is('menu') ? 'active' : '' }}">{{ __('public.nav.menu') }}</a>
-                <a href="{{ route('gallery') }}" class="{{ Route::is('gallery') ? 'active' : '' }}">{{ __('public.nav.gallery') }}</a>
-                <a href="{{ route('contact') }}" class="{{ Route::is('contact') ? 'active' : '' }}">{{ __('public.nav.contact') }}</a>
+                <a href="{{ route('home') }}"
+                    class="{{ Route::is('home') ? 'active' : '' }}">{{ __('public.nav.home') }}</a>
+                <a href="{{ route('about') }}"
+                    class="{{ Route::is('about') ? 'active' : '' }}">{{ __('public.nav.about') }}</a>
+                <a href="{{ route('menu') }}"
+                    class="{{ Route::is('menu') ? 'active' : '' }}">{{ __('public.nav.menu') }}</a>
+                <a href="{{ route('gallery') }}"
+                    class="{{ Route::is('gallery') ? 'active' : '' }}">{{ __('public.nav.gallery') }}</a>
+                <a href="{{ route('contact') }}"
+                    class="{{ Route::is('contact') ? 'active' : '' }}">{{ __('public.nav.contact') }}</a>
             </div>
 
             <div class="language-switcher desktop-language" aria-label="Language switcher">
-                <a href="{{ route('language.switch', 'id') }}" class="{{ app()->getLocale() === 'id' ? 'active' : '' }}">ID</a>
-                <a href="{{ route('language.switch', 'en') }}" class="{{ app()->getLocale() === 'en' ? 'active' : '' }}">EN</a>
+                <a href="{{ route('language.switch', 'id') }}"
+                    class="{{ app()->getLocale() === 'id' ? 'active' : '' }}">ID</a>
+                <a href="{{ route('language.switch', 'en') }}"
+                    class="{{ app()->getLocale() === 'en' ? 'active' : '' }}">EN</a>
             </div>
 
             <button type="button" class="mobile-toggle" id="mobileMenuToggle" aria-label="Open main menu"
@@ -414,13 +455,20 @@
             </button>
 
             <div class="mobile-menu" id="mobileMenu">
-                <a href="{{ route('home') }}" class="{{ Route::is('home') ? 'active' : '' }}">{{ __('public.nav.home') }}</a>
-                <a href="{{ route('about') }}" class="{{ Route::is('about') ? 'active' : '' }}">{{ __('public.nav.about') }}</a>
-                <a href="{{ route('menu') }}" class="{{ Route::is('menu') ? 'active' : '' }}">{{ __('public.nav.menu') }}</a>
-                <a href="{{ route('gallery') }}" class="{{ Route::is('gallery') ? 'active' : '' }}">{{ __('public.nav.gallery') }}</a>
-                <a href="{{ route('contact') }}" class="{{ Route::is('contact') ? 'active' : '' }}">{{ __('public.nav.contact') }}</a>
-                <a href="{{ route('language.switch', 'id') }}" class="{{ app()->getLocale() === 'id' ? 'active' : '' }}">{{ __('public.language.id') }}</a>
-                <a href="{{ route('language.switch', 'en') }}" class="{{ app()->getLocale() === 'en' ? 'active' : '' }}">{{ __('public.language.en') }}</a>
+                <a href="{{ route('home') }}"
+                    class="{{ Route::is('home') ? 'active' : '' }}">{{ __('public.nav.home') }}</a>
+                <a href="{{ route('about') }}"
+                    class="{{ Route::is('about') ? 'active' : '' }}">{{ __('public.nav.about') }}</a>
+                <a href="{{ route('menu') }}"
+                    class="{{ Route::is('menu') ? 'active' : '' }}">{{ __('public.nav.menu') }}</a>
+                <a href="{{ route('gallery') }}"
+                    class="{{ Route::is('gallery') ? 'active' : '' }}">{{ __('public.nav.gallery') }}</a>
+                <a href="{{ route('contact') }}"
+                    class="{{ Route::is('contact') ? 'active' : '' }}">{{ __('public.nav.contact') }}</a>
+                <a href="{{ route('language.switch', 'id') }}"
+                    class="{{ app()->getLocale() === 'id' ? 'active' : '' }}">{{ __('public.language.id') }}</a>
+                <a href="{{ route('language.switch', 'en') }}"
+                    class="{{ app()->getLocale() === 'en' ? 'active' : '' }}">{{ __('public.language.en') }}</a>
             </div>
         </div>
     </nav>
@@ -448,11 +496,11 @@
                     <div class="footer-contact">
                         <div>
                             <i class="ph-map-pin"></i>
-                            <span>Kintamani, Bangli, Bali, Indonesia</span>
+                            <span>Jl. Raya Penelokan, Batur Tengah, Kec. Kintamani, Kabupaten Bangli, Bali</span>
                         </div>
                         <a href="https://wa.me/6281234567890" target="_blank" rel="noopener">
                             <i class="ph-whatsapp-logo"></i>
-                            <span>+62 812-3456-7890</span>
+                            <span>+62 8123 4567 890</span>
                         </a>
                     </div>
                 </div>
@@ -460,14 +508,23 @@
                 <div>
                     <h4 class="footer-title">{{ __('public.footer.social_media') }}</h4>
                     <div class="footer-socials">
-                        <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+                        <a href="https://www.instagram.com/attalas_cafe/" target="_blank" rel="noopener"
+                            aria-label="Instagram">
                             <i class="ph-instagram-logo"></i>
                         </a>
-                        <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">
+                        <a href="https://www.facebook.com/https://www.facebook.com/people/attalas_cafe/100087332373127/"
+                            target="_blank" rel="noopener" aria-label="Facebook">
                             <i class="ph-facebook-logo"></i>
                         </a>
                         <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp">
                             <i class="ph-whatsapp-logo"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@attalascafe?_r=1&_t=ZS-97oCzxnLjrr" target="_blank"
+                            rel="noopener" aria-label="TikTok">
+                            <svg class="social-icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+                                <path
+                                    d="M14.5 3h2.4a4.2 4.2 0 0 0 4.2 4.2v2.4a6.6 6.6 0 0 1-4.2-1.4v7.5a4.9 4.9 0 1 1-4.9-4.9c.3 0 .6 0 .9.1v2.5a2.4 2.4 0 1 0 1.7 2.3V3Z" />
+                            </svg>
                         </a>
                     </div>
                 </div>
@@ -479,8 +536,8 @@
         </div>
     </footer>
 
-    <a href="https://wa.me/6281234567890?text=Halo%20Attalas%20Cafe,%20saya%20ingin%20bertanya." class="whatsapp-float"
-        target="_blank" rel="noopener" aria-label="Chat Attalas Cafe via WhatsApp">
+    <a href="https://wa.me/6281234567890?text=Halo%20Attalas%20Cafe,%20saya%20ingin%20bertanya."
+        class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat Attalas Cafe via WhatsApp">
         <i class="ph-whatsapp-logo"></i>
     </a>
 

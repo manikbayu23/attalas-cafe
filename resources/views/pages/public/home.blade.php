@@ -5,8 +5,8 @@
 @section('content')
     <main>
         <header class="home-hero">
-            <video class="hero-video" autoplay muted loop playsinline poster="{{ asset('assets/images/attalas-logo.png') }}">
-                <source src="{{ asset('assets/videos/attalas-hero.mp4') }}" type="video/mp4">
+            <video class="hero-video" autoplay muted loop playsinline poster="{{ asset('assets/images/image-hero.png') }}">
+                <source src="{{ asset('assets/videos/attalas-hero2.mp4') }}" type="video/mp4">
             </video>
 
             <div class="container hero-inner">
