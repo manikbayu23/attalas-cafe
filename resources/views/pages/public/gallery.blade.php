@@ -183,11 +183,9 @@
 
         .skeleton-card {
             position: relative;
-            background: #d9d9d9;
+            background: var(--mist-100);
             overflow: hidden;
             min-height: 310px;
-            border-radius: 28px;
-            box-shadow: 0 18px 44px rgba(16, 20, 23, .08);
         }
 
         .skeleton-card::after {
@@ -196,28 +194,12 @@
             inset: 0;
             background: linear-gradient(90deg,
                     transparent 0%,
-                    rgba(255, 255, 255, 0.6) 25%,
-                    rgba(255, 255, 255, 1) 50%,
-                    rgba(255, 255, 255, 0.6) 75%,
+                    rgba(255, 255, 255, 0.2) 50%,
                     transparent 100%);
-            animation: skeleton-shimmer 1.8s infinite;
-            z-index: 1;
-            pointer-events: none;
+            animation: skeleton-loading 1.5s infinite;
         }
 
-        @keyframes skeleton-pulse {
-
-            0%,
-            100% {
-                background-position: 0% center;
-            }
-
-            50% {
-                background-position: 100% center;
-            }
-        }
-
-        @keyframes skeleton-shimmer {
+        @keyframes skeleton-loading {
             0% {
                 transform: translateX(-100%);
             }

@@ -481,7 +481,7 @@
                         } else if (!append) {
                             if (gridEl) {
                                 gridEl.innerHTML =
-                                    '<div class="empty-state">Belum ada menu yang cocok dengan filter ini.</div>';
+                                    '<div class="empty-state">Tidak Ada menu.</div>';
                             }
                         }
 
