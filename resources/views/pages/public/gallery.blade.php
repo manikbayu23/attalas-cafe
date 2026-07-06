@@ -34,7 +34,14 @@
                     </div>
 
                     @if ($galleries->count() > $initialBatch)
-                        <div class="gallery-loading" id="galleryLoading">Memuat lebih banyak...</div>
+                        <div class="gallery-skeleton-container" id="gallerySkeletonContainer">
+                            <div class="gallery-card skeleton-card"></div>
+                            <div class="gallery-card skeleton-card"></div>
+                            <div class="gallery-card skeleton-card"></div>
+                            <div class="gallery-card skeleton-card"></div>
+                            <div class="gallery-card skeleton-card"></div>
+                            <div class="gallery-card skeleton-card"></div>
+                        </div>
                         <div class="gallery-sentinel" id="gallerySentinel" aria-hidden="true"></div>
                     @endif
                 @endif
@@ -151,8 +158,7 @@
             transform: translateY(0) scale(1);
         }
 
-        .empty-state,
-        .gallery-loading {
+        .empty-state {
             padding: 28px;
             border-radius: 24px;
             background: #fff;
@@ -160,12 +166,81 @@
             color: var(--muted);
         }
 
-        .gallery-loading {
+        .gallery-skeleton-container {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
             margin-top: 24px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .gallery-skeleton-container.is-visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .skeleton-card {
+            position: relative;
+            background: #d9d9d9;
+            overflow: hidden;
+            min-height: 310px;
+            border-radius: 28px;
+            box-shadow: 0 18px 44px rgba(16, 20, 23, .08);
+        }
+
+        .skeleton-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg,
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.6) 25%,
+                    rgba(255, 255, 255, 1) 50%,
+                    rgba(255, 255, 255, 0.6) 75%,
+                    transparent 100%);
+            animation: skeleton-shimmer 1.8s infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes skeleton-pulse {
+
+            0%,
+            100% {
+                background-position: 0% center;
+            }
+
+            50% {
+                background-position: 100% center;
+            }
+        }
+
+        @keyframes skeleton-shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
         }
 
         .gallery-sentinel {
             height: 1px;
+        }
+
+        @media (max-width: 992px) {
+            .gallery-skeleton-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            .gallery-skeleton-container {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 992px) {
@@ -186,6 +261,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Fancybox
             if (window.Fancybox) {
                 Fancybox.bind('[data-fancybox="gallery-page"]', {
                     animated: true,
@@ -203,6 +279,7 @@
                 });
             }
 
+            // Animate hero section
             if (window.gsap) {
                 gsap.from('.page-hero .eyebrow, .page-hero h1, .page-hero p', {
                     y: 34,
@@ -211,72 +288,103 @@
                     stagger: .12,
                     ease: 'power3.out'
                 });
-                gsap.utils.toArray('.gallery-card').forEach(function(card, index) {
-                    gsap.from(card, {
-                        y: 44,
-                        opacity: 0,
-                        duration: .8,
-                        delay: (index % 3) * .06,
-                        ease: 'power3.out',
-                        scrollTrigger: {
-                            trigger: card,
-                            start: 'top 86%'
-                        }
-                    });
-                });
             }
 
-            const galleryCards = Array.from(document.querySelectorAll('.gallery-card'));
-            const loadingEl = document.getElementById('galleryLoading');
+            // Infinite scroll implementation
+            const galleryGrid = document.getElementById('galleryGrid');
+            const skeletonContainer = document.getElementById('gallerySkeletonContainer');
             const sentinelEl = document.getElementById('gallerySentinel');
             const batchSize = 6;
-            let visibleCount = 0;
+            let visibleCount = 12; // Initial batch size
             let isLoading = false;
+            let hasMore = !!sentinelEl;
 
-            const showNextBatch = () => {
-                if (isLoading || !sentinelEl || visibleCount >= galleryCards.length) {
-                    if (loadingEl) {
-                        loadingEl.style.display = 'none';
-                    }
-                    return;
+            const animateNewCards = () => {
+                if (window.gsap && window.ScrollTrigger) {
+                    const newCards = galleryGrid.querySelectorAll('.gallery-card:not(.animated)');
+                    newCards.forEach((card, index) => {
+                        card.classList.add('animated');
+                        gsap.from(card, {
+                            y: 44,
+                            opacity: 0,
+                            duration: .8,
+                            delay: (index % 3) * .06,
+                            ease: 'power3.out',
+                            scrollTrigger: {
+                                trigger: card,
+                                start: 'top 86%'
+                            }
+                        });
+                    });
                 }
+            };
+
+            const loadMoreCards = () => {
+                if (isLoading || !hasMore) return;
 
                 isLoading = true;
-                if (loadingEl) {
-                    loadingEl.style.display = 'block';
+                if (skeletonContainer) {
+                    skeletonContainer.classList.add('is-visible');
                 }
 
-                setTimeout(function() {
-                    const nextCards = galleryCards.slice(visibleCount, visibleCount + batchSize);
-                    nextCards.forEach(function(card) {
+                // Simulate loading delay
+                setTimeout(() => {
+                    const allCards = galleryGrid.querySelectorAll('.gallery-card.is-hidden');
+                    const cardsToShow = Array.from(allCards).slice(0, batchSize);
+
+                    cardsToShow.forEach(card => {
                         card.classList.remove('is-hidden');
                         const img = card.querySelector('img[data-src]');
-                        if (img) {
-                            img.setAttribute('src', img.getAttribute('data-src'));
+                        if (img && img.hasAttribute('data-src')) {
+                            const src = img.getAttribute('data-src');
+                            img.src = src;
                             img.removeAttribute('data-src');
                         }
                     });
 
-                    visibleCount += nextCards.length;
-                    isLoading = false;
+                    visibleCount += cardsToShow.length;
 
-                    if (visibleCount >= galleryCards.length && loadingEl) {
-                        loadingEl.remove();
+                    // Animate newly loaded cards
+                    animateNewCards();
+
+                    // Hide skeleton loaders
+                    if (skeletonContainer) {
+                        skeletonContainer.classList.remove('is-visible');
                     }
-                }, 220);
+
+                    // Check if more cards available
+                    if (galleryGrid.querySelectorAll('.gallery-card.is-hidden').length === 0) {
+                        hasMore = false;
+                        if (sentinelEl) {
+                            sentinelEl.remove();
+                        }
+                        if (skeletonContainer) {
+                            skeletonContainer.remove();
+                        }
+                    }
+
+                    isLoading = false;
+                }, 300);
             };
 
+            // Intersection Observer for infinite scroll
             if (sentinelEl) {
-                const observer = new IntersectionObserver(function(entries) {
-                    if (entries[0] && entries[0].isIntersecting) {
-                        showNextBatch();
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        if (entries[0]?.isIntersecting && !isLoading && hasMore) {
+                            loadMoreCards();
+                        }
+                    }, {
+                        rootMargin: '200px 0px',
+                        threshold: 0
                     }
-                }, {
-                    rootMargin: '400px 0px'
-                });
+                );
 
                 observer.observe(sentinelEl);
             }
+
+            // Initial animation for visible cards
+            animateNewCards();
         });
     </script>
 @endpush

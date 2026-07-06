@@ -63,8 +63,13 @@
                     </div>
 
                     @if ($menus->count() > $initialBatch)
-                        <div class="menu-loading" id="menuLoading">
-                            <div class="loading-inline"><i class="ph-spinner-gap"></i><span>Memuat menu...</span></div>
+                        <div class="menu-skeleton-container" id="menuSkeletonContainer">
+                            <div class="menu-card skeleton-card"></div>
+                            <div class="menu-card skeleton-card"></div>
+                            <div class="menu-card skeleton-card"></div>
+                            <div class="menu-card skeleton-card"></div>
+                            <div class="menu-card skeleton-card"></div>
+                            <div class="menu-card skeleton-card"></div>
                         </div>
                         <div class="menu-sentinel" id="menuSentinel" aria-hidden="true"></div>
                     @endif
@@ -262,8 +267,7 @@
             font-size: 1.08rem;
         }
 
-        .empty-state,
-        .menu-loading {
+        .empty-state {
             padding: 28px;
             border-radius: 24px;
             background: #fff;
@@ -271,49 +275,74 @@
             color: var(--muted);
         }
 
-        .menu-loading {
-            display: none;
+        .menu-skeleton-container {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
             margin-top: 24px;
-            border: 1px solid rgba(16, 20, 23, .08);
-            background: linear-gradient(90deg, rgba(255, 255, 255, .96), rgba(244, 247, 246, .96));
-            box-shadow: 0 10px 24px rgba(16, 20, 23, .06);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        .menu-loading .loading-inline {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            color: var(--primary-900);
+        .menu-skeleton-container.is-visible {
+            opacity: 1;
+            visibility: visible;
         }
 
-        .menu-loading .loading-inline i {
-            font-size: 1rem;
-            animation: menu-spin 1s linear infinite;
+        .skeleton-card {
+            position: relative;
+            background: #d9d9d9;
+            overflow: hidden;
+            border-radius: 28px;
+            box-shadow: 0 18px 44px rgba(16, 20, 23, .08);
+        }
+
+        .skeleton-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg,
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.6) 25%,
+                    rgba(255, 255, 255, 1) 50%,
+                    rgba(255, 255, 255, 0.6) 75%,
+                    transparent 100%);
+            animation: skeleton-shimmer 1.8s infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes skeleton-shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
         }
 
         .menu-sentinel {
             height: 1px;
         }
 
-        @keyframes menu-spin {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
         @media (max-width: 992px) {
             .menu-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .menu-skeleton-container {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
 
         @media (max-width: 640px) {
             .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-skeleton-container {
                 grid-template-columns: 1fr;
             }
         }
@@ -327,7 +356,7 @@
             const menuApiUrl = '{{ route('menu.data') }}';
             const gridEl = document.getElementById('menuGrid');
             const filterButtons = Array.from(document.querySelectorAll('.filter-pill'));
-            const loadingEl = document.getElementById('menuLoading');
+            const skeletonContainer = document.getElementById('menuSkeletonContainer');
             const sentinelEl = document.getElementById('menuSentinel');
             const batchSize = 6;
             let currentFilter = 'all';
@@ -421,9 +450,8 @@
                     return;
                 }
 
-                if (loadingEl) {
-                    loadingEl.style.display = 'block';
-                    loadingEl.querySelector('span').textContent = append ? 'Memuat menu...' : 'Memuat menu...';
+                if (skeletonContainer && append) {
+                    skeletonContainer.classList.add('is-visible');
                 }
 
                 const params = new URLSearchParams({
@@ -461,8 +489,11 @@
                         hasMore = Boolean(data.hasMore);
                         isLoading = false;
 
-                        if (loadingEl) {
-                            loadingEl.style.display = hasMore ? 'block' : 'none';
+                        if (skeletonContainer) {
+                            skeletonContainer.classList.remove('is-visible');
+                            if (!hasMore) {
+                                skeletonContainer.remove();
+                            }
                         }
                     })
                     .catch(function() {
@@ -471,8 +502,8 @@
                                 '<div class="empty-state">Gagal memuat menu. Silakan coba lagi.</div>';
                         }
                         isLoading = false;
-                        if (loadingEl) {
-                            loadingEl.style.display = 'none';
+                        if (skeletonContainer) {
+                            skeletonContainer.classList.remove('is-visible');
                         }
                     });
             };
