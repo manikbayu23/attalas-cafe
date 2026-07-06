@@ -292,10 +292,13 @@
 
         .skeleton-card {
             position: relative;
-            background: #d9d9d9;
+            background: linear-gradient(90deg, #e0e0e0 25%, #d0d0d0 50%, #e0e0e0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-pulse 2s ease-in-out infinite;
             overflow: hidden;
+            min-height: 310px;
             border-radius: 28px;
-            box-shadow: 0 18px 44px rgba(16, 20, 23, .08);
+            box-shadow: 0 18px 44px rgba(16, 20, 23, .12);
         }
 
         .skeleton-card::after {
@@ -304,13 +307,25 @@
             inset: 0;
             background: linear-gradient(90deg,
                     transparent 0%,
-                    rgba(255, 255, 255, 0.6) 25%,
+                    rgba(255, 255, 255, 0.7) 20%,
                     rgba(255, 255, 255, 1) 50%,
-                    rgba(255, 255, 255, 0.6) 75%,
+                    rgba(255, 255, 255, 0.7) 80%,
                     transparent 100%);
-            animation: skeleton-shimmer 1.8s infinite;
+            animation: skeleton-shimmer 1.5s infinite;
             z-index: 1;
             pointer-events: none;
+        }
+
+        @keyframes skeleton-pulse {
+
+            0%,
+            100% {
+                background-position: 0% center;
+            }
+
+            50% {
+                background-position: 100% center;
+            }
         }
 
         @keyframes skeleton-shimmer {
@@ -554,7 +569,7 @@
                         showNextBatch();
                     }
                 }, {
-                    rootMargin: '400px 0px'
+                    rootMargin: '50% 0px'
                 });
 
                 observer.observe(sentinelEl);

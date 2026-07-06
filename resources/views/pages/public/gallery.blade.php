@@ -183,9 +183,13 @@
 
         .skeleton-card {
             position: relative;
-            background: var(--mist-100);
+            background: linear-gradient(90deg, #e0e0e0 25%, #d0d0d0 50%, #e0e0e0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-pulse 2s ease-in-out infinite;
             overflow: hidden;
             min-height: 310px;
+            border-radius: 28px;
+            box-shadow: 0 18px 44px rgba(16, 20, 23, .12);
         }
 
         .skeleton-card::after {
@@ -194,12 +198,28 @@
             inset: 0;
             background: linear-gradient(90deg,
                     transparent 0%,
-                    rgba(255, 255, 255, 0.2) 50%,
+                    rgba(255, 255, 255, 0.7) 20%,
+                    rgba(255, 255, 255, 1) 50%,
+                    rgba(255, 255, 255, 0.7) 80%,
                     transparent 100%);
-            animation: skeleton-loading 1.5s infinite;
+            animation: skeleton-shimmer 1.5s infinite;
+            z-index: 1;
+            pointer-events: none;
         }
 
-        @keyframes skeleton-loading {
+        @keyframes skeleton-pulse {
+
+            0%,
+            100% {
+                background-position: 0% center;
+            }
+
+            50% {
+                background-position: 100% center;
+            }
+        }
+
+        @keyframes skeleton-shimmer {
             0% {
                 transform: translateX(-100%);
             }
@@ -214,25 +234,21 @@
         }
 
         @media (max-width: 992px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
             .gallery-skeleton-container {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
 
         @media (max-width: 640px) {
-            .gallery-skeleton-container {
+            .gallery-grid {
                 grid-template-columns: 1fr;
             }
-        }
 
-        @media (max-width: 992px) {
-            .gallery-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-        }
-
-        @media (max-width: 640px) {
-            .gallery-grid {
+            .gallery-skeleton-container {
                 grid-template-columns: 1fr;
             }
         }
@@ -357,7 +373,7 @@
                             loadMoreCards();
                         }
                     }, {
-                        rootMargin: '200px 0px',
+                        rootMargin: '50% 0px',
                         threshold: 0
                     }
                 );
