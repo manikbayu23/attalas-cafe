@@ -1,6 +1,7 @@
 @extends('layouts.public')
 
-@section('title', 'Attalas Cafe - Coffee, Comfort, and Kintamani View')
+@section('title', __('public.seo.home_title'))
+@section('meta_description', __('public.seo.home_description'))
 
 @section('content')
     <main>
@@ -11,14 +12,11 @@
 
             <div class="container hero-inner">
                 <div class="hero-content">
-                    <span class="eyebrow"><i class="ph-mountains"></i> Kintamani scenic coffee experience</span>
-                    <h1>Kopi hangat, udara sejuk, dan view Kintamani.</h1>
-                    <p>
-                        Nikmati suasana cafe yang tenang dengan sajian kopi, menu pilihan, dan panorama Kintamani
-                        yang membuat waktu santai terasa lebih berkesan.
-                    </p>
+                    <span class="eyebrow"><i class="ph-mountains"></i> {{ __('public.home.hero.eyebrow') }}</span>
+                    <h1>{{ __('public.home.hero.h1') }}</h1>
+                    <p>{{ __('public.home.hero.p') }}</p>
                     <div class="hero-actions">
-                        <a href="#menu" class="btn btn-ghost"><i class="ph-arrow-down"></i>Explore</a>
+                        <a href="#menu" class="btn btn-ghost"><i class="ph-arrow-down"></i>{{ __('public.home.hero.explore') }}</a>
                     </div>
                 </div>
             </div>
@@ -29,23 +27,23 @@
                 <div class="features">
                     <div class="feature-card">
                         <i class="ph-coffee"></i>
-                        <h3>Curated Coffee</h3>
-                        <p>Kopi yang diracik untuk menemani suasana sejuk dan tenang di Kintamani.</p>
+                        <h3>{{ __('public.home.features.coffee_title') }}</h3>
+                        <p>{{ __('public.home.features.coffee_desc') }}</p>
                     </div>
                     <div class="feature-card">
                         <i class="ph-mountains"></i>
-                        <h3>Scenic View</h3>
-                        <p>Panorama alam menjadi bagian dari pengalaman bersantai di Attalas Cafe.</p>
+                        <h3>{{ __('public.home.features.view_title') }}</h3>
+                        <p>{{ __('public.home.features.view_desc') }}</p>
                     </div>
                     <div class="feature-card">
                         <i class="ph-fork-knife"></i>
-                        <h3>Fresh Menu</h3>
-                        <p>Pilihan menu yang cocok untuk sarapan, makan siang, hingga camilan sore.</p>
+                        <h3>{{ __('public.home.features.menu_title') }}</h3>
+                        <p>{{ __('public.home.features.menu_desc') }}</p>
                     </div>
                     <div class="feature-card">
                         <i class="ph-heart"></i>
-                        <h3>Warm Service</h3>
-                        <p>Pelayanan ramah untuk membuat setiap kunjungan terasa nyaman dan personal.</p>
+                        <h3>{{ __('public.home.features.service_title') }}</h3>
+                        <p>{{ __('public.home.features.service_desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -55,14 +53,14 @@
             <div class="container">
                 <div class="section-header">
                     <div>
-                        <span class="section-kicker">Menu pilihan</span>
-                        <h2>Favorit pelanggan Attalas.</h2>
+                        <span class="section-kicker">{{ __('public.home.menu_section.kicker') }}</span>
+                        <h2>{{ __('public.home.menu_section.h2') }}</h2>
                     </div>
-                    <p>Beberapa menu unggulan yang sering jadi pilihan untuk menemani waktu santai di cafe.</p>
+                    <p>{{ __('public.home.menu_section.p') }}</p>
                 </div>
 
                 @if ($featuredMenus->isEmpty())
-                    <div class="empty-state">Belum ada menu featured yang ditampilkan.</div>
+                    <div class="empty-state">{{ __('public.home.menu_section.empty_state') }}</div>
                 @else
                     <div class="menu-grid">
                         @foreach ($featuredMenus as $menu)
@@ -77,9 +75,9 @@
                                         </a>
                                     @endif
                                     @if ($menu->is_best_seller)
-                                        <span class="menu-badge">Best Seller</span>
+                                        <span class="menu-badge">{{ __('public.menu.badge.best_seller') }}</span>
                                     @elseif ($menu->is_featured)
-                                        <span class="menu-badge">Featured</span>
+                                        <span class="menu-badge">{{ __('public.menu.badge.featured') }}</span>
                                     @endif
                                 </div>
                                 <div class="menu-body">
@@ -101,18 +99,15 @@
         <section class="about-band">
             <div class="container about-grid">
                 <div>
-                    <span class="section-kicker light">Tentang kami</span>
-                    <h2>Dibuat untuk menikmati kopi dan view dengan lebih tenang.</h2>
-                    <p>
-                        Attalas Cafe hadir sebagai tempat singgah yang hangat di Kintamani. Kami memadukan sajian kopi,
-                        makanan, dan ambience alami agar setiap kunjungan terasa santai, premium, dan berkesan.
-                    </p>
+                    <span class="section-kicker light">{{ __('public.home.about_band.kicker') }}</span>
+                    <h2>{{ __('public.home.about_band.h2') }}</h2>
+                    <p>{{ __('public.home.about_band.p') }}</p>
                 </div>
                 <div class="about-metrics">
-                    <div><strong>01</strong><span>Scenic ambience</span></div>
-                    <div><strong>02</strong><span>Curated coffee</span></div>
-                    <div><strong>03</strong><span>Fresh menu</span></div>
-                    <div><strong>04</strong><span>Warm service</span></div>
+                    <div><strong>01</strong><span>{{ __('public.home.about_band.metric_1') }}</span></div>
+                    <div><strong>02</strong><span>{{ __('public.home.about_band.metric_2') }}</span></div>
+                    <div><strong>03</strong><span>{{ __('public.home.about_band.metric_3') }}</span></div>
+                    <div><strong>04</strong><span>{{ __('public.home.about_band.metric_4') }}</span></div>
                 </div>
             </div>
         </section>
@@ -121,14 +116,14 @@
             <div class="container">
                 <div class="section-header">
                     <div>
-                        <span class="section-kicker">Gallery</span>
-                        <h2>Momen hangat di Attalas.</h2>
+                        <span class="section-kicker">{{ __('public.home.gallery_section.kicker') }}</span>
+                        <h2>{{ __('public.home.gallery_section.h2') }}</h2>
                     </div>
-                    <p>Intip suasana, menu, dan beberapa sudut favorit dari Attalas Cafe.</p>
+                    <p>{{ __('public.home.gallery_section.p') }}</p>
                 </div>
 
                 @if ($galleryItems->isEmpty())
-                    <div class="empty-state">Belum ada gallery yang ditampilkan.</div>
+                    <div class="empty-state">{{ __('public.home.gallery_section.empty_state') }}</div>
                 @else
                     <div class="gallery-grid">
                         @foreach ($galleryItems as $gallery)
@@ -150,13 +145,13 @@
             <div class="container">
                 <div class="section-header">
                     <div>
-                        <span class="section-kicker">Review</span>
-                        <h2>Cerita pelanggan kami.</h2>
+                        <span class="section-kicker">{{ __('public.home.reviews_section.kicker') }}</span>
+                        <h2>{{ __('public.home.reviews_section.h2') }}</h2>
                     </div>
                 </div>
 
                 @if ($reviews->isEmpty())
-                    <div class="empty-state">Belum ada ulasan yang ditampilkan.</div>
+                    <div class="empty-state">{{ __('public.home.reviews_section.empty_state') }}</div>
                 @else
                     <div class="review-carousel owl-carousel" id="reviewCarousel" aria-label="Customer reviews carousel">
                         @foreach ($reviews as $review)
@@ -346,20 +341,27 @@
         }
 
         .feature-card {
-            padding: 24px;
+            padding: 26px 24px 28px;
             border-radius: 28px;
+            transition: transform .22s ease, box-shadow .22s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 28px 56px rgba(16, 20, 23, .13);
         }
 
         .feature-card i {
             display: inline-grid;
             place-items: center;
-            width: 48px;
-            height: 48px;
-            margin-bottom: 18px;
+            width: 52px;
+            height: 52px;
+            margin-bottom: 20px;
             border-radius: 18px;
-            background: rgba(127, 155, 136, 0.16);
+            background: linear-gradient(135deg, rgba(127, 155, 136, 0.18), rgba(127, 155, 136, 0.08));
             color: var(--sage-700);
-            font-size: 1.45rem;
+            font-size: 1.55rem;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
         }
 
         .feature-card h3,
@@ -384,6 +386,12 @@
         .menu-card {
             overflow: hidden;
             border-radius: 28px;
+            transition: transform .22s ease, box-shadow .22s ease;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 28px 56px rgba(16, 20, 23, .13);
         }
 
         .menu-image {
@@ -473,13 +481,26 @@
             padding: 86px 0;
             color: #fff;
             background:
-                linear-gradient(90deg, rgba(17, 29, 28, 0.88), rgba(32, 50, 49, 0.68)),
+                linear-gradient(135deg, rgba(17,29,28,0.92), rgba(32,50,49,0.76)),
                 linear-gradient(135deg, var(--primary-950), var(--primary-800));
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* decorative blob */
+        .about-band::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at 80% 40%, rgba(127,155,136,0.13) 0%, transparent 60%);
+            pointer-events: none;
         }
 
         .about-grid {
+            position: relative;
+            z-index: 1;
             display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr);
+            grid-template-columns: minmax(0, 1fr) minmax(300px, 0.9fr);
             gap: 46px;
             align-items: center;
         }
@@ -496,26 +517,37 @@
         .about-metrics {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 16px;
+            gap: 14px;
         }
 
         .about-metrics div {
-            min-height: 150px;
+            min-height: 140px;
             display: flex;
             flex-direction: column;
-            justify-content: end;
+            justify-content: flex-end;
             padding: 18px;
             border-radius: 26px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(6px);
+            transition: background .2s ease, border-color .2s ease;
+        }
+
+        .about-metrics div:hover {
+            background: rgba(255, 255, 255, 0.13);
+            border-color: rgba(255, 255, 255, 0.22);
         }
 
         .about-metrics strong {
-            font-size: 1.9rem;
+            font-size: 2rem;
+            line-height: 1;
+            letter-spacing: -0.04em;
         }
 
         .about-metrics span {
-            color: rgba(255, 255, 255, 0.72);
+            margin-top: 6px;
+            color: rgba(255, 255, 255, 0.66);
+            font-size: .85rem;
         }
 
         .gallery-grid {
@@ -717,8 +749,10 @@
         }
 
         @media (max-width: 992px) {
+            .features {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
 
-            .features,
             .menu-grid,
             .about-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -735,32 +769,116 @@
             }
         }
 
-        @media (max-width: 640px) {
-
-            .home-hero,
-            .hero-inner {
-                min-height: 640px;
-            }
-
-            .hero-inner {
-                padding: 120px 0 64px;
-            }
+        /* ── Mobile: 2-col for everything ── */
+        @media (max-width: 480px) {
 
             .section,
             .about-band {
-                padding: 58px 0;
-            }
-
-            .features,
-            .menu-grid,
-            .about-grid,
-            .about-metrics {
-                grid-template-columns: 1fr;
+                padding: 48px 0;
             }
 
             .section-header {
                 flex-direction: column;
                 align-items: flex-start;
+                gap: 10px;
+            }
+
+            /* Hero tighter */
+            .home-hero,
+            .hero-inner {
+                min-height: 580px;
+            }
+
+            .hero-inner {
+                padding: 110px 0 56px;
+            }
+
+            /* features: 2×2 grid */
+            .features {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .feature-card {
+                padding: 18px 16px 20px;
+                border-radius: 22px;
+            }
+
+            .feature-card i {
+                width: 42px;
+                height: 42px;
+                font-size: 1.25rem;
+                margin-bottom: 14px;
+                border-radius: 14px;
+            }
+
+            .feature-card h3 {
+                font-size: .92rem;
+            }
+
+            .feature-card p {
+                font-size: .82rem;
+            }
+
+            /* menu: 2-col */
+            .menu-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .menu-body {
+                padding: 12px;
+            }
+
+            .menu-body h3 {
+                font-size: .88rem;
+            }
+
+            .menu-body p {
+                font-size: .78rem;
+                min-height: unset;
+            }
+
+            /* about-band: stack vertically but keep metrics 2×2 */
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .about-band h2 {
+                font-size: 1.7rem;
+            }
+
+            .about-metrics {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            .about-metrics div {
+                min-height: 110px;
+                padding: 14px;
+                border-radius: 20px;
+            }
+
+            .about-metrics strong {
+                font-size: 1.55rem;
+            }
+
+            /* gallery home: 2-col */
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .gallery-item,
+            .gallery-item:nth-child(n) {
+                grid-column: span 1;
+                grid-row: span 1;
+                min-height: 130px;
+            }
+
+            .gallery-item {
+                border-radius: 16px;
             }
         }
     </style>

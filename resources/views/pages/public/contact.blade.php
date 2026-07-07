@@ -1,14 +1,15 @@
 @extends('layouts.public')
 
-@section('title', 'Contact Us - Attalas Cafe')
+@section('title', __('public.seo.contact_title'))
+@section('meta_description', __('public.seo.contact_description'))
 
 @section('content')
     <main>
         <section class="page-hero" @style(['--hero-image: url(' . $heroImage . ')' => $heroImage])>
             <div class="container">
-                <span class="eyebrow">Contact Us</span>
-                <h1>Mari terhubung dengan Attalas Cafe.</h1>
-                <p>Hubungi kami untuk pertanyaan, informasi menu, atau kunjungan ke cafe.</p>
+                <span class="eyebrow">{{ __('public.contact.hero.eyebrow') }}</span>
+                <h1>{{ __('public.contact.hero.h1') }}</h1>
+                <p>{{ __('public.contact.hero.p') }}</p>
             </div>
         </section>
 
@@ -20,7 +21,7 @@
                             <i class="ph-map-pin"></i>
                         </div>
                         <div class="card-content">
-                            <strong>Location</strong>
+                            <strong>{{ __('public.contact.info.location_label') }}</strong>
                             <span>Jl. Raya Penelokan, Batur Tengah, Kec. Kintamani, Kabupaten Bangli, Bali</span>
                         </div>
                     </div>
@@ -29,7 +30,7 @@
                             <i class="ph-whatsapp-logo"></i>
                         </div>
                         <div class="card-content">
-                            <strong>WhatsApp</strong>
+                            <strong>{{ __('public.contact.info.whatsapp_label') }}</strong>
                             <span>+62 8123 4567 890</span>
                         </div>
                     </div>
@@ -38,8 +39,8 @@
                             <i class="ph-clock"></i>
                         </div>
                         <div class="card-content">
-                            <strong>Opening Hours</strong>
-                            <span>Setiap hari, 08.00 - 19.00 WITA</span>
+                            <strong>{{ __('public.contact.info.opening_hours_label') }}</strong>
+                            <span>{{ __('public.contact.info.opening_hours_value') }}</span>
                         </div>
                     </div>
                     <a href="https://www.tiktok.com/@attalascafe?_r=1&_t=ZS-97oCzxnLjrr" target="_blank" rel="noopener"
@@ -68,14 +69,14 @@
                 </div>
 
                 <div class="contact-card">
-                    <h2>Kirim pesan</h2>
-                    <p>Form ini masih tampilan awal. Untuk sekarang, gunakan WhatsApp agar pesan langsung masuk.</p>
+                    <h2>{{ __('public.contact.form.h2') }}</h2>
+                    <p>{{ __('public.contact.form.p') }}</p>
                     <form>
-                        <input type="text" placeholder="Nama lengkap">
-                        <input type="email" placeholder="Email">
-                        <textarea rows="5" placeholder="Pesan"></textarea>
+                        <input type="text" placeholder="{{ __('public.contact.form.name_placeholder') }}">
+                        <input type="email" placeholder="{{ __('public.contact.form.email_placeholder') }}">
+                        <textarea rows="5" placeholder="{{ __('public.contact.form.message_placeholder') }}"></textarea>
                         <a href="https://wa.me/6281234567890?text=Halo%20Attalas%20Cafe,%20saya%20ingin%20bertanya."
-                            class="btn btn-primary" target="_blank" rel="noopener">Chat via WhatsApp</a>
+                            class="btn btn-primary" target="_blank" rel="noopener">{{ __('public.contact.form.whatsapp_btn') }}</a>
                     </form>
                 </div>
             </div>

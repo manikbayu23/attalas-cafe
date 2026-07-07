@@ -1,30 +1,45 @@
 @extends('layouts.public')
 
-@section('title', 'Gallery - Attalas Cafe')
+@section('title', __('public.seo.gallery_title'))
+@section('meta_description', __('public.seo.gallery_description'))
 
 @section('content')
     <main>
         <section class="page-hero" @style(['--hero-image: url(' . $heroImage . ')' => $heroImage])>
             <div class="container">
-                <span class="eyebrow">Gallery</span>
-                <h1>Momen, menu, dan view Attalas Cafe.</h1>
-                <p>Lihat beberapa suasana terbaik dari Attalas Cafe dan Kintamani.</p>
+                <span class="eyebrow">{{ __('public.gallery.hero.eyebrow') }}</span>
+                <h1>{{ __('public.gallery.hero.h1') }}</h1>
+                <p>{{ __('public.gallery.hero.p') }}</p>
             </div>
         </section>
 
         <section class="gallery-section">
             <div class="container">
                 @if ($galleries->isEmpty())
-                    <div class="empty-state">Belum ada gallery yang ditampilkan.</div>
+                    <div class="empty-state">{{ __('public.gallery.empty_state') }}</div>
                 @else
-                    @php $initialBatch = 12; @endphp
+                    @php
+                        $initialBatch  = 12;
+                        $hasMoreGallery = $galleries->count() > $initialBatch;
+                    @endphp
                     <div class="gallery-grid" id="galleryGrid">
-                        @foreach ($galleries as $index => $gallery)
-                            @php $isVisible = $index < $initialBatch; @endphp
-                            <figure class="gallery-card{{ $isVisible ? '' : ' is-hidden' }}">
+                        @foreach ($galleries->take($initialBatch) as $gallery)
+                            <figure class="gallery-card">
                                 <a href="{{ asset('storage/' . $gallery->image) }}" data-fancybox="gallery-page"
                                     data-caption="{{ $gallery->title ?? 'Gallery Attalas Cafe' }}" class="image-zoom-link">
-                                    <img src="{{ $isVisible ? asset('storage/' . $gallery->image) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==' }}"
+                                    <img src="{{ asset('storage/' . $gallery->image) }}"
+                                        alt="{{ $gallery->title ?? 'Attalas Cafe Gallery' }}" loading="lazy">
+                                    <span class="zoom-indicator"><i class="ph-magnifying-glass-plus"></i></span>
+                                </a>
+                            </figure>
+                        @endforeach
+
+                        {{-- Hidden cards for JS batch reveal --}}
+                        @foreach ($galleries->skip($initialBatch) as $gallery)
+                            <figure class="gallery-card is-hidden">
+                                <a href="{{ asset('storage/' . $gallery->image) }}" data-fancybox="gallery-page"
+                                    data-caption="{{ $gallery->title ?? 'Gallery Attalas Cafe' }}" class="image-zoom-link">
+                                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
                                         data-src="{{ asset('storage/' . $gallery->image) }}"
                                         alt="{{ $gallery->title ?? 'Attalas Cafe Gallery' }}" loading="lazy">
                                     <span class="zoom-indicator"><i class="ph-magnifying-glass-plus"></i></span>
@@ -33,14 +48,13 @@
                         @endforeach
                     </div>
 
-                    @if ($galleries->count() > $initialBatch)
+                    @if ($hasMoreGallery)
                         <div class="gallery-skeleton-container" id="gallerySkeletonContainer">
-                            <div class="gallery-card skeleton-card"></div>
-                            <div class="gallery-card skeleton-card"></div>
-                            <div class="gallery-card skeleton-card"></div>
-                            <div class="gallery-card skeleton-card"></div>
-                            <div class="gallery-card skeleton-card"></div>
-                            <div class="gallery-card skeleton-card"></div>
+                            @for ($s = 0; $s < 6; $s++)
+                            <div class="skeleton-card">
+                                <div class="sk-image"></div>
+                            </div>
+                            @endfor
                         </div>
                         <div class="gallery-sentinel" id="gallerySentinel" aria-hidden="true"></div>
                     @endif
@@ -90,6 +104,7 @@
             padding: 76px 0;
         }
 
+        /* ── Gallery grid ── */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -99,15 +114,18 @@
         .gallery-card {
             position: relative;
             margin: 0;
-            min-height: 310px;
+            min-height: 260px;
             overflow: hidden;
             border-radius: 28px;
             background: var(--mist-100);
             box-shadow: 0 18px 44px rgba(16, 20, 23, .08);
         }
 
-        .gallery-card:nth-child(4n+1) {
-            min-height: 430px;
+        /* Every 4th card is taller for visual rhythm (tablet+) */
+        @media (min-width: 641px) {
+            .gallery-card:nth-child(4n+1) {
+                min-height: 400px;
+            }
         }
 
         .gallery-card.is-hidden {
@@ -166,90 +184,87 @@
             color: var(--muted);
         }
 
+        /* ── Skeleton loader ── */
         .gallery-skeleton-container {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 18px;
-            margin-top: 24px;
+            margin-top: 18px;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            pointer-events: none;
+            transition: opacity .3s ease, visibility .3s ease;
         }
 
         .gallery-skeleton-container.is-visible {
             opacity: 1;
             visibility: visible;
+            pointer-events: auto;
         }
 
         .skeleton-card {
-            position: relative;
-            background: linear-gradient(90deg, #e0e0e0 25%, #d0d0d0 50%, #e0e0e0 75%);
-            background-size: 200% 100%;
-            animation: skeleton-pulse 2s ease-in-out infinite;
-            overflow: hidden;
-            min-height: 310px;
             border-radius: 28px;
-            box-shadow: 0 18px 44px rgba(16, 20, 23, .12);
+            overflow: hidden;
+            background: var(--mist-100);
+            box-shadow: 0 18px 44px rgba(16, 20, 23, .06);
         }
 
-        .skeleton-card::after {
+        @keyframes sk-shimmer {
+            0%   { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .sk-image {
+            position: relative;
+            min-height: 260px;
+            background: #e4e7ea;
+            overflow: hidden;
+        }
+
+        .sk-image::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(90deg,
-                    transparent 0%,
-                    rgba(255, 255, 255, 0.7) 20%,
-                    rgba(255, 255, 255, 1) 50%,
-                    rgba(255, 255, 255, 0.7) 80%,
-                    transparent 100%);
-            animation: skeleton-shimmer 1.5s infinite;
-            z-index: 1;
-            pointer-events: none;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255,255,255,.65) 40%,
+                rgba(255,255,255,.9)  50%,
+                rgba(255,255,255,.65) 60%,
+                transparent 100%
+            );
+            animation: sk-shimmer 1.4s ease-in-out infinite;
         }
 
-        @keyframes skeleton-pulse {
+        .gallery-sentinel { height: 1px; }
 
-            0%,
-            100% {
-                background-position: 0% center;
-            }
-
-            50% {
-                background-position: 100% center;
-            }
-        }
-
-        @keyframes skeleton-shimmer {
-            0% {
-                transform: translateX(-100%);
-            }
-
-            100% {
-                transform: translateX(100%);
-            }
-        }
-
-        .gallery-sentinel {
-            height: 1px;
-        }
-
+        /* ── Responsive ── */
         @media (max-width: 992px) {
-            .gallery-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
+            .gallery-grid,
             .gallery-skeleton-container {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
 
-        @media (max-width: 640px) {
-            .gallery-grid {
-                grid-template-columns: 1fr;
+        /* 2 columns on mobile (≤ 480px) */
+        @media (max-width: 480px) {
+            .gallery-grid,
+            .gallery-skeleton-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
             }
 
-            .gallery-skeleton-container {
-                grid-template-columns: 1fr;
+            .gallery-card {
+                min-height: 160px;
+                border-radius: 18px;
+            }
+
+            .skeleton-card {
+                border-radius: 18px;
+            }
+
+            .sk-image {
+                min-height: 160px;
             }
         }
     </style>
@@ -259,130 +274,94 @@
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Fancybox
+            /* ── Fancybox ── */
             if (window.Fancybox) {
                 Fancybox.bind('[data-fancybox="gallery-page"]', {
                     animated: true,
                     dragToClose: true,
-                    Images: {
-                        zoom: true,
-                    },
-                    Toolbar: {
-                        display: {
-                            left: [],
-                            middle: [],
-                            right: ['close'],
-                        },
-                    },
+                    Images: { zoom: true },
+                    Toolbar: { display: { left: [], middle: [], right: ['close'] } },
                 });
             }
 
-            // Animate hero section
+            /* ── Hero animation ── */
             if (window.gsap) {
                 gsap.from('.page-hero .eyebrow, .page-hero h1, .page-hero p', {
-                    y: 34,
-                    opacity: 0,
-                    duration: .9,
-                    stagger: .12,
-                    ease: 'power3.out'
+                    y: 34, opacity: 0, duration: .9, stagger: .12, ease: 'power3.out'
                 });
             }
 
-            // Infinite scroll implementation
-            const galleryGrid = document.getElementById('galleryGrid');
-            const skeletonContainer = document.getElementById('gallerySkeletonContainer');
-            const sentinelEl = document.getElementById('gallerySentinel');
-            const batchSize = 6;
-            let visibleCount = 12; // Initial batch size
-            let isLoading = false;
-            let hasMore = !!sentinelEl;
+            /* ── Infinite scroll ── */
+            const galleryGrid  = document.getElementById('galleryGrid');
+            const skeletonEl   = document.getElementById('gallerySkeletonContainer');
+            const sentinelEl   = document.getElementById('gallerySentinel');
+            const BATCH        = 6;
+            let isLoading      = false;
+            let hasMore        = !!sentinelEl;
 
-            const animateNewCards = () => {
-                if (window.gsap && window.ScrollTrigger) {
-                    const newCards = galleryGrid.querySelectorAll('.gallery-card:not(.animated)');
-                    newCards.forEach((card, index) => {
-                        card.classList.add('animated');
+            const revealCards = function() {
+                const hidden = galleryGrid.querySelectorAll('.gallery-card.is-hidden');
+                const batch  = Array.from(hidden).slice(0, BATCH);
+
+                batch.forEach(function(card) {
+                    card.classList.remove('is-hidden');
+                    // swap placeholder src with real src
+                    const img = card.querySelector('img[data-src]');
+                    if (img) {
+                        img.src = img.getAttribute('data-src');
+                        img.removeAttribute('data-src');
+                    }
+                    // GSAP entrance
+                    if (window.gsap) {
                         gsap.from(card, {
-                            y: 44,
-                            opacity: 0,
-                            duration: .8,
-                            delay: (index % 3) * .06,
-                            ease: 'power3.out',
-                            scrollTrigger: {
-                                trigger: card,
-                                start: 'top 86%'
-                            }
+                            y: 40, opacity: 0, duration: .7, ease: 'power3.out',
+                            scrollTrigger: { trigger: card, start: 'top 88%' }
                         });
-                    });
-                }
+                    }
+                });
+
+                return batch.length;
             };
 
-            const loadMoreCards = () => {
+            const loadMore = function() {
                 if (isLoading || !hasMore) return;
-
                 isLoading = true;
-                if (skeletonContainer) {
-                    skeletonContainer.classList.add('is-visible');
-                }
+                if (skeletonEl) skeletonEl.classList.add('is-visible');
 
-                // Simulate loading delay
-                setTimeout(() => {
-                    const allCards = galleryGrid.querySelectorAll('.gallery-card.is-hidden');
-                    const cardsToShow = Array.from(allCards).slice(0, batchSize);
+                setTimeout(function() {
+                    const revealed = revealCards();
 
-                    cardsToShow.forEach(card => {
-                        card.classList.remove('is-hidden');
-                        const img = card.querySelector('img[data-src]');
-                        if (img && img.hasAttribute('data-src')) {
-                            const src = img.getAttribute('data-src');
-                            img.src = src;
-                            img.removeAttribute('data-src');
-                        }
-                    });
+                    if (skeletonEl) skeletonEl.classList.remove('is-visible');
 
-                    visibleCount += cardsToShow.length;
-
-                    // Animate newly loaded cards
-                    animateNewCards();
-
-                    // Hide skeleton loaders
-                    if (skeletonContainer) {
-                        skeletonContainer.classList.remove('is-visible');
-                    }
-
-                    // Check if more cards available
+                    // no more hidden cards?
                     if (galleryGrid.querySelectorAll('.gallery-card.is-hidden').length === 0) {
                         hasMore = false;
-                        if (sentinelEl) {
-                            sentinelEl.remove();
-                        }
-                        if (skeletonContainer) {
-                            skeletonContainer.remove();
-                        }
+                        if (sentinelEl) sentinelEl.remove();
+                        if (skeletonEl)  skeletonEl.remove();
                     }
 
                     isLoading = false;
-                }, 300);
+                }, 280);
             };
 
-            // Intersection Observer for infinite scroll
             if (sentinelEl) {
-                const observer = new IntersectionObserver(
-                    (entries) => {
-                        if (entries[0]?.isIntersecting && !isLoading && hasMore) {
-                            loadMoreCards();
-                        }
-                    }, {
-                        rootMargin: '500px 0px',
-                        threshold: 0
-                    }
-                );
-
-                observer.observe(sentinelEl);
+                new IntersectionObserver(function(entries) {
+                    if (entries[0] && entries[0].isIntersecting && !isLoading && hasMore) loadMore();
+                }, { rootMargin: '400px 0px', threshold: 0 }).observe(sentinelEl);
             }
 
-            // Initial animation for visible cards
-            animateNewCards();
+            /* Initial entrance animation for visible cards */
+            if (window.gsap && window.ScrollTrigger) {
+                gsap.registerPlugin(ScrollTrigger);
+                galleryGrid.querySelectorAll('.gallery-card:not(.is-hidden)').forEach(function(card, i) {
+                    gsap.from(card, {
+                        y: 40, opacity: 0, duration: .7,
+                        delay: (i % 3) * .05,
+                        ease: 'power3.out',
+                        scrollTrigger: { trigger: card, start: 'top 88%' }
+                    });
+                });
+            }
         });
     </script>
 @endpush

@@ -1,18 +1,16 @@
 @extends('layouts.public')
 
-@section('title', 'About Us - Attalas Cafe')
+@section('title', __('public.seo.about_title'))
+@section('meta_description', __('public.seo.about_description'))
 
 @section('content')
     <main>
         <section class="about-hero" @style(['--hero-image: url(' . $heroImage . ')' => $heroImage])>
             <div class="container about-hero-inner">
                 <div class="about-copy">
-                    <span class="eyebrow">About Attalas Cafe</span>
-                    <h1>Tempat menikmati kopi, udara Kintamani, dan view yang menenangkan.</h1>
-                    <p>
-                        Attalas Cafe hadir sebagai ruang singgah yang hangat di Kintamani. Kami memadukan sajian kopi,
-                        menu pilihan, dan suasana alam yang membuat setiap kunjungan terasa lebih rileks dan berkesan.
-                    </p>
+                    <span class="eyebrow">{{ __('public.about.hero.eyebrow') }}</span>
+                    <h1>{{ __('public.about.hero.h1') }}</h1>
+                    <p>{{ __('public.about.hero.p') }}</p>
                 </div>
 
                 <div class="about-visual">
@@ -24,19 +22,12 @@
         <section class="about-section">
             <div class="container story-grid">
                 <div>
-                    <span class="section-kicker">Our Story</span>
-                    <h2>Dibangun untuk momen sederhana yang terasa premium.</h2>
+                    <span class="section-kicker">{{ __('public.about.story.kicker') }}</span>
+                    <h2>{{ __('public.about.story.h2') }}</h2>
                 </div>
                 <div>
-                    <p>
-                        Kami percaya pengalaman cafe terbaik bukan hanya tentang minuman yang enak, tetapi juga tentang
-                        tempat yang membuat pengunjung ingin tinggal lebih lama. Dari aroma kopi, suasana sejuk, sampai
-                        pelayanan yang ramah, semuanya dirancang agar terasa natural dan nyaman.
-                    </p>
-                    <p>
-                        Berada di kawasan Kintamani, Attalas Cafe ingin menjadi tempat yang cocok untuk menikmati pagi,
-                        berbincang santai, bekerja sejenak, atau sekadar menikmati pemandangan dengan secangkir kopi.
-                    </p>
+                    <p>{{ __('public.about.story.p1') }}</p>
+                    <p>{{ __('public.about.story.p2') }}</p>
                 </div>
             </div>
         </section>
@@ -45,18 +36,18 @@
             <div class="container values-grid">
                 <div class="value-card">
                     <i class="ph-mountains"></i>
-                    <h3>Scenic Ambience</h3>
-                    <p>Suasana Kintamani yang sejuk dan natural menjadi bagian utama dari pengalaman kami.</p>
+                    <h3>{{ __('public.about.values.ambience_title') }}</h3>
+                    <p>{{ __('public.about.values.ambience_desc') }}</p>
                 </div>
                 <div class="value-card">
                     <i class="ph-coffee"></i>
-                    <h3>Curated Coffee</h3>
-                    <p>Kopi disajikan untuk menemani berbagai suasana, dari santai sampai produktif.</p>
+                    <h3>{{ __('public.about.values.coffee_title') }}</h3>
+                    <p>{{ __('public.about.values.coffee_desc') }}</p>
                 </div>
                 <div class="value-card">
                     <i class="ph-heart"></i>
-                    <h3>Warm Service</h3>
-                    <p>Pelayanan ramah dan detail kecil yang membuat kunjungan terasa personal.</p>
+                    <h3>{{ __('public.about.values.service_title') }}</h3>
+                    <p>{{ __('public.about.values.service_desc') }}</p>
                 </div>
             </div>
         </section>

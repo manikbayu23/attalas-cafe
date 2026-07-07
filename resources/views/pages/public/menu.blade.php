@@ -1,26 +1,30 @@
 @extends('layouts.public')
 
-@section('title', 'Menu - Attalas Cafe')
+@section('title', __('public.seo.menu_title'))
+@section('meta_description', __('public.seo.menu_description'))
 
 @section('content')
     <main>
         <section class="page-hero" @style(['--hero-image: url(' . $heroImage . ')' => $heroImage])>
             <div class="container">
-                <span class="eyebrow">Our Menu</span>
-                <h1>Menu pilihan untuk menikmati suasana Kintamani.</h1>
-                <p>Kopi, makanan, dan minuman yang disiapkan untuk menemani waktu santai di Attalas Cafe.</p>
+                <span class="eyebrow">{{ __('public.menu.hero.eyebrow') }}</span>
+                <h1>{{ __('public.menu.hero.h1') }}</h1>
+                <p>{{ __('public.menu.hero.p') }}</p>
             </div>
         </section>
 
         <section class="menu-section">
             <div class="container">
                 @if ($menus->isEmpty())
-                    <div class="empty-state">Belum ada menu yang ditampilkan.</div>
+                    <div class="empty-state">{{ __('public.menu.empty_state') }}</div>
                 @else
-                    @php $initialBatch = 12; @endphp
+                    @php
+                        $initialBatch = 12;
+                        $hasMoreMenus  = $menus->count() > $initialBatch;
+                    @endphp
                     <div class="menu-filters" role="tablist" aria-label="Filter menu">
                         <button type="button" class="filter-pill is-active" data-filter="all">
-                            <i class="ph-squares-four"></i><span>All</span>
+                            <i class="ph-squares-four"></i><span>{{ __('public.menu.filter_all') }}</span>
                         </button>
                         @foreach ($categories as $category)
                             <button type="button" class="filter-pill" data-filter="{{ $category->id }}">
@@ -29,27 +33,25 @@
                         @endforeach
                     </div>
 
+                    {{-- Initial server-rendered batch --}}
                     <div class="menu-grid" id="menuGrid">
-                        @foreach ($menus as $index => $menu)
-                            @php $isVisible = $index < $initialBatch; @endphp
-                            <article class="menu-card{{ $isVisible ? '' : ' is-hidden' }}"
-                                data-category-id="{{ $menu->menu_category_id ?? 0 }}">
+                        @foreach ($menus->take($initialBatch) as $menu)
+                            <article class="menu-card" data-category-id="{{ $menu->menu_category_id ?? 0 }}">
                                 <div class="menu-image">
                                     @if ($menu->image)
                                         <a href="{{ asset('storage/' . $menu->image) }}" data-fancybox="menu-page"
                                             data-caption="{{ $menu->name }}" class="image-zoom-link">
-                                            <img src="{{ $isVisible ? asset('storage/' . $menu->image) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==' }}"
-                                                data-src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->name }}"
-                                                loading="lazy">
+                                            <img src="{{ asset('storage/' . $menu->image) }}"
+                                                alt="{{ $menu->name }}" loading="lazy">
                                             <span class="zoom-indicator"><i class="ph-magnifying-glass-plus"></i></span>
                                         </a>
                                     @else
                                         <div class="menu-placeholder"><i class="ph-image"></i></div>
                                     @endif
                                     @if ($menu->is_best_seller)
-                                        <span class="menu-badge">Best Seller</span>
+                                        <span class="menu-badge">{{ __('public.menu.badge.best_seller') }}</span>
                                     @elseif ($menu->is_featured)
-                                        <span class="menu-badge">Featured</span>
+                                        <span class="menu-badge">{{ __('public.menu.badge.featured') }}</span>
                                     @endif
                                 </div>
                                 <div class="menu-body">
@@ -62,14 +64,20 @@
                         @endforeach
                     </div>
 
-                    @if ($menus->count() > $initialBatch)
+                    @if ($hasMoreMenus)
+                        {{-- Skeleton cards shown while loading next batch --}}
                         <div class="menu-skeleton-container" id="menuSkeletonContainer">
-                            <div class="menu-card skeleton-card"></div>
-                            <div class="menu-card skeleton-card"></div>
-                            <div class="menu-card skeleton-card"></div>
-                            <div class="menu-card skeleton-card"></div>
-                            <div class="menu-card skeleton-card"></div>
-                            <div class="menu-card skeleton-card"></div>
+                            @for ($s = 0; $s < 6; $s++)
+                            <div class="skeleton-card">
+                                <div class="sk-image"></div>
+                                <div class="sk-body">
+                                    <div class="sk-line sk-line-sm"></div>
+                                    <div class="sk-line sk-line-lg"></div>
+                                    <div class="sk-line sk-line-md"></div>
+                                    <div class="sk-line sk-line-price"></div>
+                                </div>
+                            </div>
+                            @endfor
                         </div>
                         <div class="menu-sentinel" id="menuSentinel" aria-hidden="true"></div>
                     @endif
@@ -151,6 +159,7 @@
             border-color: var(--primary-900);
         }
 
+        /* ── Grid layout ── */
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -170,6 +179,7 @@
             display: none;
         }
 
+        /* ── Card image ── */
         .menu-image {
             position: relative;
             aspect-ratio: 4 / 3;
@@ -240,6 +250,7 @@
             font-weight: 800;
         }
 
+        /* ── Card body ── */
         .menu-body {
             padding: 18px;
         }
@@ -275,90 +286,115 @@
             color: var(--muted);
         }
 
+        /* ── Skeleton loader ── */
         .menu-skeleton-container {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 22px;
-            margin-top: 24px;
+            margin-top: 22px;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            pointer-events: none;
+            transition: opacity .3s ease, visibility .3s ease;
         }
 
         .menu-skeleton-container.is-visible {
             opacity: 1;
             visibility: visible;
+            pointer-events: auto;
         }
 
         .skeleton-card {
-            position: relative;
-            background: linear-gradient(90deg, #e0e0e0 25%, #d0d0d0 50%, #e0e0e0 75%);
-            background-size: 200% 100%;
-            animation: skeleton-pulse 2s ease-in-out infinite;
-            overflow: hidden;
-            min-height: 310px;
             border-radius: 28px;
-            box-shadow: 0 18px 44px rgba(16, 20, 23, .12);
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid rgba(16, 20, 23, .06);
+            box-shadow: 0 18px 44px rgba(16, 20, 23, .06);
         }
 
-        .skeleton-card::after {
+        /* Shimmer keyframe shared by all sk-* elements */
+        @keyframes sk-shimmer {
+            0%   { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .sk-image {
+            position: relative;
+            aspect-ratio: 4 / 3;
+            background: #eaecee;
+            overflow: hidden;
+        }
+
+        .sk-image::after,
+        .sk-line::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(90deg,
-                    transparent 0%,
-                    rgba(255, 255, 255, 0.7) 20%,
-                    rgba(255, 255, 255, 1) 50%,
-                    rgba(255, 255, 255, 0.7) 80%,
-                    transparent 100%);
-            animation: skeleton-shimmer 1.5s infinite;
-            z-index: 1;
-            pointer-events: none;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255,255,255,.65) 40%,
+                rgba(255,255,255,.9)  50%,
+                rgba(255,255,255,.65) 60%,
+                transparent 100%
+            );
+            animation: sk-shimmer 1.4s ease-in-out infinite;
         }
 
-        @keyframes skeleton-pulse {
-
-            0%,
-            100% {
-                background-position: 0% center;
-            }
-
-            50% {
-                background-position: 100% center;
-            }
+        .sk-body {
+            padding: 16px 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        @keyframes skeleton-shimmer {
-            0% {
-                transform: translateX(-100%);
-            }
-
-            100% {
-                transform: translateX(100%);
-            }
+        .sk-line {
+            position: relative;
+            border-radius: 8px;
+            background: #eaecee;
+            overflow: hidden;
         }
+
+        .sk-line-sm    { height: 10px; width: 40%; }
+        .sk-line-lg    { height: 16px; width: 85%; }
+        .sk-line-md    { height: 12px; width: 65%; }
+        .sk-line-price { height: 18px; width: 30%; margin-top: 4px; background: #dde2e6; }
 
         .menu-sentinel {
             height: 1px;
         }
 
+        /* ── Responsive ── */
         @media (max-width: 992px) {
-            .menu-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
+            .menu-grid,
             .menu-skeleton-container {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
 
-        @media (max-width: 640px) {
-            .menu-grid {
-                grid-template-columns: 1fr;
+        /* 2 columns on mobile (≤ 480px) */
+        @media (max-width: 480px) {
+            .menu-grid,
+            .menu-skeleton-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
             }
 
-            .menu-skeleton-container {
-                grid-template-columns: 1fr;
+            .menu-body {
+                padding: 12px;
+            }
+
+            .menu-body h3 {
+                font-size: .88rem;
+            }
+
+            .menu-body p {
+                font-size: .78rem;
+                min-height: unset;
+            }
+
+            .menu-body strong {
+                font-size: .95rem;
             }
         }
     </style>
@@ -368,210 +404,146 @@
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const menuApiUrl = '{{ route('menu.data') }}';
-            const gridEl = document.getElementById('menuGrid');
-            const filterButtons = Array.from(document.querySelectorAll('.filter-pill'));
-            const skeletonContainer = document.getElementById('menuSkeletonContainer');
-            const sentinelEl = document.getElementById('menuSentinel');
-            const batchSize = 6;
-            let currentFilter = 'all';
-            let visibleCount = document.querySelectorAll('.menu-card:not(.is-hidden)').length;
-            let isLoading = false;
-            let hasMore = true;
-            let observer = null;
+            const menuApiUrl   = '{{ route('menu.data') }}';
+            const gridEl       = document.getElementById('menuGrid');
+            const filterBtns   = Array.from(document.querySelectorAll('.filter-pill'));
+            const skeletonEl   = document.getElementById('menuSkeletonContainer');
+            const sentinelEl   = document.getElementById('menuSentinel');
+            const BATCH        = 6;
+            const NO_RESULT    = '{{ __('public.menu.no_result') }}';
+            const LOAD_ERROR   = '{{ __('public.menu.load_error') }}';
 
+            let currentFilter  = 'all';
+            // Start at initialBatch count — server already rendered those cards
+            let visibleCount   = gridEl ? gridEl.querySelectorAll('.menu-card').length : 0;
+            let isLoading      = false;
+            let hasMore        = !!sentinelEl;
+            let observer       = null;
+
+            /* ── Fancybox init ── */
             const initFancybox = function() {
-                if (window.Fancybox) {
-                    Fancybox.bind('[data-fancybox="menu-page"]', {
-                        animated: true,
-                        dragToClose: true,
-                        Images: {
-                            zoom: true,
-                        },
-                        Toolbar: {
-                            display: {
-                                left: [],
-                                middle: [],
-                                right: ['close'],
-                            },
-                        },
-                    });
-                }
+                if (!window.Fancybox) return;
+                Fancybox.bind('[data-fancybox="menu-page"]', {
+                    animated: true,
+                    dragToClose: true,
+                    Images: { zoom: true },
+                    Toolbar: { display: { left: [], middle: [], right: ['close'] } },
+                });
             };
 
-            const loadCardImage = function(card) {
-                const img = card.querySelector('img[data-src]');
-                if (!img) {
-                    return;
-                }
-
-                const src = img.getAttribute('data-src');
-                if (src) {
-                    img.setAttribute('src', src);
-                    img.removeAttribute('data-src');
-                }
-            };
-
+            /* ── Render API items ── */
             const renderMenuItems = function(items) {
-                if (!gridEl) {
-                    return;
-                }
-
-                const fragment = document.createDocumentFragment();
+                if (!gridEl) return;
+                const frag = document.createDocumentFragment();
                 items.forEach(function(item) {
-                    const article = document.createElement('article');
-                    article.className = 'menu-card';
-                    article.innerHTML = [
-                        '<div class="menu-image">',
-                        item.image ? '<a href="' + item.image +
-                        '" data-fancybox="menu-page" data-caption="' + (item.name || 'Menu') +
-                        '" class="image-zoom-link">' :
-                        '<div class="menu-placeholder"><i class="ph-image"></i></div>',
-                        item.image ?
-                        '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-src="' +
-                        item.image + '" alt="' + (item.name || 'Menu') + '" loading="lazy">' : '',
-                        item.image ?
-                        '<span class="zoom-indicator"><i class="ph-magnifying-glass-plus"></i></span>' :
-                        '',
-                        item.image ? '</a>' : '',
-                        item.badge ? '<span class="menu-badge">' + item.badge + '</span>' : '',
-                        '</div>',
-                        '<div class="menu-body">',
-                        '<span>' + (item.category || 'Menu') + '</span>',
-                        '<h3>' + (item.name || 'Menu') + '</h3>',
-                        '<p>' + (item.description ? item.description.substring(0, 105) : '') +
-                        '</p>',
-                        '<strong>' + (item.price || '') + '</strong>',
-                        '</div>'
-                    ].join('');
-                    fragment.appendChild(article);
+                    const el = document.createElement('article');
+                    el.className = 'menu-card';
+                    el.setAttribute('data-category-id', item.category_id || 0);
+                    let html = '<div class="menu-image">';
+                    if (item.image) {
+                        html += '<a href="' + item.image + '" data-fancybox="menu-page" data-caption="' + (item.name || '') + '" class="image-zoom-link">';
+                        html += '<img src="' + item.image + '" alt="' + (item.name || '') + '" loading="lazy">';
+                        html += '<span class="zoom-indicator"><i class="ph-magnifying-glass-plus"></i></span>';
+                        html += '</a>';
+                    } else {
+                        html += '<div class="menu-placeholder"><i class="ph-image"></i></div>';
+                    }
+                    if (item.badge) html += '<span class="menu-badge">' + item.badge + '</span>';
+                    html += '</div>';
+                    html += '<div class="menu-body">';
+                    html += '<span>' + (item.category || '') + '</span>';
+                    html += '<h3>' + (item.name || '') + '</h3>';
+                    html += '<p>' + (item.description ? item.description.substring(0, 105) : '') + '</p>';
+                    html += '<strong>' + (item.price || '') + '</strong>';
+                    html += '</div>';
+                    el.innerHTML = html;
+                    frag.appendChild(el);
                 });
-
-                gridEl.appendChild(fragment);
+                gridEl.appendChild(frag);
                 initFancybox();
-                gridEl.querySelectorAll('.menu-card').forEach(function(card) {
-                    loadCardImage(card);
-                });
             };
 
-            const clearGrid = function() {
-                if (gridEl) {
-                    gridEl.innerHTML = '';
-                }
-            };
-
-            const fetchMenuItems = function(offset, append) {
-                if (!gridEl) {
-                    return;
-                }
-
-                if (skeletonContainer && append) {
-                    skeletonContainer.classList.add('is-visible');
-                }
+            /* ── Fetch from API (only called for filter change or scroll-load) ── */
+            const fetchItems = function(offset, append) {
+                if (!gridEl) return;
+                if (skeletonEl && append) skeletonEl.classList.add('is-visible');
 
                 const params = new URLSearchParams({
                     category: currentFilter,
-                    offset: String(offset),
-                    limit: String(batchSize)
+                    offset:   String(offset),
+                    limit:    String(BATCH)
                 });
 
-                fetch(menuApiUrl + '?' + params.toString(), {
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(function(response) {
-                        if (!response.ok) {
-                            throw new Error('Request failed');
-                        }
-                        return response.json();
+                fetch(menuApiUrl + '?' + params.toString(), { headers: { 'Accept': 'application/json' } })
+                    .then(function(r) {
+                        if (!r.ok) throw new Error();
+                        return r.json();
                     })
                     .then(function(data) {
-                        if (!append) {
-                            clearGrid();
-                        }
+                        if (!append) gridEl.innerHTML = '';
 
                         if (data.items && data.items.length) {
                             renderMenuItems(data.items);
                         } else if (!append) {
-                            if (gridEl) {
-                                gridEl.innerHTML =
-                                    '<div class="empty-state">Tidak Ada menu.</div>';
-                            }
+                            gridEl.innerHTML = '<div class="empty-state">' + NO_RESULT + '</div>';
                         }
 
                         visibleCount = offset + (data.items ? data.items.length : 0);
-                        hasMore = Boolean(data.hasMore);
-                        isLoading = false;
+                        hasMore      = Boolean(data.hasMore);
+                        isLoading    = false;
 
-                        if (skeletonContainer) {
-                            skeletonContainer.classList.remove('is-visible');
-                            if (!hasMore) {
-                                skeletonContainer.remove();
-                            }
+                        if (skeletonEl) {
+                            skeletonEl.classList.remove('is-visible');
+                            if (!hasMore) skeletonEl.remove();
                         }
                     })
                     .catch(function() {
-                        if (!append && gridEl) {
-                            gridEl.innerHTML =
-                                '<div class="empty-state">Gagal memuat menu. Silakan coba lagi.</div>';
-                        }
+                        if (!append && gridEl) gridEl.innerHTML = '<div class="empty-state">' + LOAD_ERROR + '</div>';
                         isLoading = false;
-                        if (skeletonContainer) {
-                            skeletonContainer.classList.remove('is-visible');
-                        }
+                        if (skeletonEl) skeletonEl.classList.remove('is-visible');
                     });
             };
 
+            /* ── Filter change: re-fetch from offset 0 ── */
             const resetAndLoad = function(filter) {
                 currentFilter = filter;
-                visibleCount = 0;
-                hasMore = true;
-                isLoading = false;
-                fetchMenuItems(0, false);
+                visibleCount  = 0;
+                hasMore       = true;
+                isLoading     = false;
+                fetchItems(0, false);
             };
 
-            const showNextBatch = function() {
-                if (isLoading || !hasMore || !sentinelEl) {
-                    return;
-                }
-
+            /* ── Infinite scroll: load next batch ── */
+            const loadMore = function() {
+                if (isLoading || !hasMore || !sentinelEl) return;
                 isLoading = true;
-                fetchMenuItems(visibleCount, true);
+                fetchItems(visibleCount, true);
             };
 
-            filterButtons.forEach(function(button) {
-                button.addEventListener('click', function() {
-                    filterButtons.forEach(function(item) {
-                        item.classList.remove('is-active');
-                    });
-                    button.classList.add('is-active');
-                    resetAndLoad(button.getAttribute('data-filter'));
+            /* ── Filter buttons ── */
+            filterBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(function(b) { b.classList.remove('is-active'); });
+                    btn.classList.add('is-active');
+                    resetAndLoad(btn.getAttribute('data-filter'));
                 });
             });
 
+            /* ── Hero animation ── */
             if (window.gsap) {
                 gsap.from('.page-hero .eyebrow, .page-hero h1, .page-hero p', {
-                    y: 34,
-                    opacity: 0,
-                    duration: .9,
-                    stagger: .12,
-                    ease: 'power3.out'
+                    y: 34, opacity: 0, duration: .9, stagger: .12, ease: 'power3.out'
                 });
             }
 
-            initFancybox();
-            resetAndLoad('all');
+            /* ── Init ── */
+            initFancybox(); // bind initial server-rendered cards
 
+            /* ── Sentinel observer — triggers only for scroll-load, NOT on initial page load ── */
             if (sentinelEl) {
                 observer = new IntersectionObserver(function(entries) {
-                    if (entries[0] && entries[0].isIntersecting) {
-                        showNextBatch();
-                    }
-                }, {
-                    rootMargin: '500px 0px'
-                });
-
+                    if (entries[0] && entries[0].isIntersecting) loadMore();
+                }, { rootMargin: '400px 0px' });
                 observer.observe(sentinelEl);
             }
         });

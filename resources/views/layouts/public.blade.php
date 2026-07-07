@@ -1,10 +1,31 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Attalas Cafe')</title>
+    <title>@yield('title', 'Attalas Cafe Kintamani')</title>
+    
+    <!-- SEO Optimization -->
+    <meta name="description" content="@yield('meta_description', __('public.seo.default_description'))">
+    <meta name="keywords" content="@yield('meta_keywords', __('public.seo.default_keywords'))">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="@yield('title', 'Attalas Cafe Kintamani')">
+    <meta property="og:description" content="@yield('meta_description', __('public.seo.default_description'))">
+    <meta property="og:image" content="@yield('meta_image', asset('assets/images/image-hero.png'))">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="@yield('title', 'Attalas Cafe Kintamani')">
+    <meta property="twitter:description" content="@yield('meta_description', __('public.seo.default_description'))">
+    <meta property="twitter:image" content="@yield('meta_image', asset('assets/images/image-hero.png'))">
+
     <link rel="icon" href="{{ asset('assets/images/attalas-logo.png') }}" type="image/png">
     <link href="{{ asset('admin/assets/fonts/inter/inter.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('admin/assets/icons/phosphor/styles.min.css') }}" rel="stylesheet" type="text/css">
