@@ -31,7 +31,7 @@
                         </div>
                         <div class="card-content">
                             <strong>{{ __('public.contact.info.whatsapp_label') }}</strong>
-                            <span>+62 8123 4567 890</span>
+                            <span>+62 877 4806 0549</span>
                         </div>
                     </div>
                     <div class="info-card info-card-clock">
@@ -75,7 +75,7 @@
                         <input type="text" placeholder="{{ __('public.contact.form.name_placeholder') }}">
                         <input type="email" placeholder="{{ __('public.contact.form.email_placeholder') }}">
                         <textarea rows="5" placeholder="{{ __('public.contact.form.message_placeholder') }}"></textarea>
-                        <a href="https://wa.me/6281234567890?text=Halo%20Attalas%20Cafe,%20saya%20ingin%20bertanya."
+                        <a href="https://wa.me/6287748060549?text=Halo%20Attalas%20Cafe,%20saya%20ingin%20bertanya."
                             class="btn btn-primary" target="_blank" rel="noopener">{{ __('public.contact.form.whatsapp_btn') }}</a>
                     </form>
                 </div>

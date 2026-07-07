@@ -721,9 +721,9 @@
                             <i class="ph-map-pin"></i>
                             <span>Jl. Raya Penelokan, Batur Tengah, Kec. Kintamani, Kabupaten Bangli, Bali</span>
                         </div>
-                        <a href="https://wa.me/6281234567890" target="_blank" rel="noopener">
+                        <a href="https://wa.me/6287748060549" target="_blank" rel="noopener">
                             <i class="ph-whatsapp-logo"></i>
-                            <span>+62 8123 4567 890</span>
+                            <span>+62 877 4806 0549</span>
                         </a>
                     </div>
                 </div>
@@ -739,7 +739,7 @@
                             target="_blank" rel="noopener" aria-label="Facebook">
                             <i class="ph-facebook-logo"></i>
                         </a>
-                        <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp">
+                        <a href="https://wa.me/6287748060549" target="_blank" rel="noopener" aria-label="WhatsApp">
                             <i class="ph-whatsapp-logo"></i>
                         </a>
                         <a href="https://www.tiktok.com/@attalascafe?_r=1&_t=ZS-97oCzxnLjrr" target="_blank"
@@ -759,7 +759,7 @@
         </div>
     </footer>
 
-    <a href="https://wa.me/6281234567890?text={{ rawurlencode(app()->getLocale() === 'id' ? 'Halo Attalas Cafe, saya ingin melakukan reservasi.' : 'Hello Attalas Cafe, I would like to make a reservation.') }}"
+    <a href="https://wa.me/6287748060549?text={{ rawurlencode(app()->getLocale() === 'id' ? 'Halo Attalas Cafe, saya ingin melakukan reservasi.' : 'Hello Attalas Cafe, I would like to make a reservation.') }}"
         class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat Attalas Cafe via WhatsApp">
         <i class="ph-whatsapp-logo"></i>
         <span class="whatsapp-tooltip">{{ app()->getLocale() === 'id' ? 'Reservasi Sekarang!' : 'Book Now!' }}</span>
@@ -860,7 +860,7 @@
                 document.getElementById('modalMenuPrice').innerText = price || '';
                 
                 // Set WhatsApp order link dynamically
-                const waUrl = 'https://wa.me/6281234567890?text=' + encodeURIComponent('Halo Attalas Cafe, saya tertarik memesan menu ini:\n\n* ' + name + ' (' + price + ')');
+                const waUrl = 'https://wa.me/6287748060549?text=' + encodeURIComponent('Halo Attalas Cafe, saya tertarik memesan menu ini:\n\n* ' + name + ' (' + price + ')');
                 document.getElementById('modalMenuWA').href = waUrl;
                 
                 modal.classList.add('is-active');
