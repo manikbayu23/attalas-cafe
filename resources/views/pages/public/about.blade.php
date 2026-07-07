@@ -45,6 +45,11 @@
                     <p>{{ __('public.about.values.coffee_desc') }}</p>
                 </div>
                 <div class="value-card">
+                    <i class="ph-fork-knife"></i>
+                    <h3>{{ __('public.about.values.menu_title') }}</h3>
+                    <p>{{ __('public.about.values.menu_desc') }}</p>
+                </div>
+                <div class="value-card">
                     <i class="ph-heart"></i>
                     <h3>{{ __('public.about.values.service_title') }}</h3>
                     <p>{{ __('public.about.values.service_desc') }}</p>
@@ -156,16 +161,22 @@
 
         .values-grid {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 22px;
         }
 
         .value-card {
             padding: 28px;
-            border-radius: 28px;
+            border-radius: 16px;
             background: #fff;
             border: 1px solid rgba(16, 20, 23, 0.06);
             box-shadow: 0 18px 44px rgba(16, 20, 23, 0.08);
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 28px 56px rgba(16, 20, 23, .13);
         }
 
         .value-card i {
@@ -192,13 +203,45 @@
 
         @media (max-width: 900px) {
             .about-hero-inner,
-            .story-grid,
-            .values-grid {
+            .story-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .values-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
             .about-visual {
                 display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .values-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .value-card {
+                padding: 18px 16px 20px;
+                border-radius: 16px;
+            }
+
+            .value-card i {
+                width: 42px;
+                height: 42px;
+                font-size: 1.25rem;
+                margin-bottom: 14px;
+                border-radius: 14px;
+            }
+
+            .value-card h3 {
+                font-size: .92rem;
+            }
+
+            .value-card p {
+                font-size: .82rem;
+                line-height: 1.6;
             }
         }
     </style>

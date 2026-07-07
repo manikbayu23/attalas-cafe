@@ -64,15 +64,17 @@
                 @else
                     <div class="menu-grid">
                         @foreach ($featuredMenus as $menu)
-                            <article class="menu-card">
+                            @php
+                                $cleanDesc = addslashes(str_replace(["\r", "\n"], ' ', $menu->description));
+                                $imageSrc  = $menu->image ? asset('storage/' . $menu->image) : '';
+                            @endphp
+                            <article class="menu-card" onclick="openMenuModal('{{ addslashes($menu->name) }}', '{{ addslashes($menu->category->name ?? 'Menu') }}', '{{ $menu->formatted_price }}', '{{ $cleanDesc }}', '{{ $imageSrc }}')">
                                 <div class="menu-image">
                                     @if ($menu->image)
-                                        <a href="{{ asset('storage/' . $menu->image) }}" data-fancybox="home-menu"
-                                            data-caption="{{ $menu->name }} - {{ $menu->formatted_price }}"
-                                            class="image-zoom-link">
+                                        <div class="image-zoom-link">
                                             <img src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->name }}">
                                             <span class="zoom-indicator"><i class="ph-magnifying-glass-plus"></i></span>
-                                        </a>
+                                        </div>
                                     @endif
                                     @if ($menu->is_best_seller)
                                         <span class="menu-badge">{{ __('public.menu.badge.best_seller') }}</span>
@@ -83,10 +85,10 @@
                                 <div class="menu-body">
                                     <div class="menu-meta">{{ $menu->category->name ?? 'Menu' }}</div>
                                     <h3>{{ $menu->name }}</h3>
-                                    <p>{{ Str::limit($menu->description, 90) }}</p>
+                                    <hr class="menu-divider">
                                     <div class="menu-footer">
                                         <strong>{{ $menu->formatted_price }}</strong>
-                                        <i class="ph-arrow-up-right"></i>
+                                        <span class="detail-trigger"><i class="ph-arrow-up-right"></i></span>
                                     </div>
                                 </div>
                             </article>
@@ -342,7 +344,7 @@
 
         .feature-card {
             padding: 26px 24px 28px;
-            border-radius: 28px;
+            border-radius: 16px;
             transition: transform .22s ease, box-shadow .22s ease;
         }
 
@@ -385,13 +387,17 @@
 
         .menu-card {
             overflow: hidden;
-            border-radius: 28px;
-            transition: transform .22s ease, box-shadow .22s ease;
+            border-radius: 12px;
+            border: 1px solid rgba(16, 20, 23, .06);
+            box-shadow: 0 10px 30px rgba(16, 20, 23, .04);
+            cursor: pointer;
+            transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
         }
 
         .menu-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 28px 56px rgba(16, 20, 23, .13);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(16, 20, 23, .08);
+            border-color: rgba(32, 50, 49, 0.15);
         }
 
         .menu-image {
@@ -457,24 +463,79 @@
         }
 
         .menu-body {
-            padding: 18px;
+            padding: 16px 18px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
         .menu-meta {
-            margin-bottom: 6px;
-            color: var(--muted);
-            font-size: 0.82rem;
+            color: var(--sage-700);
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: capitalize;
+            letter-spacing: 0.02em;
         }
 
-        .menu-body p {
-            min-height: 44px;
-            margin-bottom: 16px;
+        .menu-body h3 {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: var(--primary-950);
+            text-transform: capitalize;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .menu-divider {
+            border: 0;
+            border-top: 1px solid rgba(16, 20, 23, 0.08);
+            margin: 10px 0 8px;
+            width: 100%;
         }
 
         .menu-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-top: 2px;
+        }
+
+        .menu-footer strong {
+            font-size: 1rem;
+            color: var(--primary-900);
+            font-weight: 800;
+        }
+
+        .detail-trigger {
+            width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            background: rgba(32, 50, 49, 0.05);
+            color: var(--primary-900);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 0;
+            font-size: 0.85rem;
+            transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+        }
+
+        .detail-trigger i {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1em;
+            height: 1em;
+            line-height: 1;
+        }
+
+        .menu-card:hover .detail-trigger {
+            background: var(--primary-900);
+            color: #fff;
+            transform: scale(1.1);
         }
 
         .about-band {
@@ -560,7 +621,7 @@
             position: relative;
             min-height: 170px;
             overflow: hidden;
-            border-radius: 24px;
+            border-radius: 16px;
             background: var(--mist-100);
         }
 
@@ -603,7 +664,7 @@
             display: flex;
             flex-direction: column;
             padding: 24px;
-            border-radius: 30px;
+            border-radius: 16px;
             background: #fff;
             border: 1px solid #e7eaeb;
             box-shadow: 0 1px 10px rgba(16, 20, 23, 0.07);

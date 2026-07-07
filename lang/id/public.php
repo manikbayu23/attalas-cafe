@@ -98,6 +98,8 @@ return [
             'ambience_desc'  => 'Suasana Kintamani yang sejuk dan natural menjadi bagian utama dari pengalaman kami.',
             'coffee_title'   => 'Curated Coffee',
             'coffee_desc'    => 'Kopi disajikan untuk menemani berbagai suasana, dari santai sampai produktif.',
+            'menu_title'     => 'Fresh Menu',
+            'menu_desc'      => 'Pilihan hidangan segar peneman santai di tengah sejuknya udara Kintamani.',
             'service_title'  => 'Warm Service',
             'service_desc'   => 'Pelayanan ramah dan detail kecil yang membuat kunjungan terasa personal.',
         ],
@@ -114,6 +116,8 @@ return [
         'empty_state' => 'Belum ada menu yang ditampilkan.',
         'no_result'   => 'Tidak Ada menu.',
         'load_error'  => 'Gagal memuat menu. Silakan coba lagi.',
+        'price_label' => 'Harga',
+        'order_label' => 'Pesan via WhatsApp',
         'badge' => [
             'best_seller' => 'Best Seller',
             'featured'    => 'Unggulan',

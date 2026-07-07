@@ -33,18 +33,21 @@
                         @endforeach
                     </div>
 
-                    {{-- Initial server-rendered batch --}}
+                    {{-- Initial server-rendered batch ──--}}
                     <div class="menu-grid" id="menuGrid">
                         @foreach ($menus->take($initialBatch) as $menu)
-                            <article class="menu-card" data-category-id="{{ $menu->menu_category_id ?? 0 }}">
+                            @php
+                                $cleanDesc = addslashes(str_replace(["\r", "\n"], ' ', $menu->description));
+                                $imageSrc  = $menu->image ? asset('storage/' . $menu->image) : '';
+                            @endphp
+                            <article class="menu-card" data-category-id="{{ $menu->menu_category_id ?? 0 }}"
+                                onclick="openMenuModal('{{ addslashes($menu->name) }}', '{{ addslashes($menu->category->name ?? 'Menu') }}', '{{ $menu->formatted_price }}', '{{ $cleanDesc }}', '{{ $imageSrc }}')">
                                 <div class="menu-image">
                                     @if ($menu->image)
-                                        <a href="{{ asset('storage/' . $menu->image) }}" data-fancybox="menu-page"
-                                            data-caption="{{ $menu->name }}" class="image-zoom-link">
-                                            <img src="{{ asset('storage/' . $menu->image) }}"
-                                                alt="{{ $menu->name }}" loading="lazy">
+                                        <div class="image-zoom-link">
+                                            <img src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->name }}" loading="lazy">
                                             <span class="zoom-indicator"><i class="ph-magnifying-glass-plus"></i></span>
-                                        </a>
+                                        </div>
                                     @else
                                         <div class="menu-placeholder"><i class="ph-image"></i></div>
                                     @endif
@@ -57,8 +60,11 @@
                                 <div class="menu-body">
                                     <span>{{ $menu->category->name ?? 'Menu' }}</span>
                                     <h3>{{ $menu->name }}</h3>
-                                    <p>{{ Str::limit($menu->description, 105) }}</p>
-                                    <strong>{{ $menu->formatted_price }}</strong>
+                                    <hr class="menu-divider">
+                                    <div class="menu-footer">
+                                        <strong>{{ $menu->formatted_price }}</strong>
+                                        <span class="detail-trigger"><i class="ph-arrow-up-right"></i></span>
+                                    </div>
                                 </div>
                             </article>
                         @endforeach
@@ -145,6 +151,7 @@
             border-radius: 999px;
             font-weight: 700;
             cursor: pointer;
+            text-transform: capitalize;
             transition: all .18s ease;
         }
 
@@ -168,10 +175,18 @@
 
         .menu-card {
             overflow: hidden;
-            border-radius: 28px;
+            border-radius: 12px;
             background: #fff;
             border: 1px solid rgba(16, 20, 23, .06);
-            box-shadow: 0 18px 44px rgba(16, 20, 23, .08);
+            box-shadow: 0 10px 30px rgba(16, 20, 23, .04);
+            cursor: pointer;
+            transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(16, 20, 23, .08);
+            border-color: rgba(32, 50, 49, 0.15);
         }
 
         .menu-card.is-hidden,
@@ -252,35 +267,85 @@
 
         /* ── Card body ── */
         .menu-body {
-            padding: 18px;
+            padding: 16px 18px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
         .menu-body span {
             display: block;
-            margin-bottom: 6px;
-            color: var(--muted);
-            font-size: .82rem;
+            color: var(--sage-700);
+            font-size: .72rem;
+            font-weight: 700;
+            text-transform: capitalize;
+            letter-spacing: 0.02em;
         }
 
         .menu-body h3 {
-            margin: 0 0 8px;
-        }
-
-        .menu-body p {
-            min-height: 52px;
-            margin: 0 0 16px;
-            color: var(--muted);
-            line-height: 1.65;
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: var(--primary-950);
+            text-transform: capitalize;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .menu-body strong {
             color: var(--primary-900);
-            font-size: 1.08rem;
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .menu-divider {
+            border: 0;
+            border-top: 1px solid rgba(16, 20, 23, 0.08);
+            margin: 10px 0 8px;
+            width: 100%;
+        }
+
+        .menu-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2px;
+        }
+
+        .detail-trigger {
+            width: 26px;
+            height: 26px;
+            border-radius: 50% !important;
+            background: rgba(32, 50, 49, 0.05);
+            color: var(--primary-900);
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 0.85rem;
+            line-height: 1 !important;
+            box-sizing: border-box !important;
+            transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+        }
+
+        .detail-trigger i {
+            display: inline-block !important;
+            line-height: 1 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+
+        .menu-card:hover .detail-trigger {
+            background: var(--primary-900);
+            color: #fff;
+            transform: scale(1.1);
         }
 
         .empty-state {
             padding: 28px;
-            border-radius: 24px;
+            border-radius: 16px;
             background: #fff;
             text-align: center;
             color: var(--muted);
@@ -305,7 +370,7 @@
         }
 
         .skeleton-card {
-            border-radius: 28px;
+            border-radius: 16px;
             overflow: hidden;
             background: #fff;
             border: 1px solid rgba(16, 20, 23, .06);
@@ -420,17 +485,6 @@
             let hasMore        = !!sentinelEl;
             let observer       = null;
 
-            /* ── Fancybox init ── */
-            const initFancybox = function() {
-                if (!window.Fancybox) return;
-                Fancybox.bind('[data-fancybox="menu-page"]', {
-                    animated: true,
-                    dragToClose: true,
-                    Images: { zoom: true },
-                    Toolbar: { display: { left: [], middle: [], right: ['close'] } },
-                });
-            };
-
             /* ── Render API items ── */
             const renderMenuItems = function(items) {
                 if (!gridEl) return;
@@ -438,13 +492,24 @@
                 items.forEach(function(item) {
                     const el = document.createElement('article');
                     el.className = 'menu-card';
+                    el.style.cursor = 'pointer';
                     el.setAttribute('data-category-id', item.category_id || 0);
+
+                    // Safely escape parameters for modal trigger
+                    const nameEsc = (item.name || '').replace(/'/g, "\\'");
+                    const catEsc  = (item.category || '').replace(/'/g, "\\'");
+                    const priceEsc = (item.price || '').replace(/'/g, "\\'");
+                    const descEsc = (item.description || '').replace(/'/g, "\\'").replace(/[\r\n]+/g, ' ');
+                    const imgEsc  = (item.image || '').replace(/'/g, "\\'");
+
+                    el.setAttribute('onclick', "openMenuModal('" + nameEsc + "', '" + catEsc + "', '" + priceEsc + "', '" + descEsc + "', '" + imgEsc + "')");
+
                     let html = '<div class="menu-image">';
                     if (item.image) {
-                        html += '<a href="' + item.image + '" data-fancybox="menu-page" data-caption="' + (item.name || '') + '" class="image-zoom-link">';
+                        html += '<div class="image-zoom-link">';
                         html += '<img src="' + item.image + '" alt="' + (item.name || '') + '" loading="lazy">';
                         html += '<span class="zoom-indicator"><i class="ph-magnifying-glass-plus"></i></span>';
-                        html += '</a>';
+                        html += '</div>';
                     } else {
                         html += '<div class="menu-placeholder"><i class="ph-image"></i></div>';
                     }
@@ -453,14 +518,16 @@
                     html += '<div class="menu-body">';
                     html += '<span>' + (item.category || '') + '</span>';
                     html += '<h3>' + (item.name || '') + '</h3>';
-                    html += '<p>' + (item.description ? item.description.substring(0, 105) : '') + '</p>';
+                    html += '<hr class="menu-divider">';
+                    html += '<div class="menu-footer">';
                     html += '<strong>' + (item.price || '') + '</strong>';
+                    html += '<span class="detail-trigger"><i class="ph-arrow-up-right"></i></span>';
+                    html += '</div>';
                     html += '</div>';
                     el.innerHTML = html;
                     frag.appendChild(el);
                 });
                 gridEl.appendChild(frag);
-                initFancybox();
             };
 
             /* ── Fetch from API (only called for filter change or scroll-load) ── */
@@ -537,7 +604,7 @@
             }
 
             /* ── Init ── */
-            initFancybox(); // bind initial server-rendered cards
+            // Initial server-rendered cards have onclick handlers already
 
             /* ── Sentinel observer — triggers only for scroll-load, NOT on initial page load ── */
             if (sentinelEl) {

@@ -406,20 +406,56 @@
             transform: scale(0.96);
         }
 
-        @keyframes float-bounce {
+        .whatsapp-tooltip {
+            position: absolute;
+            right: 76px;
+            background: #25d366;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            white-space: nowrap;
+            box-shadow: 0 10px 24px rgba(37, 211, 102, 0.25);
+            pointer-events: none;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: opacity 0.3s, transform 0.3s;
+            animation: tooltip-bounce 12s infinite;
+        }
 
-            0%,
-            100% {
+        .whatsapp-tooltip::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 6px 0 6px 6px;
+            border-style: solid;
+            border-color: transparent transparent transparent #25d366;
+        }
+
+        @keyframes float-bounce {
+            0%, 100% {
                 transform: translateY(0);
             }
-
             50% {
                 transform: translateY(-6px);
             }
         }
 
-        @media (max-width: 992px) {
+        @keyframes tooltip-bounce {
+            0%, 10%, 45%, 100% {
+                opacity: 0;
+                transform: translateX(10px);
+            }
+            15%, 40% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
 
+        @media (max-width: 992px) {
             .nav-links,
             .nav-cta,
             .language-switcher.desktop-language {
@@ -436,6 +472,161 @@
             .footer-inner {
                 grid-template-columns: 1fr;
             }
+        }
+
+        /* ── Menu Detail Modal ── */
+        .menu-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .25s ease, visibility .25s ease;
+        }
+
+        .menu-modal.is-active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .menu-modal-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(17, 29, 28, 0.65);
+            backdrop-filter: blur(8px);
+        }
+
+        .menu-modal-container {
+            position: relative;
+            z-index: 2;
+            width: min(640px, 100%);
+            background: #white;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 34px 80px rgba(16, 20, 23, 0.35);
+            overflow: hidden;
+            transform: scale(0.94) translateY(14px);
+            transition: transform .25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .menu-modal.is-active .menu-modal-container {
+            transform: scale(1) translateY(0);
+        }
+
+        .menu-modal-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            z-index: 10;
+            width: 36px;
+            height: 36px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary-900);
+            border: 1px solid rgba(16, 20, 23, 0.08);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            box-shadow: 0 4px 12px rgba(16, 20, 23, 0.1);
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .menu-modal-close:hover {
+            transform: scale(1.08) rotate(90deg);
+            background: #fff;
+        }
+
+        .menu-modal-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @media (max-width: 580px) {
+            .menu-modal-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .menu-modal-image {
+            aspect-ratio: 4 / 3;
+            background: var(--mist-100);
+            position: relative;
+        }
+
+        @media (min-width: 581px) {
+            .menu-modal-image {
+                height: 100%;
+                aspect-ratio: unset;
+            }
+        }
+
+        .menu-modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .menu-modal-body {
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-modal-category {
+            font-size: 0.76rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .menu-modal-title {
+            margin: 0 0 10px;
+            font-size: 1.25rem;
+            color: var(--primary-950);
+            line-height: 1.25;
+            letter-spacing: -0.03em;
+        }
+
+        .menu-modal-desc {
+            margin: 0 0 20px;
+            color: var(--muted);
+            line-height: 1.6;
+            font-size: 0.84rem;
+        }
+
+        .menu-modal-footer {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(16, 20, 23, 0.08);
+        }
+
+        .menu-modal-price-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-label {
+            font-size: 0.74rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 800;
+        }
+
+        .menu-modal-price {
+            font-size: 1.2rem;
+            color: var(--primary-900);
+            font-weight: 800;
         }
     </style>
 
@@ -557,10 +748,40 @@
         </div>
     </footer>
 
-    <a href="https://wa.me/6281234567890?text=Halo%20Attalas%20Cafe,%20saya%20ingin%20bertanya."
+    <a href="https://wa.me/6281234567890?text={{ rawurlencode(app()->getLocale() === 'id' ? 'Halo Attalas Cafe, saya ingin melakukan reservasi.' : 'Hello Attalas Cafe, I would like to make a reservation.') }}"
         class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat Attalas Cafe via WhatsApp">
         <i class="ph-whatsapp-logo"></i>
+        <span class="whatsapp-tooltip">{{ app()->getLocale() === 'id' ? 'Reservasi Sekarang!' : 'Book Now!' }}</span>
     </a>
+    <!-- Menu Detail Modal -->
+    <div class="menu-modal" id="menuDetailModal" aria-hidden="true" role="dialog">
+        <div class="menu-modal-overlay" onclick="closeMenuModal()"></div>
+        <div class="menu-modal-container">
+            <button type="button" class="menu-modal-close" onclick="closeMenuModal()" aria-label="Close modal">
+                <i class="ph-x"></i>
+            </button>
+            <div class="menu-modal-content">
+                <div class="menu-modal-image">
+                    <img id="modalMenuImg" src="" alt="">
+                </div>
+                <div class="menu-modal-body">
+                    <span class="menu-modal-category" id="modalMenuCategory"></span>
+                    <h2 class="menu-modal-title" id="modalMenuTitle"></h2>
+                    <p class="menu-modal-desc" id="modalMenuDesc"></p>
+                    <div class="menu-modal-footer">
+                        <div class="menu-modal-price-container">
+                            <span class="price-label">{{ __('public.menu.price_label') }}</span>
+                            <strong class="menu-modal-price" id="modalMenuPrice"></strong>
+                        </div>
+                        <a href="" id="modalMenuWA" class="btn btn-primary" target="_blank" rel="noopener" style="display: none;">
+                            <i class="ph-whatsapp-logo"></i>
+                            <span>{{ __('public.menu.order_label') }}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -600,6 +821,36 @@
                     ease: 'power3.out'
                 });
             }
+
+            // Detail modal handler
+            window.openMenuModal = function(name, category, price, desc, imageSrc) {
+                const modal = document.getElementById('menuDetailModal');
+                if (!modal) return;
+                
+                document.getElementById('modalMenuImg').src = imageSrc || '';
+                document.getElementById('modalMenuImg').alt = name || '';
+                document.getElementById('modalMenuCategory').innerText = category || '';
+                document.getElementById('modalMenuTitle').innerText = name || '';
+                document.getElementById('modalMenuDesc').innerText = desc || '';
+                document.getElementById('modalMenuPrice').innerText = price || '';
+                
+                // Set WhatsApp order link dynamically
+                const waUrl = 'https://wa.me/6281234567890?text=' + encodeURIComponent('Halo Attalas Cafe, saya tertarik memesan menu ini:\n\n* ' + name + ' (' + price + ')');
+                document.getElementById('modalMenuWA').href = waUrl;
+                
+                modal.classList.add('is-active');
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+            };
+            
+            window.closeMenuModal = function() {
+                const modal = document.getElementById('menuDetailModal');
+                if (!modal) return;
+                
+                modal.classList.remove('is-active');
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+            };
         });
     </script>
     @stack('scripts')

@@ -98,6 +98,8 @@ return [
             'ambience_desc'   => 'The cool, natural atmosphere of Kintamani is the main part of our experience.',
             'coffee_title'    => 'Curated Coffee',
             'coffee_desc'     => 'Coffee served to accompany various moods, from relaxed to productive.',
+            'menu_title'      => 'Fresh Menu',
+            'menu_desc'       => 'Fresh dishes selected to perfectly match and elevate your relaxing coffee moments.',
             'service_title'   => 'Warm Service',
             'service_desc'    => 'Friendly service and small details that make each visit feel personal.',
         ],
@@ -114,6 +116,8 @@ return [
         'empty_state' => 'No menu available yet.',
         'no_result'   => 'No menu found.',
         'load_error'  => 'Failed to load menu. Please try again.',
+        'price_label' => 'Price',
+        'order_label' => 'Order via WhatsApp',
         'badge' => [
             'best_seller' => 'Best Seller',
             'featured'    => 'Featured',

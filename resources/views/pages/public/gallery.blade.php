@@ -116,7 +116,7 @@
             margin: 0;
             min-height: 260px;
             overflow: hidden;
-            border-radius: 28px;
+            border-radius: 12px;
             background: var(--mist-100);
             box-shadow: 0 18px 44px rgba(16, 20, 23, .08);
         }
@@ -178,7 +178,7 @@
 
         .empty-state {
             padding: 28px;
-            border-radius: 24px;
+            border-radius: 12px;
             background: #fff;
             text-align: center;
             color: var(--muted);
@@ -203,7 +203,7 @@
         }
 
         .skeleton-card {
-            border-radius: 28px;
+            border-radius: 12px;
             overflow: hidden;
             background: var(--mist-100);
             box-shadow: 0 18px 44px rgba(16, 20, 23, .06);
@@ -256,11 +256,11 @@
 
             .gallery-card {
                 min-height: 160px;
-                border-radius: 18px;
+                border-radius: 12px;
             }
 
             .skeleton-card {
-                border-radius: 18px;
+                border-radius: 12px;
             }
 
             .sk-image {
