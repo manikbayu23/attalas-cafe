@@ -570,6 +570,17 @@
             object-fit: cover;
         }
 
+        .menu-modal-image .menu-placeholder {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            place-items: center;
+            background: var(--mist-100);
+            color: var(--sage-700);
+            font-size: 3rem;
+            min-height: 240px;
+        }
+
         .menu-modal-body {
             padding: 22px;
             display: flex;
@@ -763,6 +774,7 @@
             <div class="menu-modal-content">
                 <div class="menu-modal-image">
                     <img id="modalMenuImg" src="" alt="">
+                    <div id="modalMenuPlaceholder" class="menu-placeholder" style="display: none;"><i class="ph-image"></i></div>
                 </div>
                 <div class="menu-modal-body">
                     <span class="menu-modal-category" id="modalMenuCategory"></span>
@@ -827,8 +839,21 @@
                 const modal = document.getElementById('menuDetailModal');
                 if (!modal) return;
                 
-                document.getElementById('modalMenuImg').src = imageSrc || '';
-                document.getElementById('modalMenuImg').alt = name || '';
+                const imgEl = document.getElementById('modalMenuImg');
+                const placeholderEl = document.getElementById('modalMenuPlaceholder');
+                
+                if (imageSrc) {
+                    imgEl.src = imageSrc;
+                    imgEl.alt = name;
+                    imgEl.style.display = 'block';
+                    if (placeholderEl) placeholderEl.style.display = 'none';
+                } else {
+                    imgEl.src = '';
+                    imgEl.alt = '';
+                    imgEl.style.display = 'none';
+                    if (placeholderEl) placeholderEl.style.display = 'grid';
+                }
+                
                 document.getElementById('modalMenuCategory').innerText = category || '';
                 document.getElementById('modalMenuTitle').innerText = name || '';
                 document.getElementById('modalMenuDesc').innerText = desc || '';
