@@ -22,15 +22,23 @@
                         $initialBatch = 12;
                         $hasMoreMenus  = $menus->count() > $initialBatch;
                     @endphp
-                    <div class="menu-filters" role="tablist" aria-label="Filter menu">
-                        <button type="button" class="filter-pill is-active" data-filter="all">
-                            <i class="ph-squares-four"></i><span>{{ __('public.menu.filter_all') }}</span>
+                    <div class="menu-filters-wrapper">
+                        <button type="button" class="scroll-btn btn-left" aria-label="Scroll left">
+                            <i class="ph-caret-left"></i>
                         </button>
-                        @foreach ($categories as $category)
-                            <button type="button" class="filter-pill" data-filter="{{ $category->id }}">
-                                <i class="{{ $category->icon }}"></i><span>{{ $category->name }}</span>
+                        <div class="menu-filters" role="tablist" aria-label="Filter menu">
+                            <button type="button" class="filter-pill is-active" data-filter="all">
+                                <i class="ph-squares-four"></i><span>{{ __('public.menu.filter_all') }}</span>
                             </button>
-                        @endforeach
+                            @foreach ($categories as $category)
+                                <button type="button" class="filter-pill" data-filter="{{ $category->id }}">
+                                    <i class="{{ $category->icon }}"></i><span>{{ $category->name }}</span>
+                                </button>
+                            @endforeach
+                        </div>
+                        <button type="button" class="scroll-btn btn-right" aria-label="Scroll right">
+                            <i class="ph-caret-right"></i>
+                        </button>
                     </div>
 
                     {{-- Initial server-rendered batch ──--}}
@@ -70,23 +78,21 @@
                         @endforeach
                     </div>
 
-                    @if ($hasMoreMenus)
-                        {{-- Skeleton cards shown while loading next batch --}}
-                        <div class="menu-skeleton-container" id="menuSkeletonContainer">
-                            @for ($s = 0; $s < 6; $s++)
-                            <div class="skeleton-card">
-                                <div class="sk-image"></div>
-                                <div class="sk-body">
-                                    <div class="sk-line sk-line-sm"></div>
-                                    <div class="sk-line sk-line-lg"></div>
-                                    <div class="sk-line sk-line-md"></div>
-                                    <div class="sk-line sk-line-price"></div>
-                                </div>
+                    {{-- Skeleton cards shown while loading next batch --}}
+                    <div class="menu-skeleton-container" id="menuSkeletonContainer">
+                        @for ($s = 0; $s < 6; $s++)
+                        <div class="skeleton-card">
+                            <div class="sk-image"></div>
+                            <div class="sk-body">
+                                <div class="sk-line sk-line-sm"></div>
+                                <div class="sk-line sk-line-lg"></div>
+                                <div class="sk-line sk-line-md"></div>
+                                <div class="sk-line sk-line-price"></div>
                             </div>
-                            @endfor
                         </div>
-                        <div class="menu-sentinel" id="menuSentinel" aria-hidden="true"></div>
-                    @endif
+                        @endfor
+                    </div>
+                    <div class="menu-sentinel" id="menuSentinel" aria-hidden="true"></div>
                 @endif
             </div>
         </section>
@@ -133,11 +139,99 @@
             padding: 76px 0;
         }
 
+        .menu-filters-wrapper {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        /* Gradient overlays */
+        .menu-filters-wrapper::before,
+        .menu-filters-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 48px;
+            pointer-events: none;
+            z-index: 2;
+            transition: opacity .3s ease;
+            opacity: 0;
+        }
+
+        .menu-filters-wrapper::before {
+            left: 0;
+            background: linear-gradient(to right, #fff, transparent);
+        }
+
+        .menu-filters-wrapper::after {
+            right: 0;
+            background: linear-gradient(to left, #fff, transparent);
+        }
+
+        .menu-filters-wrapper.has-scroll-left::before {
+            opacity: 1;
+        }
+
+        .menu-filters-wrapper.has-scroll-right::after {
+            opacity: 1;
+        }
+
         .menu-filters {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
+            -ms-overflow-style: none;  /* Hide scrollbar for IE/Edge */
             gap: 10px;
-            margin-bottom: 24px;
+            padding: 4px 0; /* prevent box-shadow/border clipping */
+            scroll-behavior: smooth;
+        }
+
+        .menu-filters::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for Chrome/Safari/Opera */
+        }
+
+        .scroll-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #fff;
+            border: 1px solid rgba(16, 20, 23, .08);
+            box-shadow: 0 4px 12px rgba(16, 20, 23, .08);
+            color: var(--primary-900);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: opacity 0.3s ease, transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .scroll-btn.btn-left {
+            left: 8px;
+        }
+
+        .scroll-btn.btn-right {
+            right: 8px;
+        }
+
+        .scroll-btn.is-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .scroll-btn:hover {
+            background: var(--primary-900);
+            color: #fff;
+            border-color: var(--primary-900);
+            box-shadow: 0 6px 16px rgba(16, 20, 23, .16);
+            transform: translateY(-50%) scale(1.05);
         }
 
         .filter-pill {
@@ -153,6 +247,7 @@
             cursor: pointer;
             text-transform: capitalize;
             transition: all .18s ease;
+            flex-shrink: 0; /* Prevent pills from shrinking */
         }
 
         .filter-pill i {
@@ -353,20 +448,14 @@
 
         /* ── Skeleton loader ── */
         .menu-skeleton-container {
-            display: grid;
+            display: none;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 22px;
             margin-top: 22px;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition: opacity .3s ease, visibility .3s ease;
         }
 
         .menu-skeleton-container.is-visible {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
+            display: grid;
         }
 
         .skeleton-card {
@@ -482,7 +571,7 @@
             // Start at initialBatch count — server already rendered those cards
             let visibleCount   = gridEl ? gridEl.querySelectorAll('.menu-card').length : 0;
             let isLoading      = false;
-            let hasMore        = !!sentinelEl;
+            let hasMore        = @json($hasMoreMenus);
             let observer       = null;
 
             /* ── Render API items ── */
@@ -533,7 +622,7 @@
             /* ── Fetch from API (only called for filter change or scroll-load) ── */
             const fetchItems = function(offset, append) {
                 if (!gridEl) return;
-                if (skeletonEl && append) skeletonEl.classList.add('is-visible');
+                if (skeletonEl) skeletonEl.classList.add('is-visible');
 
                 const params = new URLSearchParams({
                     category: currentFilter,
@@ -561,7 +650,6 @@
 
                         if (skeletonEl) {
                             skeletonEl.classList.remove('is-visible');
-                            if (!hasMore) skeletonEl.remove();
                         }
                     })
                     .catch(function() {
@@ -601,6 +689,53 @@
                 gsap.from('.page-hero .eyebrow, .page-hero h1, .page-hero p', {
                     y: 34, opacity: 0, duration: .9, stagger: .12, ease: 'power3.out'
                 });
+            }
+
+            /* ── Carousel Scroll Logic ── */
+            const filtersWrapper = document.querySelector('.menu-filters-wrapper');
+            const filtersContainer = document.querySelector('.menu-filters');
+            const leftBtn = document.querySelector('.scroll-btn.btn-left');
+            const rightBtn = document.querySelector('.scroll-btn.btn-right');
+
+            if (filtersWrapper && filtersContainer && leftBtn && rightBtn) {
+                const updateScrollButtons = function() {
+                    const scrollLeft = filtersContainer.scrollLeft;
+                    const maxScroll = filtersContainer.scrollWidth - filtersContainer.clientWidth;
+
+                    // Show/hide left button & overlay gradient
+                    if (scrollLeft > 5) {
+                        leftBtn.classList.add('is-visible');
+                        filtersWrapper.classList.add('has-scroll-left');
+                    } else {
+                        leftBtn.classList.remove('is-visible');
+                        filtersWrapper.classList.remove('has-scroll-left');
+                    }
+
+                    // Show/hide right button & overlay gradient
+                    if (scrollLeft < maxScroll - 5) {
+                        rightBtn.classList.add('is-visible');
+                        filtersWrapper.classList.add('has-scroll-right');
+                    } else {
+                        rightBtn.classList.remove('is-visible');
+                        filtersWrapper.classList.remove('has-scroll-right');
+                    }
+                };
+
+                // Add scroll event listener
+                filtersContainer.addEventListener('scroll', updateScrollButtons);
+
+                // Add click handlers for buttons
+                leftBtn.addEventListener('click', function() {
+                    filtersContainer.scrollBy({ left: -200, behavior: 'smooth' });
+                });
+
+                rightBtn.addEventListener('click', function() {
+                    filtersContainer.scrollBy({ left: 200, behavior: 'smooth' });
+                });
+
+                // Run check initially and on resize
+                updateScrollButtons();
+                window.addEventListener('resize', updateScrollButtons);
             }
 
             /* ── Init ── */
