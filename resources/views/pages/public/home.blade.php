@@ -208,7 +208,7 @@
     <style>
         .home-hero {
             position: relative;
-            height: 100vh;
+            min-height: 100vh;
             overflow: hidden;
             color: #fff;
             background: linear-gradient(135deg, var(--primary-950), var(--primary-800));
@@ -251,10 +251,10 @@
         .hero-inner {
             position: relative;
             z-index: 3;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
-            padding: 120px 0 90px;
+            padding: 140px 0 90px;
         }
 
         .hero-content {
@@ -279,7 +279,7 @@
 
         .hero-content h1 {
             margin: 0 0 22px;
-            font-size: clamp(2.7rem, 6vw, 5.8rem);
+            font-size: clamp(2.5rem, 5vw, 4.6rem);
             line-height: 0.95;
             letter-spacing: -0.075em;
         }

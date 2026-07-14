@@ -92,19 +92,23 @@ class MenuController extends Controller
             'sort_order' => 'nullable|integer',
         ]);
 
-        // Handle image upload and convert to WebP
-        if ($request->hasFile('image')) {
-            $imagePath = $this->storeImageAsWebp($request->file('image'));
-            $validated['image'] = $imagePath;
+        try {
+            // Handle image upload and convert to WebP
+            if ($request->hasFile('image')) {
+                $imagePath = $this->storeImageAsWebp($request->file('image'));
+                $validated['image'] = $imagePath;
+            }
+
+            // Generate slug from name
+            $validated['slug'] = Str::slug($validated['name']);
+
+            Menu::create($validated);
+
+            return redirect()->route('admin.menu.index')
+                ->with('success', 'Menu berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }
-
-        // Generate slug from name
-        $validated['slug'] = Str::slug($validated['name']);
-
-        Menu::create($validated);
-
-        return redirect()->route('admin.menu.index')
-            ->with('success', 'Menu berhasil ditambahkan');
     }
 
     /**
@@ -141,23 +145,27 @@ class MenuController extends Controller
             'sort_order' => 'nullable|integer',
         ]);
 
-        // Handle image upload and convert to WebP
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($menu->image) {
-                Storage::disk('public')->delete($menu->image);
+        try {
+            // Handle image upload and convert to WebP
+            if ($request->hasFile('image')) {
+                // Delete old image if exists
+                if ($menu->image) {
+                    Storage::disk('public')->delete($menu->image);
+                }
+                $imagePath = $this->storeImageAsWebp($request->file('image'));
+                $validated['image'] = $imagePath;
             }
-            $imagePath = $this->storeImageAsWebp($request->file('image'));
-            $validated['image'] = $imagePath;
+
+            // Generate slug from name
+            $validated['slug'] = Str::slug($validated['name']);
+
+            $menu->update($validated);
+
+            return redirect()->route('admin.menu.index')
+                ->with('success', 'Menu berhasil diperbarui');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }
-
-        // Generate slug from name
-        $validated['slug'] = Str::slug($validated['name']);
-
-        $menu->update($validated);
-
-        return redirect()->route('admin.menu.index')
-            ->with('success', 'Menu berhasil diperbarui');
     }
 
     /**

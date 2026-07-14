@@ -21,7 +21,7 @@
         <div class="row g-3 mb-4">
             <div class="col-sm-6 col-xl">
                 <div class="summary-card">
-                    <div class="summary-icon bg-brown"><i class="ph-fork-knife"></i></div>
+                    <div class="summary-icon bg-primary-800"><i class="ph-fork-knife"></i></div>
                     <div>
                         <div class="summary-label">Total Menu</div>
                         <div class="summary-value">{{ $stats['menus'] }}</div>
@@ -30,7 +30,7 @@
             </div>
             <div class="col-sm-6 col-xl">
                 <div class="summary-card">
-                    <div class="summary-icon bg-orange"><i class="ph-tag"></i></div>
+                    <div class="summary-icon bg-primary-700"><i class="ph-tag"></i></div>
                     <div>
                         <div class="summary-label">Kategori</div>
                         <div class="summary-value">{{ $stats['categories'] }}</div>
@@ -39,7 +39,7 @@
             </div>
             <div class="col-sm-6 col-xl">
                 <div class="summary-card">
-                    <div class="summary-icon bg-cream"><i class="ph-images"></i></div>
+                    <div class="summary-icon bg-primary-900"><i class="ph-image"></i></div>
                     <div>
                         <div class="summary-label">Gallery</div>
                         <div class="summary-value">{{ $stats['galleries'] }}</div>
@@ -48,7 +48,7 @@
             </div>
             <div class="col-sm-6 col-xl">
                 <div class="summary-card">
-                    <div class="summary-icon bg-gold"><i class="ph-star"></i></div>
+                    <div class="summary-icon bg-primary-800"><i class="ph-star"></i></div>
                     <div>
                         <div class="summary-label">Ulasan</div>
                         <div class="summary-value">{{ $stats['reviews'] }}</div>
@@ -57,7 +57,7 @@
             </div>
             <div class="col-sm-6 col-xl">
                 <div class="summary-card">
-                    <div class="summary-icon bg-dark-brown"><i class="ph-users"></i></div>
+                    <div class="summary-icon bg-primary-950"><i class="ph-users"></i></div>
                     <div>
                         <div class="summary-label">User</div>
                         <div class="summary-value">{{ $stats['users'] }}</div>
@@ -280,10 +280,10 @@
             gap: 1.5rem;
             padding: 1.5rem;
             border-radius: 18px;
-            background: radial-gradient(circle at top right, rgba(249, 245, 240, 0.45), transparent 45%),
-                linear-gradient(135deg, #2b160d, #8b5a2b);
+            background: radial-gradient(circle at top right, rgba(220, 231, 227, 0.45), transparent 45%),
+                linear-gradient(135deg, var(--primary-950), var(--primary-800));
             color: #fff;
-            box-shadow: 0 18px 40px rgba(43, 22, 13, 0.22);
+            box-shadow: 0 18px 40px rgba(17, 29, 28, 0.22);
         }
 
         .dashboard-eyebrow {
@@ -311,8 +311,8 @@
 
         .summary-card,
         .dashboard-card {
-            border: 1px solid rgba(139, 90, 43, 0.08);
-            box-shadow: 0 12px 28px rgba(43, 22, 13, 0.07);
+            border: 1px solid rgba(60, 89, 86, 0.08);
+            box-shadow: 0 12px 28px rgba(17, 29, 28, 0.07);
         }
 
         .summary-card {
@@ -347,19 +347,18 @@
         .summary-value {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #2b160d;
+            color: var(--primary-950);
         }
 
-        .bg-brown { background: #8b5a2b; }
-        .bg-orange { background: #b77b45; }
-        .bg-cream { background: #d2a679; }
-        .bg-gold { background: #c9973f; }
-        .bg-dark-brown { background: #2b160d; }
+        .bg-primary-950 { background: var(--primary-950); }
+        .bg-primary-900 { background: var(--primary-900); }
+        .bg-primary-800 { background: var(--primary-800); }
+        .bg-primary-700 { background: var(--primary-700); }
 
         .mini-stat {
             border-radius: 14px;
             padding: 1rem;
-            background: rgba(139, 90, 43, 0.06);
+            background: rgba(60, 89, 86, 0.06);
         }
 
         .mini-label {
@@ -371,7 +370,7 @@
 
         .mini-stat strong {
             font-size: 1.6rem;
-            color: #2b160d;
+            color: var(--primary-950);
         }
 
         .insight-row {
@@ -380,11 +379,11 @@
             align-items: center;
             margin-bottom: 0.8rem;
             padding-bottom: 0.8rem;
-            border-bottom: 1px dashed rgba(139, 90, 43, 0.18);
+            border-bottom: 1px dashed rgba(60, 89, 86, 0.18);
         }
 
         .insight-row strong {
-            color: #8b5a2b;
+            color: var(--primary-800);
         }
 
         .dashboard-menu-img {
@@ -392,13 +391,13 @@
             height: 48px;
             border-radius: 12px;
             object-fit: cover;
-            background: #f9f5f0;
+            background: var(--mist-50);
         }
 
         .placeholder-img {
             display: grid;
             place-items: center;
-            color: #8b5a2b;
+            color: var(--primary-800);
         }
 
         .quick-actions {
@@ -412,8 +411,8 @@
             gap: 0.75rem;
             padding: 0.75rem 0.9rem;
             border-radius: 14px;
-            background: rgba(139, 90, 43, 0.06);
-            color: #2b160d;
+            background: rgba(60, 89, 86, 0.06);
+            color: var(--primary-950);
             text-decoration: none;
             font-weight: 600;
             transition: transform 0.12s ease, background-color 0.12s ease;
@@ -421,18 +420,18 @@
 
         .quick-action:hover {
             transform: translateX(3px);
-            background: rgba(139, 90, 43, 0.12);
-            color: #2b160d;
+            background: rgba(60, 89, 86, 0.12);
+            color: var(--primary-950);
         }
 
         .quick-action i {
             font-size: 1.25rem;
-            color: #8b5a2b;
+            color: var(--primary-800);
         }
 
         .review-item {
             padding: 0.85rem 0;
-            border-bottom: 1px solid rgba(139, 90, 43, 0.12);
+            border-bottom: 1px solid rgba(60, 89, 86, 0.12);
         }
 
         .review-item:first-child {
@@ -459,7 +458,7 @@
             padding-top: 75%;
             overflow: hidden;
             border-radius: 14px;
-            background: #f9f5f0;
+            background: var(--mist-50);
         }
 
         .dashboard-gallery-item img {

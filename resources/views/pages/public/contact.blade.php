@@ -16,7 +16,8 @@
         <section class="contact-section">
             <div class="container contact-grid">
                 <div class="contact-info">
-                    <div class="info-card info-card-location">
+                    <a href="https://www.google.com/maps/place/ATTALAS+CAFE/@-8.2766412,115.3479415,17z/data=!3m1!4b1!4m6!3m5!1s0x2dd1f579afd7161f:0xc4036299583a290a!8m2!3d-8.2766413!4d115.3479415" target="_blank" rel="noopener"
+                        class="info-card info-card-location social-link-card">
                         <div class="icon-wrapper icon-location">
                             <i class="ph-map-pin"></i>
                         </div>
@@ -24,8 +25,9 @@
                             <strong>{{ __('public.contact.info.location_label') }}</strong>
                             <span>Jl. Raya Penelokan, Batur Tengah, Kec. Kintamani, Kabupaten Bangli, Bali</span>
                         </div>
-                    </div>
-                    <div class="info-card info-card-whatsapp">
+                    </a>
+                    <a href="https://wa.me/6287748060549" target="_blank" rel="noopener"
+                        class="info-card info-card-whatsapp social-link-card">
                         <div class="icon-wrapper icon-whatsapp">
                             <i class="ph-whatsapp-logo"></i>
                         </div>
@@ -33,7 +35,7 @@
                             <strong>{{ __('public.contact.info.whatsapp_label') }}</strong>
                             <span>+62 877 4806 0549</span>
                         </div>
-                    </div>
+                    </a>
                     <div class="info-card info-card-clock">
                         <div class="icon-wrapper icon-clock">
                             <i class="ph-clock"></i>
@@ -56,14 +58,14 @@
                             <span>@attalascafe</span>
                         </div>
                     </a>
-                    <a href="https://www.instagram.com/attalascafe" target="_blank" rel="noopener"
+                    <a href="https://www.instagram.com/attalas_cafe/" target="_blank" rel="noopener"
                         class="info-card info-card-instagram social-link-card">
                         <div class="icon-wrapper icon-instagram">
                             <i class="ph-instagram-logo"></i>
                         </div>
                         <div class="card-content">
                             <strong>Instagram</strong>
-                            <span>@attalascafe</span>
+                            <span>@attalas_cafe</span>
                         </div>
                     </a>
                 </div>
@@ -98,7 +100,7 @@
 @push('style')
     <style>
         .page-hero {
-            padding: 150px 0 86px;
+            padding: 180px 0 86px;
             color: #fff;
             background-image: linear-gradient(90deg, rgba(17, 29, 28, .88), rgba(32, 50, 49, .48), rgba(32, 50, 49, .18)), var(--hero-image), linear-gradient(135deg, var(--primary-950), var(--primary-800));
             background-size: cover;
@@ -118,7 +120,7 @@
         .page-hero h1 {
             max-width: 900px;
             margin: 0 0 18px;
-            font-size: clamp(2.5rem, 5vw, 5rem);
+            font-size: clamp(2.3rem, 4.5vw, 4.2rem);
             line-height: .98;
             letter-spacing: -.07em;
         }
@@ -250,8 +252,9 @@
         }
 
         .icon-wrapper svg {
-            width: 100%;
-            height: 100%;
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
         }
 
         .card-content {

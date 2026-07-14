@@ -10,6 +10,7 @@ class MenuCategory extends Model
     protected $fillable = [
         'name',
         'slug',
+        'type',
         'status',
         'sort_order',
     ];

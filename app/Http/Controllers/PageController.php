@@ -6,6 +6,7 @@ use App\Models\Gallery;
 use App\Models\Menu;
 use App\Models\MenuCategory;
 use App\Models\Review;
+use App\Services\MenuCategoryService;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -72,44 +73,61 @@ class PageController extends Controller
     public function menu()
     {
         $menus = Menu::with('category')
-            ->where('status', true)
-            ->orderByDesc('is_best_seller')
-            ->orderByDesc('is_featured')
-            ->orderBy('sort_order')
-            ->latest()
+            ->select('menus.*')
+            ->join('menu_categories', 'menus.menu_category_id', '=', 'menu_categories.id')
+            ->where('menus.status', true)
+            ->orderByRaw("CASE menu_categories.type WHEN 'food' THEN 1 WHEN 'drink' THEN 2 ELSE 3 END")
+            ->orderBy('menu_categories.sort_order')
+            ->orderByDesc('menus.is_best_seller')
+            ->orderByDesc('menus.is_featured')
+            ->orderBy('menus.sort_order')
+            ->latest('menus.created_at')
             ->get();
 
         $categories = MenuCategory::where('status', true)
             ->orderBy('sort_order')
             ->get()
             ->map(function ($category) {
-                $category->icon = $this->categoryIcon($category->name);
+                $category->icon = MenuCategoryService::iconForName($category->name);
 
                 return $category;
             });
 
+        // Pass full type definitions to view so Blade can render labels & icons dynamically
+        $categoryTypes = MenuCategoryService::types();
+
         $heroImage = $this->heroImage('image-hero-menu.png');
 
-        return view('pages.public.menu', compact('menus', 'categories', 'heroImage'));
+        return view('pages.public.menu', compact('menus', 'categories', 'categoryTypes', 'heroImage'));
     }
 
     public function menuData(Request $request)
     {
+        $categoryInput  = $request->get('category', 'all');
+        $validGroupKeys = MenuCategoryService::keys(); // ['food', 'drink', 'others', …]
+
         $query = Menu::with('category')
-            ->where('status', true)
-            ->when($request->filled('category') && $request->get('category') !== 'all', function ($query) use ($request) {
-                $query->where('menu_category_id', $request->integer('category'));
+            ->select('menus.*')
+            ->join('menu_categories', 'menus.menu_category_id', '=', 'menu_categories.id')
+            ->where('menus.status', true)
+            ->when(!empty($categoryInput) && $categoryInput !== 'all', function ($query) use ($categoryInput) {
+                $categories = array_filter(explode(',', $categoryInput));
+                if (!empty($categories)) {
+                    $query->whereIn('menus.menu_category_id', $categories);
+                }
             });
 
-        $total = (clone $query)->count();
+        $total  = (clone $query)->count();
         $offset = $request->integer('offset', 0);
-        $limit = $request->integer('limit', 12);
+        $limit  = $request->integer('limit', 12);
 
         $items = (clone $query)
-            ->orderByDesc('is_best_seller')
-            ->orderByDesc('is_featured')
-            ->orderBy('sort_order')
-            ->latest()
+            ->orderByRaw("CASE menu_categories.type WHEN 'food' THEN 1 WHEN 'drink' THEN 2 ELSE 3 END")
+            ->orderBy('menu_categories.sort_order')
+            ->orderByDesc('menus.is_best_seller')
+            ->orderByDesc('menus.is_featured')
+            ->orderBy('menus.sort_order')
+            ->latest('menus.created_at')
             ->skip($offset)
             ->take($limit)
             ->get();
@@ -117,41 +135,18 @@ class PageController extends Controller
         return response()->json([
             'items' => $items->map(function ($menu) {
                 return [
-                    'id' => $menu->id,
-                    'name' => $menu->name,
+                    'id'          => $menu->id,
+                    'name'        => $menu->name,
                     'description' => $menu->description,
-                    'price' => $menu->formatted_price,
-                    'image' => $menu->image ? asset('storage/' . $menu->image) : null,
-                    'category' => $menu->category?->name ?? 'Menu',
-                    'badge' => $menu->is_best_seller ? 'Best Seller' : ($menu->is_featured ? 'Featured' : null),
+                    'price'       => $menu->formatted_price,
+                    'image'       => $menu->image ? asset('storage/' . $menu->image) : null,
+                    'category'    => $menu->category?->name ?? 'Menu',
+                    'badge'       => $menu->is_best_seller ? 'Best Seller' : ($menu->is_featured ? 'Featured' : null),
                 ];
             }),
-            'total' => $total,
+            'total'   => $total,
             'hasMore' => $total > $offset + $items->count(),
         ]);
-    }
-
-    private function categoryIcon(string $name): string
-    {
-        $name = strtolower($name);
-
-        if (str_contains($name, 'coffee') || str_contains($name, 'kopi')) {
-            return 'ph-coffee';
-        }
-
-        if (str_contains($name, 'tea') || str_contains($name, 'teh')) {
-            return 'ph-cup';
-        }
-
-        if (str_contains($name, 'food') || str_contains($name, 'makanan') || str_contains($name, 'snack')) {
-            return 'ph-pizza';
-        }
-
-        if (str_contains($name, 'dessert') || str_contains($name, 'cake') || str_contains($name, 'puding')) {
-            return 'ph-cake';
-        }
-
-        return 'ph-squares-four';
     }
 
     private function heroImage($image): ?string

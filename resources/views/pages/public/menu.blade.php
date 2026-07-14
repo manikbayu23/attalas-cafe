@@ -22,22 +22,10 @@
                         $initialBatch = 12;
                         $hasMoreMenus  = $menus->count() > $initialBatch;
                     @endphp
-                    <div class="menu-filters-wrapper">
-                        <button type="button" class="scroll-btn btn-left" aria-label="Scroll left">
-                            <i class="ph-caret-left"></i>
-                        </button>
-                        <div class="menu-filters" role="tablist" aria-label="Filter menu">
-                            <button type="button" class="filter-pill is-active" data-filter="all">
-                                <i class="ph-squares-four"></i><span>{{ __('public.menu.filter_all') }}</span>
-                            </button>
-                            @foreach ($categories as $category)
-                                <button type="button" class="filter-pill" data-filter="{{ $category->id }}">
-                                    <i class="{{ $category->icon }}"></i><span>{{ $category->name }}</span>
-                                </button>
-                            @endforeach
-                        </div>
-                        <button type="button" class="scroll-btn btn-right" aria-label="Scroll right">
-                            <i class="ph-caret-right"></i>
+                    <div class="menu-header">
+                        <button type="button" class="btn btn-primary" id="btnFilterToggle" aria-label="Open Filters" onclick="openFilterModal()">
+                            <i class="ph-faders"></i>
+                            <span>{{ app()->getLocale() === 'id' ? 'Filter Kategori' : 'Filter Category' }}</span>
                         </button>
                     </div>
 
@@ -95,6 +83,49 @@
                     <div class="menu-sentinel" id="menuSentinel" aria-hidden="true"></div>
                 @endif
             </div>
+
+            {{-- Category Filter Modal --}}
+            <div class="menu-modal" id="filterModal" aria-hidden="true" role="dialog">
+                <div class="menu-modal-overlay" onclick="closeFilterModal()"></div>
+                <div class="menu-modal-container" style="max-width: 480px;">
+                    <button type="button" class="menu-modal-close" onclick="closeFilterModal()" aria-label="Close modal">
+                        <i class="ph-x"></i>
+                    </button>
+                    <div class="filter-modal-header">
+                        <h3>{{ app()->getLocale() === 'id' ? 'Filter Kategori' : 'Filter Categories' }}</h3>
+                    </div>
+                    <div class="filter-modal-body">
+                        @foreach ($categoryTypes as $typeKey => $typeMeta)
+                            @php
+                                $groupCategories = $categories->where('type', $typeKey);
+                            @endphp
+                            @if ($groupCategories->isNotEmpty())
+                                <div class="filter-group">
+                                    <h4 class="filter-group-title">{{ app()->getLocale() === 'id' ? $typeMeta['label'] : $typeMeta['label_en'] }}</h4>
+                                    <div class="filter-checkbox-grid">
+                                        @foreach ($groupCategories as $category)
+                                            <label class="filter-checkbox-label">
+                                                <input type="checkbox" name="categories[]" value="{{ $category->id }}" class="filter-checkbox-input" onchange="toggleFilterCheckbox(this)">
+                                                <span class="filter-checkbox-btn">
+                                                    {{ $category->name }}
+                                                </span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                    <div class="filter-modal-footer">
+                        <button type="button" class="btn btn-ghost" style="color: var(--primary-900); border-color: var(--primary-900); width: 100%;" onclick="resetFilters()">
+                            {{ app()->getLocale() === 'id' ? 'Reset' : 'Reset' }}
+                        </button>
+                        <button type="button" class="btn btn-primary" style="width: 100%;" onclick="applyFilters()">
+                            {{ app()->getLocale() === 'id' ? 'Terapkan' : 'Apply' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 @endsection
@@ -103,7 +134,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
     <style>
         .page-hero {
-            padding: 150px 0 86px;
+            padding: 180px 0 86px;
             color: #fff;
             background-image: linear-gradient(90deg, rgba(17, 29, 28, 0.88), rgba(32, 50, 49, 0.52), rgba(32, 50, 49, 0.2)), var(--hero-image), linear-gradient(135deg, var(--primary-950), var(--primary-800));
             background-size: cover;
@@ -123,7 +154,7 @@
         .page-hero h1 {
             max-width: 880px;
             margin: 0 0 18px;
-            font-size: clamp(2.5rem, 5vw, 5rem);
+            font-size: clamp(2.3rem, 4.5vw, 4.2rem);
             line-height: .98;
             letter-spacing: -.07em;
         }
@@ -259,6 +290,14 @@
             background: var(--primary-900);
             color: #fff;
             border-color: var(--primary-900);
+        }
+
+        .filter-divider {
+            width: 1px;
+            background-color: rgba(16, 20, 23, .16);
+            margin: 4px 6px;
+            flex-shrink: 0;
+            border-radius: 2px;
         }
 
         /* ── Grid layout ── */
@@ -552,6 +591,95 @@
             }
         }
     </style>
+    </style>
+    <style>
+        .menu-header {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .filter-modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(16, 20, 23, 0.08);
+        }
+
+        .filter-modal-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--primary-950);
+            font-weight: 800;
+        }
+
+        .filter-modal-body {
+            padding: 20px 24px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .filter-group {
+            margin-bottom: 24px;
+        }
+
+        .filter-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-group-title {
+            margin: 0 0 12px;
+            font-size: 0.85rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 800;
+        }
+
+        .filter-checkbox-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-checkbox-label {
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .filter-checkbox-input {
+            display: none;
+        }
+
+        .filter-checkbox-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 999px;
+            border: 1px solid rgba(16, 20, 23, 0.12);
+            background: #fff;
+            color: var(--primary-900);
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .filter-checkbox-btn:hover {
+            border-color: var(--primary-900);
+        }
+
+        .filter-checkbox-input:checked + .filter-checkbox-btn {
+            background: var(--primary-900);
+            color: #fff;
+            border-color: var(--primary-900);
+            box-shadow: 0 4px 12px rgba(32, 50, 49, 0.2);
+        }
+
+        .filter-modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid rgba(16, 20, 23, 0.08);
+            display: flex;
+            gap: 12px;
+        }
+    </style>
 @endpush
 
 @push('scripts')
@@ -560,14 +688,13 @@
         document.addEventListener('DOMContentLoaded', function() {
             const menuApiUrl   = '{{ route('menu.data') }}';
             const gridEl       = document.getElementById('menuGrid');
-            const filterBtns   = Array.from(document.querySelectorAll('.filter-pill'));
             const skeletonEl   = document.getElementById('menuSkeletonContainer');
             const sentinelEl   = document.getElementById('menuSentinel');
             const BATCH        = 6;
             const NO_RESULT    = '{{ __('public.menu.no_result') }}';
             const LOAD_ERROR   = '{{ __('public.menu.load_error') }}';
 
-            let currentFilter  = 'all';
+            let currentFilter  = [];
             // Start at initialBatch count — server already rendered those cards
             let visibleCount   = gridEl ? gridEl.querySelectorAll('.menu-card').length : 0;
             let isLoading      = false;
@@ -624,8 +751,15 @@
                 if (!gridEl) return;
                 if (skeletonEl) skeletonEl.classList.add('is-visible');
 
+                let filterVal = 'all';
+                if (Array.isArray(currentFilter)) {
+                    filterVal = currentFilter.length ? currentFilter.join(',') : 'all';
+                } else if (typeof currentFilter === 'string' && currentFilter.trim() !== '') {
+                    filterVal = currentFilter;
+                }
+
                 const params = new URLSearchParams({
-                    category: currentFilter,
+                    category: filterVal,
                     offset:   String(offset),
                     limit:    String(BATCH)
                 });
@@ -659,15 +793,6 @@
                     });
             };
 
-            /* ── Filter change: re-fetch from offset 0 ── */
-            const resetAndLoad = function(filter) {
-                currentFilter = filter;
-                visibleCount  = 0;
-                hasMore       = true;
-                isLoading     = false;
-                fetchItems(0, false);
-            };
-
             /* ── Infinite scroll: load next batch ── */
             const loadMore = function() {
                 if (isLoading || !hasMore || !sentinelEl) return;
@@ -675,67 +800,47 @@
                 fetchItems(visibleCount, true);
             };
 
-            /* ── Filter buttons ── */
-            filterBtns.forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    filterBtns.forEach(function(b) { b.classList.remove('is-active'); });
-                    btn.classList.add('is-active');
-                    resetAndLoad(btn.getAttribute('data-filter'));
-                });
-            });
+            /* ── Filter Init ── */
+            window.openFilterModal = function() {
+                const modal = document.getElementById('filterModal');
+                if (modal) modal.classList.add('is-active');
+            };
+
+            window.closeFilterModal = function() {
+                const modal = document.getElementById('filterModal');
+                if (modal) modal.classList.remove('is-active');
+            };
+
+            window.toggleFilterCheckbox = function(checkbox) {
+                // Checkbox handles its own state
+            };
+
+            window.resetFilters = function() {
+                const checkboxes = document.querySelectorAll('.filter-checkbox-input');
+                checkboxes.forEach(cb => cb.checked = false);
+                currentFilter = [];
+                visibleCount  = 0;
+                hasMore       = true;
+                isLoading     = false;
+                fetchItems(0, false);
+                closeFilterModal();
+            };
+
+            window.applyFilters = function() {
+                const checkboxes = document.querySelectorAll('.filter-checkbox-input:checked');
+                currentFilter = Array.from(checkboxes).map(cb => cb.value);
+                visibleCount  = 0;
+                hasMore       = true;
+                isLoading     = false;
+                fetchItems(0, false);
+                closeFilterModal();
+            };
 
             /* ── Hero animation ── */
             if (window.gsap) {
                 gsap.from('.page-hero .eyebrow, .page-hero h1, .page-hero p', {
                     y: 34, opacity: 0, duration: .9, stagger: .12, ease: 'power3.out'
                 });
-            }
-
-            /* ── Carousel Scroll Logic ── */
-            const filtersWrapper = document.querySelector('.menu-filters-wrapper');
-            const filtersContainer = document.querySelector('.menu-filters');
-            const leftBtn = document.querySelector('.scroll-btn.btn-left');
-            const rightBtn = document.querySelector('.scroll-btn.btn-right');
-
-            if (filtersWrapper && filtersContainer && leftBtn && rightBtn) {
-                const updateScrollButtons = function() {
-                    const scrollLeft = filtersContainer.scrollLeft;
-                    const maxScroll = filtersContainer.scrollWidth - filtersContainer.clientWidth;
-
-                    // Show/hide left button & overlay gradient
-                    if (scrollLeft > 5) {
-                        leftBtn.classList.add('is-visible');
-                        filtersWrapper.classList.add('has-scroll-left');
-                    } else {
-                        leftBtn.classList.remove('is-visible');
-                        filtersWrapper.classList.remove('has-scroll-left');
-                    }
-
-                    // Show/hide right button & overlay gradient
-                    if (scrollLeft < maxScroll - 5) {
-                        rightBtn.classList.add('is-visible');
-                        filtersWrapper.classList.add('has-scroll-right');
-                    } else {
-                        rightBtn.classList.remove('is-visible');
-                        filtersWrapper.classList.remove('has-scroll-right');
-                    }
-                };
-
-                // Add scroll event listener
-                filtersContainer.addEventListener('scroll', updateScrollButtons);
-
-                // Add click handlers for buttons
-                leftBtn.addEventListener('click', function() {
-                    filtersContainer.scrollBy({ left: -200, behavior: 'smooth' });
-                });
-
-                rightBtn.addEventListener('click', function() {
-                    filtersContainer.scrollBy({ left: 200, behavior: 'smooth' });
-                });
-
-                // Run check initially and on resize
-                updateScrollButtons();
-                window.addEventListener('resize', updateScrollButtons);
             }
 
             /* ── Init ── */

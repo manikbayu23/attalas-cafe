@@ -65,7 +65,7 @@
             min-height: 620px;
             display: flex;
             align-items: center;
-            padding: 130px 0 76px;
+            padding: 160px 0 76px;
             color: #fff;
             background-image:
                 linear-gradient(90deg, rgba(17, 29, 28, 0.86), rgba(32, 50, 49, 0.56), rgba(32, 50, 49, 0.22)),
@@ -99,7 +99,7 @@
         .about-copy h1 {
             max-width: 820px;
             margin: 0 0 20px;
-            font-size: clamp(2.4rem, 5vw, 5rem);
+            font-size: clamp(2.3rem, 4.5vw, 4.2rem);
             line-height: 0.98;
             letter-spacing: -0.07em;
         }

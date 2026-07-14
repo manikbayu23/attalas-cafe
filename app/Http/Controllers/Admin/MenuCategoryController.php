@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\MenuCategory;
+use App\Services\MenuCategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -14,8 +15,10 @@ class MenuCategoryController extends Controller
      */
     public function index()
     {
-        $categories = MenuCategory::all();
-        return view('pages.admin.menu-category.index', compact('categories'));
+        $categories    = MenuCategory::all();
+        $categoryTypes = MenuCategoryService::types();
+
+        return view('pages.admin.menu-category.index', compact('categories', 'categoryTypes'));
     }
 
     /**
@@ -23,7 +26,9 @@ class MenuCategoryController extends Controller
      */
     public function create()
     {
-        return view('pages.admin.menu-category.create');
+        $typeOptions = MenuCategoryService::selectOptions();
+
+        return view('pages.admin.menu-category.create', compact('typeOptions'));
     }
 
     /**
@@ -32,17 +37,23 @@ class MenuCategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'       => 'required|string|max:255',
+            'type'       => 'required|string|in:' . implode(',', MenuCategoryService::keys()),
             'sort_order' => 'nullable|integer',
         ]);
 
-        MenuCategory::create([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'sort_order' => MenuCategory::max('sort_order') + 1,
-        ]);
+        try {
+            MenuCategory::create([
+                'name'       => $request->name,
+                'slug'       => Str::slug($request->name),
+                'type'       => $request->type,
+                'sort_order' => MenuCategory::max('sort_order') + 1,
+            ]);
 
-        return redirect()->route('admin.menu-category.index')->with('success', 'Menu Category created successfully.');
+            return redirect()->route('admin.menu-category.index')->with('success', 'Kategori Menu berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
+        }
     }
 
     /**
@@ -58,7 +69,9 @@ class MenuCategoryController extends Controller
      */
     public function edit(MenuCategory $menuCategory)
     {
-        return view('pages.admin.menu-category.edit', compact('menuCategory'));
+        $typeOptions = MenuCategoryService::selectOptions();
+
+        return view('pages.admin.menu-category.edit', compact('menuCategory', 'typeOptions'));
     }
 
     /**
@@ -67,17 +80,23 @@ class MenuCategoryController extends Controller
     public function update(Request $request, MenuCategory $menuCategory)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'       => 'required|string|max:255',
+            'type'       => 'required|string|in:' . implode(',', MenuCategoryService::keys()),
             'sort_order' => 'nullable|integer',
         ]);
 
-        $menuCategory->update([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'sort_order' => $request->sort_order,
-        ]);
+        try {
+            $menuCategory->update([
+                'name'       => $request->name,
+                'slug'       => Str::slug($request->name),
+                'type'       => $request->type,
+                'sort_order' => $request->sort_order,
+            ]);
 
-        return redirect()->route('admin.menu-category.index')->with('success', 'Menu Category updated successfully.');
+            return redirect()->route('admin.menu-category.index')->with('success', 'Kategori Menu berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
+        }
     }
 
     /**

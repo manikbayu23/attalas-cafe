@@ -22,27 +22,27 @@
             <li class="nav-item nav-item-dropdown-lg dropdown ms-lg-2">
                 <a href="#" class="navbar-nav-link align-items-center rounded-pill p-1" data-bs-toggle="dropdown">
                     <div class="status-indicator-container">
-                        <img src="{{ asset('assets/img/user2.png') }}" class="w-32px h-32px rounded-pill"
-                            alt="user">
-                        {{-- <span class="ph-user"></span> --}}
+                        <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-pill" style="width: 32px; height: 32px;">
+                            <i class="ph-user"></i>
+                        </div>
                         <span class="status-indicator bg-success"></span>
                     </div>
                     <span class="d-none d-lg-inline-block mx-lg-2">{{ Auth::user()->name }}</span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-end">
-                    {{-- <a href="{{ route('user.dashboard') }}" class="dropdown-item">
-                        <i class="ph-arrow-square-out me-2"></i>
-                        Halaman Staf
+                    <a href="{{ url('/') }}" class="dropdown-item">
+                        <i class="ph-house me-2"></i>
+                        Halaman Beranda
                     </a>
                     <div class="dropdown-divider"></div>
-                    <form action="{{ route('logout') }}" method="POST">
+                    <form action="{{ route('admin.logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="dropdown-item">
                             <i class="ph-sign-out me-2"></i>
                             Logout
                         </button>
-                    </form> --}}
+                    </form>
                 </div>
             </li>
         </ul>

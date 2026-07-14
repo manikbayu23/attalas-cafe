@@ -31,6 +31,19 @@
                             </div>
 
                             <div class="mb-3">
+                                <label for="type" class="form-label">Tipe Kategori <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-control @error('type') is-invalid @enderror" id="type" name="type" required>
+                                    @foreach ($typeOptions as $key => $label)
+                                        <option value="{{ $key }}" {{ old('type', $menuCategory->type) == $key ? 'selected' : '' }}>{{ $label }}</option>
+                                    @endforeach
+                                </select>
+                                @error('type')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="status" name="status"
                                         value="1" {{ old('status', $menuCategory->status) ? 'checked' : '' }}>

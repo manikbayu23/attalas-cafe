@@ -68,7 +68,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
     <style>
         .page-hero {
-            padding: 150px 0 86px;
+            padding: 180px 0 86px;
             color: #fff;
             background-image: linear-gradient(90deg, rgba(17, 29, 28, .88), rgba(32, 50, 49, .48), rgba(32, 50, 49, .18)), var(--hero-image), linear-gradient(135deg, var(--primary-950), var(--primary-800));
             background-size: cover;
@@ -88,7 +88,7 @@
         .page-hero h1 {
             max-width: 900px;
             margin: 0 0 18px;
-            font-size: clamp(2.5rem, 5vw, 5rem);
+            font-size: clamp(2.3rem, 4.5vw, 4.2rem);
             line-height: .98;
             letter-spacing: -.07em;
         }

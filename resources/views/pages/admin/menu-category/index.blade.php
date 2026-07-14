@@ -49,6 +49,7 @@
                         <tr>
                             <th>Nama Kategori</th>
                             <th>Slug</th>
+                            <th class="text-center">Tipe</th>
                             <th class="text-center">Jumlah Menu</th>
                             <th class="text-center">Status</th>
                             <th class="text-center">Urutan</th>
@@ -60,6 +61,16 @@
                             <tr>
                                 <td>{{ $category->name }}</td>
                                 <td><code>{{ $category->slug }}</code></td>
+                                <td class="text-center">
+                                    @php
+                                        $typeMeta = $categoryTypes[$category->type] ?? null;
+                                    @endphp
+                                    @if ($typeMeta)
+                                        <span class="badge {{ $typeMeta['badge'] }}">{{ $typeMeta['label'] }}</span>
+                                    @else
+                                        <span class="badge bg-secondary">{{ $category->type }}</span>
+                                    @endif
+                                </td>
                                 <td class="text-center">
                                     <span
                                         class="badge bg-info">{{ $category->menus_count ?? $category->menus()->count() }}</span>
@@ -94,7 +105,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center text-muted py-4">
+                                <td colspan="7" class="text-center text-muted py-4">
                                     Belum ada kategori menu. <a href="{{ route('admin.menu-category.create') }}">Tambah
                                         kategori sekarang</a>
                                 </td>

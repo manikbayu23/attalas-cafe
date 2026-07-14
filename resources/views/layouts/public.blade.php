@@ -125,6 +125,7 @@
             gap: 10px;
             font-weight: 800;
             letter-spacing: -0.03em;
+            white-space: nowrap;
         }
 
         .brand img {
@@ -217,11 +218,14 @@
             width: 42px;
             height: 42px;
             border: 0;
+            margin: 0;
+            padding: 0;
             border-radius: 999px;
             background: var(--primary-900);
             color: #fff;
             font-size: 1.35rem;
             cursor: pointer;
+            flex-shrink: 0;
         }
 
         .mobile-menu {
@@ -463,8 +467,9 @@
             }
 
             .mobile-toggle {
-                display: inline-grid;
-                place-items: center;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
             }
         }
 
@@ -735,7 +740,7 @@
                             aria-label="Instagram">
                             <i class="ph-instagram-logo"></i>
                         </a>
-                        <a href="https://www.facebook.com/https://www.facebook.com/people/attalas_cafe/100087332373127/"
+                        <a href="https://www.facebook.com/people/attalas_cafe/100087332373127/"
                             target="_blank" rel="noopener" aria-label="Facebook">
                             <i class="ph-facebook-logo"></i>
                         </a>
