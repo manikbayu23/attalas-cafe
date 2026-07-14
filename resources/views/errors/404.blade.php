@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halaman Tidak Ditemukan - Attalas Cafe</title>
-    <link href="{{ asset('admin/assets/fonts/inter/inter.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('admin/assets/icons/phosphor/styles.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('admin_assets/assets/fonts/inter/inter.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('admin_assets/assets/icons/phosphor/styles.min.css') }}" rel="stylesheet" type="text/css">
     <style>
         :root {
             --attalas-brown-900: #2b160d;

@@ -25,15 +25,6 @@ class MenuCategoryService
     public static function types(): array
     {
         return [
-            'food' => [
-                'label'      => 'Makanan',
-                'label_en'   => 'Food',
-                'badge'      => 'bg-success',
-                'icon'       => 'ph-fork-knife',
-                'group_icon' => 'ph-pizza',
-                'all_label'      => 'Semua Makanan',
-                'all_label_en'   => 'All Food',
-            ],
             'drink' => [
                 'label'      => 'Minuman',
                 'label_en'   => 'Drinks',
@@ -42,6 +33,15 @@ class MenuCategoryService
                 'group_icon' => 'ph-cup',
                 'all_label'      => 'Semua Minuman',
                 'all_label_en'   => 'All Drinks',
+            ],
+            'food' => [
+                'label'      => 'Makanan',
+                'label_en'   => 'Food',
+                'badge'      => 'bg-success',
+                'icon'       => 'ph-fork-knife',
+                'group_icon' => 'ph-pizza',
+                'all_label'      => 'Semua Makanan',
+                'all_label_en'   => 'All Food',
             ],
             'others' => [
                 'label'      => 'Lainnya',

@@ -32,8 +32,7 @@ Route::get('/menu/data', [PageController::class, 'menuData'])->name('menu.data')
 
 Route::middleware(['role:admin'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
-
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::resource('menu-category', MenuCategoryController::class);
         Route::resource('reviews', ReviewController::class);

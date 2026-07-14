@@ -307,6 +307,17 @@
             gap: 22px;
         }
 
+        @keyframes fadeUpCard {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .menu-card {
             overflow: hidden;
             border-radius: 12px;
@@ -315,10 +326,11 @@
             box-shadow: 0 10px 30px rgba(16, 20, 23, .04);
             cursor: pointer;
             transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+            animation: fadeUpCard 0.4s ease-out backwards;
         }
 
         .menu-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-4px) scale(1.01);
             box-shadow: 0 20px 40px rgba(16, 20, 23, .08);
             border-color: rgba(32, 50, 49, 0.15);
         }
@@ -599,6 +611,24 @@
             margin-bottom: 24px;
         }
 
+        #btnFilterToggle {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(32, 50, 49, 0.15);
+        }
+
+        #btnFilterToggle:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(32, 50, 49, 0.25);
+        }
+
+        #btnFilterToggle i {
+            transition: transform 0.3s ease;
+        }
+
+        #btnFilterToggle:hover i {
+            transform: rotate(15deg) scale(1.1);
+        }
+
         .filter-modal-header {
             padding: 20px 24px;
             border-bottom: 1px solid rgba(16, 20, 23, 0.08);
@@ -749,6 +779,11 @@
             /* ── Fetch from API (only called for filter change or scroll-load) ── */
             const fetchItems = function(offset, append) {
                 if (!gridEl) return;
+
+                if (!append) {
+                    gridEl.innerHTML = '';
+                }
+
                 if (skeletonEl) skeletonEl.classList.add('is-visible');
 
                 let filterVal = 'all';

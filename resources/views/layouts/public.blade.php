@@ -27,8 +27,8 @@
     <meta property="twitter:image" content="@yield('meta_image', asset('assets/images/image-hero.png'))">
 
     <link rel="icon" href="{{ asset('assets/images/attalas-logo.png') }}" type="image/png">
-    <link href="{{ asset('admin/assets/fonts/inter/inter.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('admin/assets/icons/phosphor/styles.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('admin_assets/assets/fonts/inter/inter.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('admin_assets/assets/icons/phosphor/styles.min.css') }}" rel="stylesheet" type="text/css">
 
     <style>
         :root {

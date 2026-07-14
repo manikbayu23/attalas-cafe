@@ -10,9 +10,9 @@
     <link rel="icon" href="{{ asset('assets/images/attalas-logo.png') }}" type="image/png">
 
     <!-- Global stylesheets -->
-    <link href="{{ asset('admin/assets/fonts/inter/inter.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('admin/assets/icons/phosphor/styles.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('admin/assets/css/ltr/all.min.css') }}" id="stylesheet" rel="stylesheet" type="text/css">
+    <link href="{{ asset('admin_assets/assets/fonts/inter/inter.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('admin_assets/assets/icons/phosphor/styles.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('admin_assets/assets/css/ltr/all.min.css') }}" id="stylesheet" rel="stylesheet" type="text/css">
 
 
     @stack('style')
@@ -87,14 +87,14 @@
     <!-- /global stylesheets -->
 
     <!-- Core JS files -->
-    <script src="{{ asset('admin/assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('admin_assets/assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
     <!-- /core JS files -->
 
-    <script src="{{ asset('admin/assets/js/app.js') }}"></script>
-    <script src="{{ asset('admin/assets/js/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('admin_assets/assets/js/app.js') }}"></script>
+    <script src="{{ asset('admin_assets/assets/js/jquery/jquery.min.js') }}"></script>
 
-    <script src="{{ asset('admin/assets/js/vendor/notifications/noty.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/demo/pages/extra_noty.js') }}"></script>
+    <script src="{{ asset('admin_assets/assets/js/vendor/notifications/noty.min.js') }}"></script>
+    <script src="{{ asset('admin_assets/assets/demo/pages/extra_noty.js') }}"></script>
     <!-- /theme JS files -->
 
 

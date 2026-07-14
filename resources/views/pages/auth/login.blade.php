@@ -6,11 +6,11 @@
     <div class="d-flex flex-row justify-content-center align-items-center">
 
         {{-- LEFT SIDE --}}
-        <div class="col-12 col-md-6 vh-100 d-none d-md-block" style="background: linear-gradient(135deg, #2b160d, #8b5a2b);">
+        <div class="col-12 col-md-6 vh-100 d-none d-md-block" style="background: linear-gradient(135deg, rgba(17,29,28,0.92), rgba(45,68,66,0.85)), url('{{ asset('assets/images/image-hero-about.png') }}') center/cover;">
 
             <div
                 class="container p-5 d-flex flex-column justify-content-center align-items-center h-100 text-center text-white">
-                <img src="{{ asset('assets/images/attalas-logo.png') }}" class="img-fluid mb-4" style="max-width: 180px;"
+                <img src="{{ asset('assets/images/attalas-logo.png') }}" class="img-fluid mb-4 shadow-sm rounded-circle" style="max-width: 180px; padding: 10px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);"
                     alt="Attalas Cafe Logo">
 
                 <h1 class="fw-bold mb-2">Attalas Cafe</h1>
@@ -21,9 +21,9 @@
         </div>
 
         {{-- RIGHT SIDE --}}
-        <div class="col-12 col-md-6 d-flex justify-content-center align-items-center bg-white vh-100">
-            <div class="card shadow-none border-0" style="width: 30rem;">
-                <div class="card-body">
+        <div class="col-12 col-md-6 d-flex justify-content-center align-items-center vh-100" style="background-color: #f5f7f4;">
+            <div class="card shadow-lg border-0 rounded-4 w-100" style="max-width: 480px; margin: 0 1rem;">
+                <div class="card-body p-5">
 
                     @if ($errors->has('failed'))
                         <div class="alert alert-warning alert-icon-start alert-dismissible fade show">
@@ -92,17 +92,17 @@
                                 </div>
                             </div>
 
-                            <div class="mb-3">
-                                <button type="submit" class="btn w-100 text-white" style="background-color: #8b5a2b;">
+                            <div class="mb-4 mt-2">
+                                <button type="submit" class="btn w-100 text-white shadow-sm py-2 fw-semibold" style="background-color: #2d4442; border-radius: 8px; transition: all 0.2s;" onmouseover="this.style.backgroundColor='#3c5956'" onmouseout="this.style.backgroundColor='#2d4442'">
                                     Sign In
                                 </button>
                             </div>
                         </form>
                     </div>
 
-                    <div class="text-center text-body bg-white">
-                        <a href="/" class="text-body text-decoration-none"
-                            style="color: rgb(152, 152, 152) !important">
+                    <div class="text-center text-body mt-4">
+                        <a href="/" class="text-decoration-none small fw-semibold"
+                            style="color: #6c757d !important; transition: color 0.2s;" onmouseover="this.style.color='#2d4442'" onmouseout="this.style.color='#6c757d'">
                             &copy; {{ now()->year }} - Attalas Cafe
                         </a>
                     </div>

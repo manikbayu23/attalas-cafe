@@ -76,7 +76,7 @@ class PageController extends Controller
             ->select('menus.*')
             ->join('menu_categories', 'menus.menu_category_id', '=', 'menu_categories.id')
             ->where('menus.status', true)
-            ->orderByRaw("CASE menu_categories.type WHEN 'food' THEN 1 WHEN 'drink' THEN 2 ELSE 3 END")
+            ->orderByRaw("CASE menu_categories.type WHEN 'drink' THEN 1 WHEN 'food' THEN 2 ELSE 3 END")
             ->orderBy('menu_categories.sort_order')
             ->orderByDesc('menus.is_best_seller')
             ->orderByDesc('menus.is_featured')
@@ -122,7 +122,7 @@ class PageController extends Controller
         $limit  = $request->integer('limit', 12);
 
         $items = (clone $query)
-            ->orderByRaw("CASE menu_categories.type WHEN 'food' THEN 1 WHEN 'drink' THEN 2 ELSE 3 END")
+            ->orderByRaw("CASE menu_categories.type WHEN 'drink' THEN 1 WHEN 'food' THEN 2 ELSE 3 END")
             ->orderBy('menu_categories.sort_order')
             ->orderByDesc('menus.is_best_seller')
             ->orderByDesc('menus.is_featured')
