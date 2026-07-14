@@ -16,7 +16,7 @@
         <section class="contact-section">
             <div class="container contact-grid">
                 <div class="contact-info">
-                    <a href="https://www.google.com/maps/place/ATTALAS+CAFE/@-8.2766412,115.3479415,17z/data=!3m1!4b1!4m6!3m5!1s0x2dd1f579afd7161f:0xc4036299583a290a!8m2!3d-8.2766413!4d115.3479415" target="_blank" rel="noopener"
+                    <a href="https://maps.app.goo.gl/1HLDYH4bGJBSHv8Y9" target="_blank" rel="noopener"
                         class="info-card info-card-location social-link-card">
                         <div class="icon-wrapper icon-location">
                             <i class="ph-map-pin"></i>
